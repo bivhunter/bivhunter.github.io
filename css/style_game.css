@@ -1,0 +1,224 @@
+body {
+  width: 95% ;
+  min-width: 950px;
+  max-width: 1300px;
+  padding: 0px;
+  margin: 0;
+ /* background: radial-gradient(white, #A77B5C);*/
+  height: 600px;
+  overflow: hidden;
+ /* outline: 1px groove blue;*/
+}
+
+.header {
+  width: 900px;
+  height: 70px;
+  margin: 30px auto 0 auto;
+  padding-bottom: 20px;
+ /* background: transparent;*/
+ /* outline: 1px groove blue;*/
+}
+
+.game-field {
+  width: 900px;
+  height: 600px;
+  margin: 0px auto 0 auto;
+    padding: 0;
+  position: relative; 
+  border: 3px groove #2A7676;
+  /* float: left; */
+  overflow: hidden;
+  /*background: radial-gradient(white, #D3D3D3);*/
+}
+
+.help {
+
+    margin: 30px auto 0 auto;
+}
+
+.help-table {
+    width: 400px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+
+.menu-selected {
+  border: 2px groove blue;
+}
+
+.menu {
+    width: 900px;
+    height: 600px;
+  margin: 0 auto 0 auto;
+  padding-top: 50px;
+ /* vertical-align: center;*/
+    position: relative;
+    background: rgba(202, 202, 202, 0.5);
+    z-index: 999;
+}
+
+.menu-list {
+    width: 400px;
+  list-style: none;
+  margin: 0 auto 0 auto;
+  padding: 50px 0;
+}
+
+.menu li{
+  text-align: center;
+  font-size: 50px;
+}
+
+.menu-header {
+  font-size: 75px;
+  margin: 0 auto 0 auto;
+  text-align: center;
+}
+
+.info {
+    width: 900px;
+    height: 600px;
+   /* padding: auto;*/
+    position: relative;
+    z-index: 9999;
+    display: table-cell;
+    vertical-align: middle;
+    background: rgba(202, 202, 202, 0.5);
+}
+
+.info-message {
+
+    margin-block-end: 0;
+    margin-block-start: 0;
+    /*height: 160px;*/
+    font-size: 150px;
+
+    line-height: 1;
+    padding: 0;
+   /* position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;*/
+    text-align: center;
+
+
+
+}
+/* .menu-field {
+  width: 150px;
+  height: 600px;
+  position: relative;
+  border-top: 3px groove #2A7676;
+  border-right: 3px groove #2A7676;
+  border-bottom: 3px groove #2A7676;
+  float: right;
+  overflow: hidden;
+}
+
+#game-field2 {
+  margin-top: 20px;
+} */
+
+/* #menu {
+  margin-left: 1010px;
+  width: 200px;
+  height: 300px;
+  padding: 10px;
+  
+} */
+
+.ball {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  background: radial-gradient(white, #FF2323);
+  border-radius: 24px;
+  border-width: 3px;
+  border-color: #A70000;
+  border-style: groove ridge ridge groove;
+}
+
+.block {
+  width: 44px;
+  height: 14px ;
+
+  position: absolute;
+  font-size: 10px;
+ /*  left: 200px;
+ top: 150px; */
+}
+
+.bricks {
+  background: radial-gradient(white, #A77B5C);
+  border: 3px groove #986C4D;
+}
+
+.bricks-2 {
+  background: radial-gradient(white, #D3D3D3);
+  border: 3px groove #CACACA;
+}
+
+.penoblock {
+  background: radial-gradient(white, #D3D3D3);
+  border: 3px groove #CACACA;
+}
+
+
+
+.board {
+  height: 20px;
+  width: 124px;
+  border-top-left-radius: 65px 13px;
+  border-top-right-radius: 65px 13px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  position: absolute;
+  left: 0px;
+  top:0px;
+  border: 3px groove #2A7676;
+  background: radial-gradient(white, #84D0D0);
+  z-index: 98;
+  overflow-scrolling: touch;
+
+}
+
+.board-radius {
+  height: 164px;
+  width: 164px;
+  border-radius: 82px;
+  position: absolute;
+  left: -40px;
+  top:0px;
+  border: 3px groove #2A7676;
+ /* border: 3px groove #2A7676;
+  background: radial-gradient(white, #84D0D0);*/
+  z-index: 98;
+}
+
+.board-radius-2 {
+  height: 192px;
+  width: 200px;
+  border-radius: 200px;
+  position: absolute;
+  left: -56px;
+  top: 20px;
+  border: 3px groove #2A7676;
+  z-index: 99;
+}
+
+ul button {
+  width: 100px;
+  text-align: center;
+}
+
+.point {
+    width: 1px;
+    height: 1px;
+    border-radius: 0.5px;
+    background: black;
+    position: absolute;
+}
