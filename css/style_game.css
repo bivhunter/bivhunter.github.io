@@ -43,9 +43,6 @@ body {
 }
 
 
-.menu-selected {
-  border: 2px groove blue;
-}
 
 .menu {
     width: 900px;
@@ -57,6 +54,12 @@ body {
     background: rgba(202, 202, 202, 0.5);
     z-index: 999;
 }
+
+.menu-selected {
+    /*border: 2px groove blue;
+    box-shadow: #0D8AA2;*/
+}
+
 
 .menu-list {
     width: 400px;
@@ -70,10 +73,31 @@ body {
   font-size: 50px;
 }
 
+.menu li span {
+    margin: 0 auto;
+    display: inline-block;
+    position: relative;
+}
+
 .menu-header {
   font-size: 75px;
   margin: 0 auto 0 auto;
   text-align: center;
+}
+
+.menu-marker {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: -40px;
+    top: 14px;
+    padding: 0;
+    margin: 0;
+    background: radial-gradient(white, #FF2323);
+    border-radius: 30px;
+    border-width: 3px;
+    border-color: #A70000;
+    border-style: groove ridge ridge groove;
 }
 
 .info {
@@ -129,7 +153,7 @@ body {
   
 } */
 
-.ball {
+.ball{
   width: 24px;
   height: 24px;
   position: absolute;
@@ -141,6 +165,8 @@ body {
   border-color: #A70000;
   border-style: groove ridge ridge groove;
 }
+
+
 
 .block {
   width: 44px;

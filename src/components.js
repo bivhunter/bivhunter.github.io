@@ -18,10 +18,18 @@ class Menu {
 		this._menuItems.forEach(item => {
 			let listItem = document.createElement("li");
 			menuItems.appendChild(listItem);
-			listItem.textContent = item;
+
+
+			let span = document.createElement("span");
+            listItem.appendChild(span);
+            span.textContent = item;
+
 			let temp = item.split(" ");
 			item = temp.join("-");
 			listItem.classList.add("menu-" + item.toLowerCase());
+
+
+
 		});
 
 		menuItems.classList.add("menu-list");
@@ -30,7 +38,12 @@ class Menu {
 		menuWrapper.appendChild(menuItems);
 		this._elem = menuWrapper;
 		this._menuItems = menuItems;
+
+		this.marker = document.createElement("div");
+		this.marker.classList.add("menu-marker");
 		this.selectedItem = menuItems.firstElementChild;
+
+        this.selectedItem.querySelector("span").appendChild(this.marker);
 		this.selectedItem.classList.add("menu-selected");
 		//console.log(menuWrapper);
 	}
@@ -43,6 +56,8 @@ class Menu {
 		} else {
 			this._menuItems.firstElementChild.classList.add("menu-selected");
 		}
+        selectedItem = this._menuItems.querySelector(".menu-selected");
+		selectedItem.querySelector("span").appendChild(this.marker);
 	}
 
 	selectPrevious() {
@@ -53,6 +68,8 @@ class Menu {
 		} else {
 			this._menuItems.lastElementChild.classList.add("menu-selected");
 		}
+        selectedItem = this._menuItems.querySelector(".menu-selected");
+        selectedItem.querySelector("span").appendChild(this.marker);
 	}
 
 	getSelectedItem() {

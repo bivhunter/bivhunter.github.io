@@ -28,7 +28,11 @@ var Menu = function () {
 			this._menuItems.forEach(function (item) {
 				var listItem = document.createElement("li");
 				menuItems.appendChild(listItem);
-				listItem.textContent = item;
+
+				var span = document.createElement("span");
+				listItem.appendChild(span);
+				span.textContent = item;
+
 				var temp = item.split(" ");
 				item = temp.join("-");
 				listItem.classList.add("menu-" + item.toLowerCase());
@@ -40,7 +44,12 @@ var Menu = function () {
 			menuWrapper.appendChild(menuItems);
 			this._elem = menuWrapper;
 			this._menuItems = menuItems;
+
+			this.marker = document.createElement("div");
+			this.marker.classList.add("menu-marker");
 			this.selectedItem = menuItems.firstElementChild;
+
+			this.selectedItem.querySelector("span").appendChild(this.marker);
 			this.selectedItem.classList.add("menu-selected");
 			//console.log(menuWrapper);
 		}
@@ -54,6 +63,8 @@ var Menu = function () {
 			} else {
 				this._menuItems.firstElementChild.classList.add("menu-selected");
 			}
+			selectedItem = this._menuItems.querySelector(".menu-selected");
+			selectedItem.querySelector("span").appendChild(this.marker);
 		}
 	}, {
 		key: "selectPrevious",
@@ -65,6 +76,8 @@ var Menu = function () {
 			} else {
 				this._menuItems.lastElementChild.classList.add("menu-selected");
 			}
+			selectedItem = this._menuItems.querySelector(".menu-selected");
+			selectedItem.querySelector("span").appendChild(this.marker);
 		}
 	}, {
 		key: "getSelectedItem",
