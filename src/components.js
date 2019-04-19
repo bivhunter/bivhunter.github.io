@@ -141,6 +141,20 @@ class Header {
 class Round {
 	constructor() {
 		this._rounds = {
+            round_0: [
+                "                    ",
+                "                    ",
+                "                    ",
+                "    p        p    ",
+                "   p p      p p   ",
+                "  p p p    p p p  ",
+                " p p p p  p p p p ",
+                "p p p p pp p p p p",
+                " p p p p  p p p p ",
+                "  p p p    p p p  ",
+                "   p p      p p   ",
+                "    p        p    "
+            ],
 			round_1: [
 				"                    ",
 				"                    ",
@@ -181,8 +195,8 @@ class Round {
             ]
 
 		};
-		this._activeRound = this._rounds.round_1;
-		this._activeRoundNum = 1;
+		this._activeRound = this._rounds.round_0;
+		this._activeRoundNum = 0;
 		console.log("round", this._activeRoundNum);
 	}
 

@@ -50,14 +50,16 @@ body {
   margin: 0 auto 0 auto;
   padding-top: 50px;
  /* vertical-align: center;*/
-    position: relative;
+    position: absolute;
     background: rgba(202, 202, 202, 0.5);
-    z-index: 999;
+    /*opacity: 0.99;*/
+    z-index: 99;
 }
 
-.menu-selected {
-    /*border: 2px groove blue;
-    box-shadow: #0D8AA2;*/
+.menu-selected span {
+    border: 3px groove transparent;
+    box-shadow: 2px 4px 4px 2px rgb(178,178,178);
+
 }
 
 
@@ -74,13 +76,17 @@ body {
 }
 
 .menu li span {
-    margin: 0 auto;
+   padding: 0 10px;
     display: inline-block;
     position: relative;
+    color: rgb(42,118,118);
+    text-shadow: 2px 2px 3px rgb(6,82,82);
 }
 
-.menu-header {
-  font-size: 75px;
+.menu-header, .info-message {
+  font-size: 150px;
+    color: rgb(167,0,0);
+    text-shadow: 4px 4px 5px rgb(80,6,6);
   margin: 0 auto 0 auto;
   text-align: center;
 }
@@ -89,14 +95,14 @@ body {
     width: 30px;
     height: 30px;
     position: absolute;
-    left: -40px;
+    left: -50px;
     top: 14px;
     padding: 0;
     margin: 0;
     background: radial-gradient(white, #FF2323);
     border-radius: 30px;
     border-width: 3px;
-    border-color: #A70000;
+    border-color: #a60000;
     border-style: groove ridge ridge groove;
 }
 
@@ -105,7 +111,12 @@ body {
     height: 600px;
    /* padding: auto;*/
     position: relative;
-    z-index: 9999;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+   /* opacity: 0.5;*/
     display: table-cell;
     vertical-align: middle;
     background: rgba(202, 202, 202, 0.5);
@@ -113,19 +124,22 @@ body {
 
 .info-message {
 
-    margin-block-end: 0;
-    margin-block-start: 0;
+   /* margin-block-end: 0;
+    margin-block-start: 0;*/
     /*height: 160px;*/
-    font-size: 150px;
 
+  /*  color: #00cc33;*/
     line-height: 1;
-    padding: 0;
+
+
+
+
    /* position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     top: 0;*/
-    text-align: center;
+
 
 
 
@@ -162,7 +176,7 @@ body {
   background: radial-gradient(white, #FF2323);
   border-radius: 24px;
   border-width: 3px;
-  border-color: #A70000;
+  border-color: rgb(167,0,0);
   border-style: groove ridge ridge groove;
 }
 
