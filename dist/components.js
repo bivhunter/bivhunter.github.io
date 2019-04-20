@@ -28,7 +28,11 @@ var Menu = function () {
 			this._menuItems.forEach(function (item) {
 				var listItem = document.createElement("li");
 				menuItems.appendChild(listItem);
-				listItem.textContent = item;
+
+				var span = document.createElement("span");
+				listItem.appendChild(span);
+				span.textContent = item;
+
 				var temp = item.split(" ");
 				item = temp.join("-");
 				listItem.classList.add("menu-" + item.toLowerCase());
@@ -40,7 +44,12 @@ var Menu = function () {
 			menuWrapper.appendChild(menuItems);
 			this._elem = menuWrapper;
 			this._menuItems = menuItems;
+
+			this.marker = document.createElement("div");
+			this.marker.classList.add("menu-marker");
 			this.selectedItem = menuItems.firstElementChild;
+
+			this.selectedItem.querySelector("span").appendChild(this.marker);
 			this.selectedItem.classList.add("menu-selected");
 			//console.log(menuWrapper);
 		}
@@ -54,6 +63,8 @@ var Menu = function () {
 			} else {
 				this._menuItems.firstElementChild.classList.add("menu-selected");
 			}
+			selectedItem = this._menuItems.querySelector(".menu-selected");
+			selectedItem.querySelector("span").appendChild(this.marker);
 		}
 	}, {
 		key: "selectPrevious",
@@ -65,6 +76,8 @@ var Menu = function () {
 			} else {
 				this._menuItems.lastElementChild.classList.add("menu-selected");
 			}
+			selectedItem = this._menuItems.querySelector(".menu-selected");
+			selectedItem.querySelector("span").appendChild(this.marker);
 		}
 	}, {
 		key: "getSelectedItem",
@@ -152,14 +165,15 @@ var Round = function () {
 		_classCallCheck(this, Round);
 
 		this._rounds = {
+			round_Demo: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
 			round_1: ["                    ", "                    ", "         p          "],
 			round_2: ["                    ", "                    ", "         b          "],
 			round_4: ["                    ", "                    ", "                    ", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb"],
 			round_3: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "]
 
 		};
-		this._activeRound = this._rounds.round_1;
-		this._activeRoundNum = 1;
+		this._activeRound = this._rounds.round_Demo;
+		this._activeRoundNum = "Demo";
 		console.log("round", this._activeRoundNum);
 	}
 

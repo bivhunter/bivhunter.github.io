@@ -44,6 +44,7 @@ var GameScene = function () {
 
 			this._info = new Info("");
 			this._isShowInfo = true;
+			this._infoText = "Round " + this._round.getActiveRoundNum();
 		}
 	}, {
 		key: "_initHeader",
@@ -153,21 +154,14 @@ var GameScene = function () {
 			this._checkKeys();
 
 			//	this._ball2.update(dt);
-			this._updateCount++;
+			//this._updateCount++;
 
-			console.log("update" + dt);
+			//console.log("update" + dt);
 		}
 	}, {
 		key: "render",
 		value: function render(dt) {
-			/*let newArr = [];
-   this._blockArr.forEach((item) => {
-   	if (item) {
-   		newArr.push(item);
-   	}
-   });
-   this._blockArr = newArr;*/
-			//console.log(this._blockArr);
+
 			this._board.render(dt);
 
 			if (!this._game.gameField.contains(this._boardElem)) {
@@ -192,21 +186,11 @@ var GameScene = function () {
 			}
 
 			this._removeBlock();
-
 			this._ball.render(dt);
 
 			if (!this._game.gameField.contains(this._ballElem)) {
 				this._game.gameField.appendChild(this._ballElem);
 			}
-
-			//this.appendChild(header.getElem());
-
-			//this._game.gameField.appendChild(block.getElem());
-
-
-			//this._ball2.render(dt);
-			//this._renderCount++;
-			//console.log("render" + dt);
 		}
 	}, {
 		key: "_renderBlock",
@@ -254,21 +238,23 @@ var GameScene = function () {
 			var speed = Math.min(dt * 100 * board.moveMult, 200);
 			board.speed = board.direction * speed;
 			//console.log("speed: ", board.speed, "direction: ", board.direction);
+			board.position += board.speed;
 			this._calcBoardPos(board);
 		}
 	}, {
 		key: "_updateInfo",
 		value: function _updateInfo(dt) {
 			var info = this._info;
-			var text = "Round " + this._round.getActiveRoundNum();
+
 			if (this._startInfoTime < 5 || !this._isBlockRender) {
 				this._startInfoTime += dt;
 				info.enableAnimation();
-				info.animate(dt, 5, text);
+				info.animate(dt, 5, this._infoText);
 				console.log(this._startInfoTime);
 				this._isShowInfo = true;
 				return;
 			}
+
 			/*
            if (this._endInfoTime < 3) {
                this._endInfoTime += dt;
@@ -285,13 +271,14 @@ var GameScene = function () {
                    isClear: true
                });
    		}*/
+
 			info.disableAnimation();
 			this._isShowInfo = false;
 		}
 	}, {
 		key: "_calcBoardPos",
 		value: function _calcBoardPos(board) {
-			board.position += board.speed;
+
 			if (this._boardMaxPosition < board.position) {
 				board.position = this._boardMaxPosition;
 			}

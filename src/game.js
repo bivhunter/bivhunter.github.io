@@ -12,7 +12,8 @@ class Game {
     this.round = new Round();
     this._sceneArr = [];
     this.setScene({
-        scene: StartScene,
+        scene: StartScene_v2,
+        round: this.round,
         isClear: true
     });
 
@@ -48,7 +49,7 @@ class Game {
       }
 
       let scene = new options.scene(this, options.round, options.isLoss);
-      if (scene instanceof  GameScene) {
+      if (scene instanceof  GameScene || scene instanceof  StartScene_v2) {
           this._sceneArr = [];
       }
     if (this.activeScene) {

@@ -6,9 +6,9 @@ class StartScene {
 
 	_init() {
 		let menu = new Menu({
-			header: "Game",
+			header: "Ricochet",
 			menuItems: [
-				"Start",
+				"Start Game",
 				"Help",
 				"Quit"
 			]
@@ -33,7 +33,7 @@ class StartScene {
 		if (this._game.checkKeyPress(13)) {
 
 			switch (this._menu.getSelectedItem().classList[0]) {
-				case "menu-start":
+				case "menu-start-game":
 					this._game.setScene({
                         scene: GameScene,
                         round: this._game.round,

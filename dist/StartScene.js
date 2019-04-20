@@ -16,8 +16,8 @@ var StartScene = function () {
 		key: "_init",
 		value: function _init() {
 			var menu = new Menu({
-				header: "Game",
-				menuItems: ["Start", "Help", "Quit"]
+				header: "Ricochet",
+				menuItems: ["Start Game", "Help", "Quit"]
 			});
 			//console.log(menu.getElem());
 			this._menu = menu;
@@ -38,7 +38,7 @@ var StartScene = function () {
 			if (this._game.checkKeyPress(13)) {
 
 				switch (this._menu.getSelectedItem().classList[0]) {
-					case "menu-start":
+					case "menu-start-game":
 						this._game.setScene({
 							scene: GameScene,
 							round: this._game.round,
