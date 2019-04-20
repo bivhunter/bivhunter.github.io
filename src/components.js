@@ -141,7 +141,7 @@ class Header {
 class Round {
 	constructor() {
 		this._rounds = {
-            round_0: [
+            round_Demo: [
                 "                    ",
                 "                    ",
                 "                    ",
@@ -195,8 +195,8 @@ class Round {
             ]
 
 		};
-		this._activeRound = this._rounds.round_0;
-		this._activeRoundNum = 0;
+		this._activeRound = this._rounds.round_Demo;
+		this._activeRoundNum = "Demo";
 		console.log("round", this._activeRoundNum);
 	}
 

@@ -24,7 +24,7 @@ class StartScene_v2 extends GameScene {
                 "Quit"
             ]
         });
-        //console.log(menu.getElem());
+
         this._menu = menu;
         this._menuElem = menu.getElem();
     }
@@ -33,10 +33,6 @@ class StartScene_v2 extends GameScene {
         this._ball = new Ball({
             game: this,
             speed: 300,
-            /*position: {
-                x: -20,
-                y: -20
-            },*/
             direction: {
                 x: 1,
                 y: -1
@@ -49,94 +45,15 @@ class StartScene_v2 extends GameScene {
     update(dt) {
         this._checkKeys();
         super.update(dt);
-        //console.log(this._position);
-       /* this._updateInfo(dt);
-        this._updateBoard(dt, this._board);
-        this._updateBall(dt, this._ball);*/
-
-
-
     }
 
     render(dt) {
-        /*let newArr = [];
-        this._blockArr.forEach((item) => {
-            if (item) {
-                newArr.push(item);
-            }
-        });
-        this._blockArr = newArr;*/
-        //console.log(this._blockArr);
-
-
-        this._board.render(dt);
-
-        if (!this._game.gameField.contains(this._boardElem)) {
-            this._game.gameField.appendChild(this._boardElem);
-        }
-
-
-
-        this._renderBlock();
-
-
-
         if (!this._game.gameField.contains(this._menuElem)) {
             this._game.gameField.appendChild(this._menuElem);
             console.log("append child");
         }
 
-        if (this._isShowInfo) {
-            if (!this._game.gameField.contains(this._info.getElem())) {
-                this._game.gameField.appendChild(this._info.getElem());
-            }
-            return;
-        } else {
-            if (this._game.gameField.contains(this._info.getElem())) {
-                this._game.gameField.removeChild(this._info.getElem());
-            }
-
-        }
-
-        this._ball.render(dt);
-
-        if (!this._game.gameField.contains(this._ballElem)) {
-            this._game.gameField.appendChild(this._ballElem);
-        }
-
-        this._removeBlock();
-
-
-
-
-
-
-
-
-
-
-
-        /*this._board.render(dt);
-
-        if (!this._game.gameField.contains(this._boardElem)) {
-            this._game.gameField.appendChild(this._boardElem);
-        }
-
-        this._renderBlock();
-
-        this._removeBlock();
-
-        this._ball.render(dt);
-
-        if (!this._game.gameField.contains(this._ballElem)) {
-            this._game.gameField.appendChild(this._ballElem);
-        }
-
-        if (!this._game.gameField.contains(this._menuElem)) {
-            this._game.gameField.appendChild(this._menuElem);
-            console.log("append child");
-        }*/
-
+        super.render(dt);
     }
 
     _checkKeys() {
@@ -179,10 +96,6 @@ class StartScene_v2 extends GameScene {
         board.position = this._ball.renderPosition.x;
         this._calcBoardPos(board)
     }
-
-   /* _updateInfo() {
-
-    }*/
 
     _updateBall(dt, ball) {
         super._updateBall(dt, ball);

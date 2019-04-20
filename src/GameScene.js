@@ -152,14 +152,7 @@ class GameScene {
 	}
 
 	render(dt) {
-		/*let newArr = [];
-		this._blockArr.forEach((item) => {
-			if (item) {
-				newArr.push(item);
-			}
-		});
-		this._blockArr = newArr;*/
-		//console.log(this._blockArr);
+
         this._board.render(dt);
 
         if (!this._game.gameField.contains(this._boardElem)) {
@@ -184,28 +177,12 @@ class GameScene {
 
         }
 
-
-
 		this._removeBlock();
-
 		this._ball.render(dt);
 
 		if (!this._game.gameField.contains(this._ballElem)) {
 			this._game.gameField.appendChild(this._ballElem);
 		}
-
-
-
-		//this.appendChild(header.getElem());
-
-        //this._game.gameField.appendChild(block.getElem());
-
-
-
-
-        //this._ball2.render(dt);
-		//this._renderCount++;
-		//console.log("render" + dt);
 	}
 
 	_renderBlock() {
