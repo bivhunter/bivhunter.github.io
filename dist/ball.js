@@ -74,6 +74,12 @@ var Ball = function () {
             var x = board.renderPosition || 450;
             var y = board.topPosition - board.height / 2 - board.borderWidth - this.radius || 557;
             console.log(x, y);
+
+            // перешкоджає зилипанню шара
+            if (isNaN(x) || isNaN(y)) {
+                x = 450;
+                y = 557;
+            }
             this.renderPosition.x = x;
             this.renderPosition.y = y;
             this.position.x = x;
