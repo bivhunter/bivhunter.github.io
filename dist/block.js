@@ -21,7 +21,7 @@ var Block = function () {
 			var block = document.createElement("div");
 			block.classList.add("block");
 			block.classList.add(this._class);
-			block.innerHTML = this.x + "   " + this.y;
+			/*block.innerHTML = this.x + "   " + this.y;*/
 
 			this._width = 50;
 			this._height = 20;

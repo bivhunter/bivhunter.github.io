@@ -1,22 +1,33 @@
 body {
   width: 95% ;
   min-width: 950px;
-  max-width: 1300px;
+  max-width: 1200px;
   padding: 0px;
   margin: 0;
- /* background: radial-gradient(white, #A77B5C);*/
+    margin: 0 auto;
   height: 600px;
-  overflow: hidden;
+/*  overflow: hidden;*/
  /* outline: 1px groove blue;*/
 }
 
+.wrapper {
+    width: 100%;
+    height: 800px;
+    margin: 0 auto;
+     /*outline: 1px groove blue;*/
+     background: linear-gradient(rgb(255,255,184), rgb(132,208,208));
+    box-shadow: 4px 4px 2px 4px rgb(0,71,71),
+    -4px -4px 2px 4px rgb(86,86,15);
+}
+
+
 .header {
   width: 900px;
-  height: 70px;
+  height: 100px;
   margin: 30px auto 0 auto;
-  padding-bottom: 20px;
+
  /* background: transparent;*/
-  outline: 1px groove blue;
+  /*outline: 1px groove blue;*/
 }
 
 .game-field {
@@ -24,11 +35,15 @@ body {
   height: 600px;
   margin: 0px auto 0 auto;
     padding: 0;
-  position: relative; 
-  border: 3px groove #2A7676;
+  position: relative;
+    border-width:  2px;
+    border-color: rgb(163,163,92) rgb(42,118,118) rgb(42,118,118) rgb(163,163,92);
+    border-style: groove ridge ridge groove;
   /* float: left; */
   overflow: hidden;
-  /*background: radial-gradient(white, #D3D3D3);*/
+    box-shadow: 8px 8px 4px 8px rgb(0,71,71),
+    -8px -8px 4px 8px rgb(86,86,15);
+  /*background: radial-gradient(white, rgb(255,255,184));*/
 }
 
 .help {
@@ -203,8 +218,8 @@ body {
 }
 
 .penoblock {
-  background: radial-gradient(white, #D3D3D3);
-  border: 3px groove #CACACA;
+  background: radial-gradient(white, rgb(29,40,163));
+  border: 3px groove rgb(6,6,115);
 }
 
 
@@ -220,7 +235,7 @@ body {
   left: 0px;
   top:0px;
   border: 3px groove #2A7676;
-  background: radial-gradient(white, #84D0D0);
+  background: radial-gradient(white, rgb(132,208,208));
   z-index: 98;
   overflow-scrolling: touch;
 

@@ -155,7 +155,7 @@ class Round {
                 "   p p      p p   ",
                 "    p        p    "
             ],
-			round_1: [
+			round_3: [
 				"                    ",
 				"                    ",
 				"         p          ",
@@ -179,7 +179,7 @@ class Round {
                 "bbbbbbbbbbbbbbbbbb",
                 "bbbbbbbbbbbbbbbbbb"
             ],
-            round_3: [
+            round_1: [
                 "                    ",
                 "                    ",
                 "                    ",
