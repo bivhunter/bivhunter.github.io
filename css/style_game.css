@@ -25,9 +25,24 @@ body {
   width: 900px;
   height: 100px;
   margin: 30px auto 0 auto;
-
  /* background: transparent;*/
   /*outline: 1px groove blue;*/
+}
+
+.header-list {
+  list-style: none;
+}
+
+.header-list li{
+  display: inline-block;
+ /*  width: 33%; */
+  font-size: 50px;
+  text-align: centr;
+  margin: 0 30px 0 30px;
+}
+
+.header-list span {
+  
 }
 
 .game-field {
@@ -48,7 +63,7 @@ body {
 
 .help {
 
-    margin: 30px auto 0 auto;
+    margin: 10px auto 0 auto;
 }
 
 .help-table {
@@ -57,16 +72,20 @@ body {
     margin: 0 auto;
 }
 
+.help-table td {
+  width: 50%;
+}
+
 
 
 .menu {
     width: 900px;
     height: 600px;
   margin: 0 auto 0 auto;
-  padding-top: 50px;
+  padding-top: 20px;
  /* vertical-align: center;*/
     position: absolute;
-    background: rgba(202, 202, 202, 0.6);
+    background: rgba(202, 202, 202, 0.7);
     /*opacity: 0.99;*/
     z-index: 99;
 }
@@ -82,7 +101,7 @@ body {
     width: 400px;
   list-style: none;
   margin: 0 auto 0 auto;
-  padding: 50px 0;
+  padding: 40px 0;
 }
 
 .menu li{
@@ -124,13 +143,13 @@ body {
 .info {
     width: 900px;
     height: 600px;
-   /* padding: auto;*/
+    /* padding: 50px; */
     position: relative;
     left: 0;
     top: 0;
     bottom: 0;
     right: 0;
-    z-index: -1;
+    z-index: 9;
    /* opacity: 0.5;*/
     display: table-cell;
     vertical-align: middle;
@@ -144,6 +163,7 @@ body {
     /*height: 160px;*/
 
   /*  color: #00cc33;*/
+  margin: 40px;
     line-height: 1;
 
 

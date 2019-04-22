@@ -21,8 +21,8 @@ class Menu {
 
 
 			let span = document.createElement("span");
-            listItem.appendChild(span);
-            span.textContent = item;
+			listItem.appendChild(span);
+			span.textContent = item;
 
 			let temp = item.split(" ");
 			item = temp.join("-");
@@ -43,7 +43,7 @@ class Menu {
 		this.marker.classList.add("menu-marker");
 		this.selectedItem = menuItems.firstElementChild;
 
-        this.selectedItem.querySelector("span").appendChild(this.marker);
+		this.selectedItem.querySelector("span").appendChild(this.marker);
 		this.selectedItem.classList.add("menu-selected");
 		//console.log(menuWrapper);
 	}
@@ -56,7 +56,7 @@ class Menu {
 		} else {
 			this._menuItems.firstElementChild.classList.add("menu-selected");
 		}
-        selectedItem = this._menuItems.querySelector(".menu-selected");
+		selectedItem = this._menuItems.querySelector(".menu-selected");
 		selectedItem.querySelector("span").appendChild(this.marker);
 	}
 
@@ -68,8 +68,8 @@ class Menu {
 		} else {
 			this._menuItems.lastElementChild.classList.add("menu-selected");
 		}
-        selectedItem = this._menuItems.querySelector(".menu-selected");
-        selectedItem.querySelector("span").appendChild(this.marker);
+		selectedItem = this._menuItems.querySelector(".menu-selected");
+		selectedItem.querySelector("span").appendChild(this.marker);
 	}
 
 	getSelectedItem() {
@@ -107,6 +107,7 @@ class Header {
 		for (let key in this.options) {
 			let li = document.createElement("li");
 			li.textContent = `${key}: `;
+			let div = document.createElement("div");
 
 			let span = document.createElement("span");
 			let classStr = "header-" + key.toLowerCase();
@@ -141,58 +142,58 @@ class Header {
 class Round {
 	constructor() {
 		this._rounds = {
-            round_Demo: [
-                "                    ",
-                "                    ",
-                "                    ",
-                "    p        p    ",
-                "   p p      p p   ",
-                "  p p p    p p p  ",
-                " p p p p  p p p p ",
-                "p p p p pp p p p p",
-                " p p p p  p p p p ",
-                "  p p p    p p p  ",
-                "   p p      p p   ",
-                "    p        p    "
-            ],
+			round_Demo: [
+				"                    ",
+				"                    ",
+				"                    ",
+				"    p        p    ",
+				"   p p      p p   ",
+				"  p p p    p p p  ",
+				" p p p p  p p p p ",
+				"p p p p pp p p p p",
+				" p p p p  p p p p ",
+				"  p p p    p p p  ",
+				"   p p      p p   ",
+				"    p        p    "
+			],
 			round_3: [
 				"                    ",
 				"                    ",
 				"         p          ",
 			],
-            round_2: [
-                "                    ",
-                "                    ",
-                "         b          ",
-            ],
+			round_2: [
+				"                    ",
+				"                    ",
+				"         b          ",
+			],
 			round_4: [
-                "                    ",
-                "                    ",
-                "                    ",
-                "bbbbbbbbbbbbbbbbbb",
-                "bbbbbbbbbbbbbbbbbb",
-                "bbbbbbbbbbbbbbbbbb",
-                "bbbbbbbbbbbbbbbbbb",
-                "bbbbbbbbbbbbbbbbbb",
-                "bbbbbbbbbbbbbbbbbb",
-                "bbbbbbbbbbbbbbbbbb",
-                "bbbbbbbbbbbbbbbbbb",
-                "bbbbbbbbbbbbbbbbbb"
-            ],
-            round_1: [
-                "                    ",
-                "                    ",
-                "                    ",
-                "    p        p    ",
-                "   p p      p p   ",
-                "  p p p    p p p  ",
-                " p p p p  p p p p ",
-                "p p p p pp p p p p",
-                " p p p p  p p p p ",
-                "  p p p    p p p  ",
-                "   p p      p p   ",
-                "    p        p    "
-            ]
+				"                    ",
+				"                    ",
+				"                    ",
+				"bbbbbbbbbbbbbbbbbb",
+				"bbbbbbbbbbbbbbbbbb",
+				"bbbbbbbbbbbbbbbbbb",
+				"bbbbbbbbbbbbbbbbbb",
+				"bbbbbbbbbbbbbbbbbb",
+				"bbbbbbbbbbbbbbbbbb",
+				"bbbbbbbbbbbbbbbbbb",
+				"bbbbbbbbbbbbbbbbbb",
+				"bbbbbbbbbbbbbbbbbb"
+			],
+			round_1: [
+				"                    ",
+				"                    ",
+				"                    ",
+				"    p        p    ",
+				"   p p      p p   ",
+				"  p p p    p p p  ",
+				" p p p p  p p p p ",
+				"p p p p pp p p p p",
+				" p p p p  p p p p ",
+				"  p p p    p p p  ",
+				"   p p      p p   ",
+				"    p        p    "
+			]
 
 		};
 		this._activeRound = this._rounds.round_Demo;
@@ -205,14 +206,14 @@ class Round {
 	}
 
 	getFirstRound() {
-        this._activeRound = this._rounds.round_1;
-        this._activeRoundNum = 1;
-        return this;
-    }
+		this._activeRound = this._rounds.round_1;
+		this._activeRoundNum = 1;
+		return this;
+	}
 
 	getActiveRoundNum() {
-	    return this._activeRoundNum;
-    }
+		return this._activeRoundNum;
+	}
 
 	getNextRound() {
 		let round = "round_" + (this._activeRoundNum + 1);
@@ -220,74 +221,74 @@ class Round {
 			return null;
 		}
 		this._activeRound = this._rounds[round];
-        this._activeRoundNum++
-		return this;
+		this._activeRoundNum++
+			return this;
 	}
 }
 
 class Info {
-    constructor (text) {
-        this._text = text;
-        this.time = 0;
-        this.animationTime = 0;
-        this.count = 0;
-        this._init();
-    }
+	constructor(text) {
+		this._text = text;
+		this.time = 0;
+		this.animationTime = 0;
+		this.count = 0;
+		this._init();
+	}
 
-    _init() {
-        let div = document.createElement("div");
-        div.classList.add("info");
-        this._elem = div;
-        let message = document.createElement("p");
-        message.classList.add("info-message");
-        message.textContent = this._text;
-        this._message = message;
-        div.appendChild(message);
+	_init() {
+		let div = document.createElement("div");
+		div.classList.add("info");
+		this._elem = div;
+		let message = document.createElement("p");
+		message.classList.add("info-message");
+		message.textContent = this._text;
+		this._message = message;
+		div.appendChild(message);
 
-    }
+	}
 
-    enableAnimation() {
-    	this.isAnimation = true;
+	enableAnimation() {
+		this.isAnimation = true;
 	}
 
 	disableAnimation() {
-        this.isAnimation = false;
-        this.time = 0;
-        this.animationTime = 0;
-        this.count = 0;
+		this.isAnimation = false;
+		this.time = 0;
+		this.animationTime = 0;
+		this.count = 0;
 	}
 
-    animate(dt, duration, text) {
-    	if (!this.isAnimation) {
-    		return;
+	animate(dt, duration, text) {
+		if (!this.isAnimation) {
+			return;
 		}
 
-        if (this.time < duration) {
-            this.time += dt;
-            let period = duration / (text.length + 5);
-            if (this.animationTime < period) {
-                this.animationTime += dt;
-            } else {
-                if (this.count < text.length) {
-                    this.addText(text[this.count]);
-                    this.animationTime = 0;
-                    this.count++;
-                }
-            }
+		if (this.time < duration) {
+			this.time += dt;
+			let period = duration / (text.length + 5);
+			if (this.animationTime < period) {
+				this.animationTime += dt;
+			} else {
+				if (this.count < text.length) {
+					this.addText(text[this.count]);
+					this.animationTime = 0;
+					this.count++;
+				}
+			}
 
-        }
-    }
-
-    getElem () {
-        return this._elem;
-    }
-
-    addText(text) {
-        this._message.textContent += text;
+		}
 	}
 
-    setText(text) {
-        this._message.textContent = text;
-    }
+	getElem() {
+		return this._elem;
+	}
+
+	addText(text) {
+		this._message.textContent += text;
+	}
+
+	setText(text) {
+		this._message.textContent = text;
+	}
 
 }
