@@ -1,6 +1,6 @@
-class StartScene_v2 extends GameScene {
-    constructor (game, round) {
-        super (game, round);
+class StartScene extends GameScene {
+    constructor(game, round) {
+        super(game, round);
     }
 
     _initRound(round) {
@@ -104,10 +104,9 @@ class StartScene_v2 extends GameScene {
 
     gameOver() {
         this._game.setScene({
-            scene: StartScene_v2,
+            scene: StartScene,
             round: this._game.round,
             isClear: true
         });
     }
 }
-

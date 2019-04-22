@@ -10,7 +10,7 @@ var Game = function () {
 
     this.gameField = gameField;
     this.header = document.getElementById("header");
-    this.lifes = 2;
+    this.lifes = 1;
     this.score = 0;
     this._stop = false;
     //this._isStart = false;
@@ -18,7 +18,7 @@ var Game = function () {
     this.round = new Round();
     this._sceneArr = [];
     this.setScene({
-      scene: StartScene_v2,
+      scene: StartScene,
       round: this.round,
       isClear: true
     });
@@ -58,7 +58,7 @@ var Game = function () {
       }
 
       var scene = new options.scene(this, options.round, options.isLoss);
-      if (scene instanceof GameScene || scene instanceof StartScene_v2) {
+      if (scene instanceof GameScene || scene instanceof StartScene) {
         this._sceneArr = [];
       }
       if (this.activeScene) {

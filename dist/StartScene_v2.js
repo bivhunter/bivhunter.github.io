@@ -10,25 +10,25 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var StartScene_v2 = function (_GameScene) {
-    _inherits(StartScene_v2, _GameScene);
+var StartScene = function (_GameScene) {
+    _inherits(StartScene, _GameScene);
 
-    function StartScene_v2(game, round) {
-        _classCallCheck(this, StartScene_v2);
+    function StartScene(game, round) {
+        _classCallCheck(this, StartScene);
 
-        return _possibleConstructorReturn(this, (StartScene_v2.__proto__ || Object.getPrototypeOf(StartScene_v2)).call(this, game, round));
+        return _possibleConstructorReturn(this, (StartScene.__proto__ || Object.getPrototypeOf(StartScene)).call(this, game, round));
     }
 
-    _createClass(StartScene_v2, [{
+    _createClass(StartScene, [{
         key: "_initRound",
         value: function _initRound(round) {
-            _get(StartScene_v2.prototype.__proto__ || Object.getPrototypeOf(StartScene_v2.prototype), "_initRound", this).call(this, round);
+            _get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_initRound", this).call(this, round);
             this._initMenu();
         }
     }, {
         key: "_initInfo",
         value: function _initInfo() {
-            _get(StartScene_v2.prototype.__proto__ || Object.getPrototypeOf(StartScene_v2.prototype), "_initInfo", this).call(this);
+            _get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_initInfo", this).call(this);
             this._infoText = "Demo";
             this._info.getElem().style.background = "inherit";
             this._info.getElem().style.verticalAlign = "bottom";
@@ -62,7 +62,7 @@ var StartScene_v2 = function (_GameScene) {
         key: "update",
         value: function update(dt) {
             this._checkKeys();
-            _get(StartScene_v2.prototype.__proto__ || Object.getPrototypeOf(StartScene_v2.prototype), "update", this).call(this, dt);
+            _get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "update", this).call(this, dt);
         }
     }, {
         key: "render",
@@ -72,7 +72,7 @@ var StartScene_v2 = function (_GameScene) {
                 console.log("append child");
             }
 
-            _get(StartScene_v2.prototype.__proto__ || Object.getPrototypeOf(StartScene_v2.prototype), "render", this).call(this, dt);
+            _get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "render", this).call(this, dt);
         }
     }, {
         key: "_checkKeys",
@@ -120,19 +120,19 @@ var StartScene_v2 = function (_GameScene) {
     }, {
         key: "_updateBall",
         value: function _updateBall(dt, ball) {
-            _get(StartScene_v2.prototype.__proto__ || Object.getPrototypeOf(StartScene_v2.prototype), "_updateBall", this).call(this, dt, ball);
+            _get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_updateBall", this).call(this, dt, ball);
             ball.isOnBoard = false;
         }
     }, {
         key: "gameOver",
         value: function gameOver() {
             this._game.setScene({
-                scene: StartScene_v2,
+                scene: StartScene,
                 round: this._game.round,
                 isClear: true
             });
         }
     }]);
 
-    return StartScene_v2;
+    return StartScene;
 }(GameScene);

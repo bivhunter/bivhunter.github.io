@@ -4,7 +4,7 @@ class Game {
   constructor(gameField) {
     this.gameField = gameField;
     this.header = document.getElementById("header");
-    this.lifes = 2;
+    this.lifes = 1;
     this.score = 0;
     this._stop = false;
     //this._isStart = false;
@@ -12,9 +12,9 @@ class Game {
     this.round = new Round();
     this._sceneArr = [];
     this.setScene({
-        scene: StartScene_v2,
-        round: this.round,
-        isClear: true
+      scene: StartScene,
+      round: this.round,
+      isClear: true
     });
 
     //this._start();
@@ -43,17 +43,17 @@ class Game {
   }
 
   setScene(options) {
-      if (options.isClear) {
-          this.gameField.innerHTML = "";
-          this.header.innerHTML = "";
-      }
+    if (options.isClear) {
+      this.gameField.innerHTML = "";
+      this.header.innerHTML = "";
+    }
 
-      let scene = new options.scene(this, options.round, options.isLoss);
-      if (scene instanceof  GameScene || scene instanceof  StartScene_v2) {
-          this._sceneArr = [];
-      }
+    let scene = new options.scene(this, options.round, options.isLoss);
+    if (scene instanceof GameScene || scene instanceof StartScene) {
+      this._sceneArr = [];
+    }
     if (this.activeScene) {
-        this._sceneArr.push(this.activeScene);
+      this._sceneArr.push(this.activeScene);
     }
     this.activeScene = scene;
   }
@@ -63,15 +63,15 @@ class Game {
     this.activeScene = this._sceneArr.pop();
   }
 
- /* _pressEnter() {
-    if (this._isStart) {
-      this._isStart = false;
-      this.pause();
-    } else {
-      this._isStart = true;
-      this.start();
-    }
-  }*/
+  /* _pressEnter() {
+     if (this._isStart) {
+       this._isStart = false;
+       this.pause();
+     } else {
+       this._isStart = true;
+       this.start();
+     }
+   }*/
 
   update(dt) {
     this.activeScene.update(dt);
