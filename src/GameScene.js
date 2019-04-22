@@ -6,8 +6,8 @@ class GameScene {
 	constructor(game, round) {
 		this._game = game;
 		this._round = round;
-        this._startInfoTime = 0;
-        this._endInfoTime = 10;
+		this._startInfoTime = 0;
+		this._endInfoTime = 10;
 		this._initRound(round);
 
 		this._renderCount = 0;
@@ -38,10 +38,10 @@ class GameScene {
 
 	_initInfo() {
 
-	    this._info = new Info("");
-	    this._isShowInfo = true;
-        this._infoText = "Round " + this._round.getActiveRoundNum();
-    }
+		this._info = new Info("");
+		this._isShowInfo = true;
+		this._infoText = "Round " + this._round.getActiveRoundNum();
+	}
 
 	_initHeader(options) {
 		let header = new Header(options);
@@ -59,8 +59,8 @@ class GameScene {
 				y: -20
 			},*/
 			direction: {
-				x: 0,
-				y: 1
+				x: 1,
+				y: -2
 			}
 		});
 		this._ballElem = this._ball.getElem();
@@ -85,8 +85,8 @@ class GameScene {
 	_initBlocks(round) {
 		this._blockArr = [];
 		this._blockForRemove = [];
-       // this._isPause = true;
-        this._blockCount = 0;
+		// this._isPause = true;
+		this._blockCount = 0;
 		let block;
 		for (let i = 0; i < round.length; i++) {
 			let y = i * 20;
@@ -115,16 +115,16 @@ class GameScene {
 	}
 
 	_checkKeys() {
-        if (this._game.keys["32"]) {
-            this._ball.isOnBoard = false;
-        }
+		if (this._game.checkKeyPress(32)) {
+			this._ball.isOnBoard = false;
+		}
 
 		if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {
 			this._blockCount = 0;
 			this._game.setScene({
-                scene: PauseScene,
-                isClear: false
-            });
+				scene: PauseScene,
+				isClear: false
+			});
 			this._isPause = true;
 		}
 	}
@@ -135,12 +135,12 @@ class GameScene {
 
 
 		this._updateInfo(dt);
-		if(this._isShowInfo) {
+		if (this._isShowInfo) {
 			return;
 		}
 
-        this._updateBoard(dt, this._board);
-        this._updateBall(dt, this._ball);
+		this._updateBoard(dt, this._board);
+		this._updateBall(dt, this._ball);
 
 
 		this._checkKeys();
@@ -153,29 +153,29 @@ class GameScene {
 
 	render(dt) {
 
-        this._board.render(dt);
+		this._board.render(dt);
 
-        if (!this._game.gameField.contains(this._boardElem)) {
-            this._game.gameField.appendChild(this._boardElem);
-        }
+		if (!this._game.gameField.contains(this._boardElem)) {
+			this._game.gameField.appendChild(this._boardElem);
+		}
 
-        if (!this._game.header.contains(this.header.getElem())) {
-            this._game.header.appendChild(this.header.getElem());
-        }
+		if (!this._game.header.contains(this.header.getElem())) {
+			this._game.header.appendChild(this.header.getElem());
+		}
 
-        this._renderBlock();
+		this._renderBlock();
 
-        if (this._isShowInfo) {
-            if (!this._game.gameField.contains(this._info.getElem())) {
-                this._game.gameField.appendChild(this._info.getElem());
-            	}
-            return;
-			} else {
-            if (this._game.gameField.contains(this._info.getElem())) {
-                this._game.gameField.removeChild(this._info.getElem());
-            }
+		if (this._isShowInfo) {
+			if (!this._game.gameField.contains(this._info.getElem())) {
+				this._game.gameField.appendChild(this._info.getElem());
+			}
+			return;
+		} else {
+			if (this._game.gameField.contains(this._info.getElem())) {
+				this._game.gameField.removeChild(this._info.getElem());
+			}
 
-        }
+		}
 
 		this._removeBlock();
 		this._ball.render(dt);
@@ -188,18 +188,18 @@ class GameScene {
 	_renderBlock() {
 		if (this._isPause) {
 			this._blockArr.forEach(block => {
-                this._game.gameField.appendChild(block.getElem());
+				this._game.gameField.appendChild(block.getElem());
 			});
 			this._isPause = false;
 			this._blockCount === this._blockArr.length;
 		}
 
-        if (this._blockCount < this._blockArr.length) {
-                this._game.gameField.appendChild(this._blockArr[this._blockCount].getElem());
-                this._blockCount ++;
-				return;
-        }
-        this._isBlockRender = true;
+		if (this._blockCount < this._blockArr.length) {
+			this._game.gameField.appendChild(this._blockArr[this._blockCount].getElem());
+			this._blockCount++;
+			return;
+		}
+		this._isBlockRender = true;
 	}
 
 	_updateBoard(dt, board) {
@@ -227,7 +227,7 @@ class GameScene {
 		let speed = Math.min(dt * 100 * board.moveMult, 200);
 		board.speed = board.direction * speed;
 		//console.log("speed: ", board.speed, "direction: ", board.direction);
-        board.position += board.speed;
+		board.position += board.speed;
 		this._calcBoardPos(board)
 
 	}
@@ -235,35 +235,17 @@ class GameScene {
 	_updateInfo(dt) {
 		let info = this._info;
 
-        if (this._startInfoTime < 5 || !this._isBlockRender) {
-            this._startInfoTime += dt;
-            info.enableAnimation();
-            info.animate(dt, 5, this._infoText);
-            console.log(this._startInfoTime);
-            this._isShowInfo = true;
-            return ;
-        }
+		if (this._startInfoTime < 5 || !this._isBlockRender) {
+			this._startInfoTime += dt;
+			info.enableAnimation();
+			info.animate(dt, 5, this._infoText);
+			console.log(this._startInfoTime);
+			this._isShowInfo = true;
+			return;
+		}
 
-
-/*
-        if (this._endInfoTime < 3) {
-            this._endInfoTime += dt;
-            console.log(this._endInfoTime);
-            this._isShowInfo = true;
-            return ;
-        }
-
-        if (this._isEndRound) {
-        	console.log("newScene");
-            this._game.setScene({
-                scene: GameScene,
-                round: this._game.round,
-                isClear: true
-            });
-		}*/
-
-        info.disableAnimation();
-        this._isShowInfo = false;
+		info.disableAnimation();
+		this._isShowInfo = false;
 	}
 
 
@@ -292,9 +274,9 @@ class GameScene {
 			ball.direction.x = 0.01;
 		}
 
-        if (ball.direction.y === 0) {
-            ball.direction.y = 0.01;
-        }
+		if (ball.direction.y === 0) {
+			ball.direction.y = 0.01;
+		}
 		ball.speed = vectorScalar(dt * ball.speedCoef, ball.direction);
 		this._excessBallSpeed(ball.speed);
 
@@ -747,9 +729,9 @@ class GameScene {
 	}
 
 	_touchingBlock(block) {
-        this._game.score += block.touching();
-        this.header.setScore(this._game.score);
-        this._blockForRemove.push(block);
+		this._game.score += block.touching();
+		this.header.setScore(this._game.score);
+		this._blockForRemove.push(block);
 	}
 
 
@@ -775,9 +757,9 @@ class GameScene {
 		});
 
 		this._blockForRemove = [];
-		if(this._blockArr.length === 0) {
-            this.gameOver(false);
-        }
+		if (this._blockArr.length === 0) {
+			this.gameOver(false);
+		}
 
 	}
 
@@ -793,12 +775,12 @@ class GameScene {
 
 	gameOver(isLoss) {
 
-			this._game.setScene({
-                scene: GameOverScene,
-                round: this._game.round,
-                isClear: false,
-				isLoss: isLoss
-            });
+		this._game.setScene({
+			scene: GameOverScene,
+			round: this._game.round,
+			isClear: false,
+			isLoss: isLoss
+		});
 
 
 

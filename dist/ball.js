@@ -71,11 +71,11 @@ var Ball = function () {
     }, {
         key: "sendToBoard",
         value: function sendToBoard(board) {
-            var x = board.renderPosition || 450;
-            var y = board.topPosition - board.height / 2 - board.borderWidth - this.radius || 557;
+            var x = board.renderPosition;
+            var y = board.topPosition - board.height / 2 - board.borderWidth - this.radius;
             console.log(x, y);
 
-            // перешкоджає зилипанню шара
+            //можливо перешкоджає залипанню шара
             if (isNaN(x) || isNaN(y)) {
                 x = 450;
                 y = 557;

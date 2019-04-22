@@ -65,8 +65,8 @@ var GameScene = function () {
     	y: -20
     },*/
 				direction: {
-					x: 0,
-					y: 1
+					x: 1,
+					y: -2
 				}
 			});
 			this._ballElem = this._ball.getElem();
@@ -123,7 +123,7 @@ var GameScene = function () {
 	}, {
 		key: "_checkKeys",
 		value: function _checkKeys() {
-			if (this._game.keys["32"]) {
+			if (this._game.checkKeyPress(32)) {
 				this._ball.isOnBoard = false;
 			}
 
@@ -254,23 +254,6 @@ var GameScene = function () {
 				this._isShowInfo = true;
 				return;
 			}
-
-			/*
-           if (this._endInfoTime < 3) {
-               this._endInfoTime += dt;
-               console.log(this._endInfoTime);
-               this._isShowInfo = true;
-               return ;
-           }
-   
-           if (this._isEndRound) {
-           	console.log("newScene");
-               this._game.setScene({
-                   scene: GameScene,
-                   round: this._game.round,
-                   isClear: true
-               });
-   		}*/
 
 			info.disableAnimation();
 			this._isShowInfo = false;

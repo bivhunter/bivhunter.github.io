@@ -1,32 +1,32 @@
 "use strict";
 
 class Ball {
-	constructor(options) {
-		//розмір шару
-		this._game = options.game;
+    constructor(options) {
+        //розмір шару
+        this._game = options.game;
 
-		this.position = {};
-		this.renderPosition = {};
-		this.speedCoef = options.speed || 100;
+        this.position = {};
+        this.renderPosition = {};
+        this.speedCoef = options.speed || 100;
 
-		this.direction = options.direction || {
-			x: 0.01,
-			y: -1
-		};
-		this.radius = 15;
-	}
+        this.direction = options.direction || {
+            x: 0.01,
+            y: -1
+        };
+        this.radius = 15;
+    }
 
-	_init() {
-		this._ball = document.createElement("div");
-		this._ball.classList.add("ball");
-		this.direction = vectorNorm(this.direction);
-	}
+    _init() {
+        this._ball = document.createElement("div");
+        this._ball.classList.add("ball");
+        this.direction = vectorNorm(this.direction);
+    }
 
-	//відмальовка шара
-	render(dt) {
-		 console.log("render", this.renderPosition);
-		this._setPosition(this.renderPosition);
-	}
+    //відмальовка шара
+    render(dt) {
+        console.log("render", this.renderPosition);
+        this._setPosition(this.renderPosition);
+    }
 
     getNormal(direction) {
         return vectorSum(this.position, vectorScalar(this.radius, direction));
@@ -58,11 +58,11 @@ class Ball {
     }
 
     sendToBoard(board) {
-        let x = board.renderPosition || 450;
-        let y = (board.topPosition - board.height / 2 - board.borderWidth - this.radius) || 557;
+        let x = board.renderPosition;
+        let y = (board.topPosition - board.height / 2 - board.borderWidth - this.radius);
         console.log(x, y);
 
-        // перешкоджає зилипанню шара
+        //можливо перешкоджає залипанню шара
         if (isNaN(x) || isNaN(y)) {
             x = 450;
             y = 557;
@@ -86,4 +86,3 @@ class Ball {
 
 
 }
-
