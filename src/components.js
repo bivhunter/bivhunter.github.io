@@ -106,13 +106,11 @@ class Header {
 
 		for (let key in this.options) {
 			let li = document.createElement("li");
-			li.textContent = `${key}: `;
-			let div = document.createElement("div");
-
 			let span = document.createElement("span");
 			let classStr = "header-" + key.toLowerCase();
+
 			span.classList.add(classStr);
-			span.textContent = this.options[key];
+			span.textContent = `${key}: ${this.options[key]}`;
 
 			ul.appendChild(li);
 			li.appendChild(span);
@@ -134,7 +132,7 @@ class Header {
 	}
 
 	setScore(str) {
-		this._elem.querySelector(".header-score").textContent = str;
+		this._elem.querySelector(".header-score").textContent = "Score: " + str;
 	}
 
 }

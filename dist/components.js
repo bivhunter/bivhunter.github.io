@@ -123,12 +123,11 @@ var Header = function () {
 
 			for (var key in this.options) {
 				var li = document.createElement("li");
-				li.textContent = key + ": ";
-
 				var span = document.createElement("span");
 				var classStr = "header-" + key.toLowerCase();
+
 				span.classList.add(classStr);
-				span.textContent = this.options[key];
+				span.textContent = key + ": " + this.options[key];
 
 				ul.appendChild(li);
 				li.appendChild(span);
@@ -153,7 +152,7 @@ var Header = function () {
 	}, {
 		key: "setScore",
 		value: function setScore(str) {
-			this._elem.querySelector(".header-score").textContent = str;
+			this._elem.querySelector(".header-score").textContent = "Score: " + str;
 		}
 	}]);
 

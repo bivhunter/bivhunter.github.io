@@ -101,8 +101,8 @@ var GameOverScene = function () {
                 switch (this._menu.getSelectedItem().classList[0]) {
                     case "menu-new-game":
                         {
-                            this._game.lifes = 1;
-                            this._score = 0;
+                            this._game.lifes = 5;
+                            this._game.score = 0;
                             this._game.setScene({
                                 scene: StartScene,
                                 round: this._game.round.getFirstRound(),

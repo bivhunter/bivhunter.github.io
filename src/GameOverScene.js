@@ -1,5 +1,5 @@
 class GameOverScene {
-    constructor (game, round, isLoss) {
+    constructor(game, round, isLoss) {
         this._game = game;
         this._round = round;
         this._isLoss = isLoss;
@@ -32,7 +32,7 @@ class GameOverScene {
     update(dt) {
         let text = this._isLoss ? "Loss" : "Victory";
         let info = this._info;
-        if(this._isShowInfo) {
+        if (this._isShowInfo) {
             this._time += dt;
             info.enableAnimation();
             info.animate(dt, 6, text);
@@ -93,15 +93,15 @@ class GameOverScene {
             console.log(this._game.round);
             switch (this._menu.getSelectedItem().classList[0]) {
                 case "menu-new-game":
-                {
-                    this._game.lifes = 1;
-                    this._score = 0;
-                    this._game.setScene({
-                        scene: StartScene,
-                        round: this._game.round.getFirstRound(),
-                        isClear: true
-                    });
-                }
+                    {
+                        this._game.lifes = 5;
+                        this._game.score = 0;
+                        this._game.setScene({
+                            scene: StartScene,
+                            round: this._game.round.getFirstRound(),
+                            isClear: true
+                        });
+                    }
                     break;
                 case "menu-help":
                     this._game.setScene({
@@ -122,7 +122,7 @@ class GameOverScene {
     }
 
     render(dt) {
-        if(this._isMenu) {
+        if (this._isMenu) {
             if (!this._game.gameField.contains(this._menuElem)) {
                 this._game.gameField.appendChild(this._menuElem);
                 console.log("append child");
