@@ -112,6 +112,11 @@ class Header {
 			span.classList.add(classStr);
 			span.textContent = `${key}: ${this.options[key]}`;
 
+			if (key === "Score") {
+			    let block = document.createElement("div");
+			    block.classList.add("header-block");
+			    li.appendChild(block);
+            }
 			ul.appendChild(li);
 			li.appendChild(span);
 		}
@@ -154,7 +159,7 @@ class Round {
 				"   p p      p p   ",
 				"    p        p    "
 			],
-			round_3: [
+			round_1: [
 				"                    ",
 				"                    ",
 				"         p          ",
@@ -178,7 +183,7 @@ class Round {
 				"bbbbbbbbbbbbbbbbbb",
 				"bbbbbbbbbbbbbbbbbb"
 			],
-			round_1: [
+			round_3: [
 				"                    ",
 				"                    ",
 				"                    ",

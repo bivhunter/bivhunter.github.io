@@ -129,6 +129,11 @@ var Header = function () {
 				span.classList.add(classStr);
 				span.textContent = key + ": " + this.options[key];
 
+				if (key === "Score") {
+					var block = document.createElement("div");
+					block.classList.add("header-block");
+					li.appendChild(block);
+				}
 				ul.appendChild(li);
 				li.appendChild(span);
 			}
@@ -165,10 +170,10 @@ var Round = function () {
 
 		this._rounds = {
 			round_Demo: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
-			round_3: ["                    ", "                    ", "         p          "],
+			round_1: ["                    ", "                    ", "         p          "],
 			round_2: ["                    ", "                    ", "         b          "],
 			round_4: ["                    ", "                    ", "                    ", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb", "bbbbbbbbbbbbbbbbbb"],
-			round_1: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "]
+			round_3: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "]
 
 		};
 		this._activeRound = this._rounds.round_Demo;

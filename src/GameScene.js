@@ -177,12 +177,15 @@ class GameScene {
 
 		}
 
-		this._removeBlock();
 		this._ball.render(dt);
 
 		if (!this._game.gameField.contains(this._ballElem)) {
 			this._game.gameField.appendChild(this._ballElem);
 		}
+
+		//запускається останнім, щоб після запуску нової сцени
+		//не вимальовувалися старі елементи
+        this._removeBlock();
 	}
 
 	_renderBlock() {
