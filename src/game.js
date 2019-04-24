@@ -1,30 +1,27 @@
 "use strict";
 
 class Game {
-  constructor(gameField) {
+  constructor(gameField, headerField) {
     this.gameField = gameField;
-    this.header = document.getElementById("header");
+    this.headerField = headerField;
     this.lifes = 1;
     this.score = 0;
     this._stop = false;
     //this._isStart = false;
     this.keys = {};
     this.round = new Round();
+    this.header = new Header({});
     this._sceneArr = [];
+    //this._start();
+
+    this._initEvent();
     this.setScene({
       scene: StartScene,
       round: this.round,
       isClear: true
     });
-
-    //this._start();
-
-    //this._animationFrame;
-    this._initEvent();
     this.start();
   }
-
-
 
   _initEvent() {
     this.keys = {};
@@ -45,7 +42,7 @@ class Game {
   setScene(options) {
     if (options.isClear) {
       this.gameField.innerHTML = "";
-      this.header.innerHTML = "";
+      this.headerField.innerHTML = "";
     }
 
     let scene = new options.scene(this, options.round, options.isLoss);
@@ -75,16 +72,29 @@ class Game {
 
   update(dt) {
     this.activeScene.update(dt);
+    this._updateHeader(dt);
   }
 
   render(dt) {
     this.activeScene.render(dt);
+    this._renderHeader(dt);
   }
 
   /*pause() {
     this.stop();
 
   }*/
+
+  _updateHeader(dt) {
+    this.header.setScore(this.score);
+    this.header.setLifes(this.lifes);
+  }
+
+  _renderHeader(dt) {
+    if (!this.headerField.contains(this.header.getElem())) {
+      this.headerField.appendChild(this.header.getElem());
+    }
+  }
 
   stop() {
     console.log("stop" + this._animation);
@@ -241,7 +251,7 @@ function calcCentr(direc, pos, coord, r) {
 let res = calcQuad(1, 2, 1);
 
 console.log(Math.sign(0) + " " + 2 * res.x_2);
-let gameLounch = new Game(document.getElementById("game-field"));
+let gameLounch = new Game(document.getElementById("game-field"), document.getElementById("header-field"));
 
 /*document.getElementById("start").addEventListener("click", () => {
   gameLounch.start();

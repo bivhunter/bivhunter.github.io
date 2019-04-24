@@ -100,7 +100,7 @@ var Header = function () {
 
 		this.score = options.score || 0;
 		this.life = options.lifes || 0;
-		this.round = options.round || 1;
+		this.round = options.round || 0;
 
 		this.options = {
 			Round: this.round,
@@ -147,12 +147,12 @@ var Header = function () {
 	}, {
 		key: "setRound",
 		value: function setRound(str) {
-			this._elem.querySelector(".header-round").textContent = str;
+			this._elem.querySelector(".header-round").textContent = "Round: " + str;
 		}
 	}, {
 		key: "setLifes",
 		value: function setLifes(str) {
-			this._elem.querySelector(".header-lifes").textContent = str;
+			this._elem.querySelector(".header-lifes").textContent = "Lifes: " + str;
 		}
 	}, {
 		key: "setScore",
@@ -191,6 +191,13 @@ var Round = function () {
 		value: function getFirstRound() {
 			this._activeRound = this._rounds.round_1;
 			this._activeRoundNum = 1;
+			return this;
+		}
+	}, {
+		key: "getDemoRound",
+		value: function getDemoRound() {
+			this._activeRound = this._rounds.round_Demo;
+			this._activeRoundNum = "Demo";
 			return this;
 		}
 	}, {

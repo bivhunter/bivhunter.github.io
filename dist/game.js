@@ -5,28 +5,27 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Game = function () {
-  function Game(gameField) {
+  function Game(gameField, headerField) {
     _classCallCheck(this, Game);
 
     this.gameField = gameField;
-    this.header = document.getElementById("header");
+    this.headerField = headerField;
     this.lifes = 1;
     this.score = 0;
     this._stop = false;
     //this._isStart = false;
     this.keys = {};
     this.round = new Round();
+    this.header = new Header({});
     this._sceneArr = [];
+    //this._start();
+
+    this._initEvent();
     this.setScene({
       scene: StartScene,
       round: this.round,
       isClear: true
     });
-
-    //this._start();
-
-    //this._animationFrame;
-    this._initEvent();
     this.start();
   }
 
@@ -54,7 +53,7 @@ var Game = function () {
     value: function setScene(options) {
       if (options.isClear) {
         this.gameField.innerHTML = "";
-        this.header.innerHTML = "";
+        this.headerField.innerHTML = "";
       }
 
       var scene = new options.scene(this, options.round, options.isLoss);
@@ -87,17 +86,32 @@ var Game = function () {
     key: "update",
     value: function update(dt) {
       this.activeScene.update(dt);
+      this._updateHeader(dt);
     }
   }, {
     key: "render",
     value: function render(dt) {
       this.activeScene.render(dt);
+      this._renderHeader(dt);
     }
 
     /*pause() {
       this.stop();
       }*/
 
+  }, {
+    key: "_updateHeader",
+    value: function _updateHeader(dt) {
+      this.header.setScore(this.score);
+      this.header.setLifes(this.lifes);
+    }
+  }, {
+    key: "_renderHeader",
+    value: function _renderHeader(dt) {
+      if (!this.headerField.contains(this.header.getElem())) {
+        this.headerField.appendChild(this.header.getElem());
+      }
+    }
   }, {
     key: "stop",
     value: function stop() {
@@ -260,7 +274,7 @@ function calcCentr(direc, pos, coord, r) {
 var res = calcQuad(1, 2, 1);
 
 console.log(Math.sign(0) + " " + 2 * res.x_2);
-var gameLounch = new Game(document.getElementById("game-field"));
+var gameLounch = new Game(document.getElementById("game-field"), document.getElementById("header-field"));
 
 /*document.getElementById("start").addEventListener("click", () => {
   gameLounch.start();

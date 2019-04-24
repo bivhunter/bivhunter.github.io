@@ -85,7 +85,7 @@ class Header {
 	constructor(options) {
 		this.score = options.score || 0;
 		this.life = options.lifes || 0;
-		this.round = options.round || 1;
+		this.round = options.round || 0;
 
 		this.options = {
 			Round: this.round,
@@ -113,10 +113,10 @@ class Header {
 			span.textContent = `${key}: ${this.options[key]}`;
 
 			if (key === "Score") {
-			    let block = document.createElement("div");
-			    block.classList.add("header-block");
-			    li.appendChild(block);
-            }
+				let block = document.createElement("div");
+				block.classList.add("header-block");
+				li.appendChild(block);
+			}
 			ul.appendChild(li);
 			li.appendChild(span);
 		}
@@ -129,11 +129,11 @@ class Header {
 	}
 
 	setRound(str) {
-		this._elem.querySelector(".header-round").textContent = str;
+		this._elem.querySelector(".header-round").textContent = "Round: " + str;
 	}
 
 	setLifes(str) {
-		this._elem.querySelector(".header-lifes").textContent = str;
+		this._elem.querySelector(".header-lifes").textContent = "Lifes: " + str;
 	}
 
 	setScore(str) {
@@ -211,6 +211,12 @@ class Round {
 	getFirstRound() {
 		this._activeRound = this._rounds.round_1;
 		this._activeRoundNum = 1;
+		return this;
+	}
+
+	getDemoRound() {
+		this._activeRound = this._rounds.round_Demo;
+		this._activeRoundNum = "Demo";
 		return this;
 	}
 

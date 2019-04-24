@@ -58,18 +58,22 @@ var Block = function () {
 	}, {
 		key: "touching",
 		value: function touching() {
-			var score = 0;
+			this.score = 0;
 			if (this._class === "bricks") {
 				this._changeClass("bricks", "bricks-2");
-				score = 20;
+				this.score = 20;
 			} else if (this._class === "penoblock") {
 				this.remove = true;
-				score = 20;
+				this.score = 20;
 			} else if (this._class === "bricks-2") {
 				this.remove = true;
-				score = 30;
+				this.score = 30;
 			}
-			return score;
+		}
+	}, {
+		key: "getScore",
+		value: function getScore() {
+			return this.score;
 		}
 	}, {
 		key: "getElem",

@@ -8,25 +8,21 @@ class GameScene {
 		this._round = round;
 		this._startInfoTime = 0;
 		this._endInfoTime = 10;
-		this._initRound(round);
+		this._initRound();
 
 		this._renderCount = 0;
 		this._updateCount = 0;
 	}
 
-	_initRound(round) {
+	_initRound() {
 		// this._ballCoord = this._ball.getCoord();
 		//ініціалізація шара
-
+		this._game.header.setRound(this._round.getActiveRoundNum());
 		this._initBoard();
 		this._initBall();
 
-		this._initBlocks(round.getActiveRound());
-		this._initHeader({
-			lifes: this._game.lifes,
-			round: round.getActiveRoundNum(),
-			score: this._game.score
-		});
+		this._initBlocks(this._round.getActiveRound());
+
 		this._initInfo();
 
 
@@ -36,19 +32,14 @@ class GameScene {
 
 	}
 
-	_initInfo() {
+	_initInfo(round) {
 
 		this._info = new Info("");
 		this._isShowInfo = true;
 		this._infoText = "Round " + this._round.getActiveRoundNum();
 	}
 
-	_initHeader(options) {
-		let header = new Header(options);
-		this.header = header;
 
-		//console.log(header, header.getElem());
-	}
 
 	_initBall() {
 		this._ball = new Ball({
@@ -159,10 +150,6 @@ class GameScene {
 			this._game.gameField.appendChild(this._boardElem);
 		}
 
-		if (!this._game.header.contains(this.header.getElem())) {
-			this._game.header.appendChild(this.header.getElem());
-		}
-
 		this._renderBlock();
 
 		if (this._isShowInfo) {
@@ -185,7 +172,7 @@ class GameScene {
 
 		//запускається останнім, щоб після запуску нової сцени
 		//не вимальовувалися старі елементи
-        this._removeBlock();
+		this._removeBlock();
 	}
 
 	_renderBlock() {
@@ -732,8 +719,8 @@ class GameScene {
 	}
 
 	_touchingBlock(block) {
-		this._game.score += block.touching();
-		this.header.setScore(this._game.score);
+		block.touching();
+		this._game.score += block.getScore();
 		this._blockForRemove.push(block);
 	}
 
