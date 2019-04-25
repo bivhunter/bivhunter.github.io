@@ -163,40 +163,41 @@ class Round {
 				"                    ",
 				"                    ",
 				"         p          ",
-			],
-			round_2: [
-				"                    ",
-				"                    ",
-				"         b          ",
-			],
-			round_4: [
-				"                    ",
-				"                    ",
-				"                    ",
-				"bbbbbbbbbbbbbbbbbb",
-				"bbbbbbbbbbbbbbbbbb",
-				"bbbbbbbbbbbbbbbbbb",
-				"bbbbbbbbbbbbbbbbbb",
-				"bbbbbbbbbbbbbbbbbb",
-				"bbbbbbbbbbbbbbbbbb",
-				"bbbbbbbbbbbbbbbbbb",
-				"bbbbbbbbbbbbbbbbbb",
-				"bbbbbbbbbbbbbbbbbb"
-			],
-			round_3: [
-				"                    ",
-				"                    ",
-				"                    ",
-				"    p        p    ",
-				"   p p      p p   ",
-				"  p p p    p p p  ",
-				" p p p p  p p p p ",
-				"p p p p pp p p p p",
-				" p p p p  p p p p ",
-				"  p p p    p p p  ",
-				"   p p      p p   ",
-				"    p        p    "
-			]
+		]
+			/*,
+						round_2: [
+							"                    ",
+							"                    ",
+							"         b          ",
+						],
+						round_4: [
+							"                    ",
+							"                    ",
+							"                    ",
+							"bbbbbbbbbbbbbbbbbb",
+							"bbbbbbbbbbbbbbbbbb",
+							"bbbbbbbbbbbbbbbbbb",
+							"bbbbbbbbbbbbbbbbbb",
+							"bbbbbbbbbbbbbbbbbb",
+							"bbbbbbbbbbbbbbbbbb",
+							"bbbbbbbbbbbbbbbbbb",
+							"bbbbbbbbbbbbbbbbbb",
+							"bbbbbbbbbbbbbbbbbb"
+						],
+						round_3: [
+							"                    ",
+							"                    ",
+							"                    ",
+							"    p        p    ",
+							"   p p      p p   ",
+							"  p p p    p p p  ",
+							" p p p p  p p p p ",
+							"p p p p pp p p p p",
+							" p p p p  p p p p ",
+							"  p p p    p p p  ",
+							"   p p      p p   ",
+							"    p        p    "
+				]*/
 
 		};
 		this._activeRound = this._rounds.round_Demo;

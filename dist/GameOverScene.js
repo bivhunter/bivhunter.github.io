@@ -39,7 +39,7 @@ var GameOverScene = function () {
     }, {
         key: "update",
         value: function update(dt) {
-            var text = this._isLoss ? "Loss" : "Victory";
+            var text = this._isLoss ? "Loss!" : "Victory!";
             var info = this._info;
             if (this._isShowInfo) {
                 this._time += dt;

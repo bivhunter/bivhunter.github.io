@@ -6,6 +6,7 @@ class GameScene {
 	constructor(game, round) {
 		this._game = game;
 		this._round = round;
+		this._acceleration = 0.2;
 		this._startInfoTime = 0;
 		this._endInfoTime = 10;
 		this._initRound();
@@ -343,7 +344,7 @@ class GameScene {
 		}
 		//console.log(ball.position, ball.speed, ball.direction);
 		if (distance !== 0) {
-			ball.speedCoef += 0.2;
+			ball.speedCoef += this._acceleration;
 			//console.log(ball.speedCoef);
 			this._calcBallPosition(ball);
 		} else {

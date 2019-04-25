@@ -62,10 +62,12 @@ var PauseScene = function () {
 						});
 						break;
 					case "menu-quit":
+						this._game.lifes = 0;
 						this._game.setScene({
-							scene: FinalScene,
+							scene: GameOverScene,
+							round: this._game.round,
 							isClear: true,
-							round: this._round
+							isLoss: true
 						});
 						break;
 				}

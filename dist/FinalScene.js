@@ -20,7 +20,8 @@ var FinalScene = function () {
             var text = void 0;
             this._game.gameField.innerHTML = "";
             if (this._round === null) {
-                text = "Victory";
+                text = "You Won!!! Your Score: " + this._game.score;
+                console.log(text);
             } else if (this._round === undefined) {
                 text = "Game By Hunter";
             } else {
@@ -42,6 +43,7 @@ var FinalScene = function () {
                 this._time += dt;
             } else {
                 info.disableAnimation();
+                this._game.stop();
             }
         }
     }, {

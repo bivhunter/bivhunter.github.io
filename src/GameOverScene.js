@@ -31,7 +31,7 @@ class GameOverScene {
     }
 
     update(dt) {
-        let text = this._isLoss ? "Loss" : "Victory";
+        let text = this._isLoss ? "Loss!" : "Victory!";
         let info = this._info;
         if (this._isShowInfo) {
             this._time += dt;

@@ -134,7 +134,8 @@ body {
   padding-top: 20px;
  /* vertical-align: center;*/
     position: absolute;
-    background: rgba(202, 202, 202, 0.7);
+    /* background: rgba(202, 202, 202, 0.7); */
+    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(202, 202, 202, 0.5));
     /*opacity: 0.99;*/
     z-index: 99;
 }
@@ -202,7 +203,8 @@ body {
    /* opacity: 0.5;*/
     display: table-cell;
     vertical-align: middle;
-    background: rgba(202, 202, 202, 0.5);
+
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(202, 202, 202, 0.5));
 }
 
 .info-message {
