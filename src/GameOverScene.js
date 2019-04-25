@@ -78,11 +78,11 @@ class GameOverScene {
     }
 
     _updateMenu() {
-        if (this._game.checkKeyPress(38)) {
+        if (this._game.checkKeyPress(38) || this._game.checkKeyPress("W".charCodeAt(0))) {
             this._menu.selectPrevious();
         }
 
-        if (this._game.checkKeyPress(40)) {
+        if (this._game.checkKeyPress(40) || this._game.checkKeyPress("S".charCodeAt(0))) {
             this._menu.selectNext();
         }
 

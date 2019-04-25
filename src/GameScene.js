@@ -119,6 +119,35 @@ class GameScene {
 			});
 			this._isPause = true;
 		}
+
+		this._checkKeysBoard(this._board);
+	}
+
+	_checkKeysBoard(board) {
+		if (((this._game.keys["37"] || this._game.keys["A".charCodeAt(0) + ""]) &&
+				(this._game.keys["39"] || this._game.keys["D".charCodeAt(0) + ""])) ||
+			(!this._game.keys["37"] && !this._game.keys["39"] &&
+				!this._game.keys["A".charCodeAt(0) + ""] &&
+				!this._game.keys["D".charCodeAt(0) + ""])) {
+			board.direction = 0;
+			board.moveMult = 0;
+			// console.log("no press");
+		} else {
+			board.moveMult += 0.7;
+			if (this._game.keys["37"] || this._game.keys["A".charCodeAt(0) + ""]) {
+				if (board.direction > 0) {
+					board.moveMult = 0;
+				}
+				board.direction = -1;
+				// console.log("left press");
+			} else if (this._game.keys["39"] || this._game.keys["D".charCodeAt(0) + ""]) {
+				if (board.direction < 0) {
+					board.moveMult = 0;
+				}
+				board.direction = 1;
+				// console.log("right press");
+			}
+		}
 	}
 
 	update(dt) {
@@ -131,11 +160,12 @@ class GameScene {
 			return;
 		}
 
+		this._checkKeys();
+
 		this._updateBoard(dt, this._board);
 		this._updateBall(dt, this._ball);
 
 
-		this._checkKeys();
 
 		//	this._ball2.update(dt);
 		//this._updateCount++;
@@ -194,27 +224,7 @@ class GameScene {
 	}
 
 	_updateBoard(dt, board) {
-		if ((this._game.keys["37"] && this._game.keys["39"]) ||
-			(!this._game.keys["37"]) && !this._game.keys["39"]) {
-			board.direction = 0;
-			board.moveMult = 0;
-			// console.log("no press");
-		} else {
-			board.moveMult += 0.7;
-			if (this._game.keys["37"]) {
-				if (board.direction > 0) {
-					board.moveMult = 0;
-				}
-				board.direction = -1;
-				// console.log("left press");
-			} else if (this._game.keys["39"]) {
-				if (board.direction < 0) {
-					board.moveMult = 0;
-				}
-				board.direction = 1;
-				// console.log("right press");
-			}
-		}
+
 		let speed = Math.min(dt * 100 * board.moveMult, 200);
 		board.speed = board.direction * speed;
 		//console.log("speed: ", board.speed, "direction: ", board.direction);

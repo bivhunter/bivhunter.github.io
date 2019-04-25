@@ -35,7 +35,7 @@ var Ball = function () {
     }, {
         key: "render",
         value: function render(dt) {
-            console.log("render", this.renderPosition);
+            // console.log("render", this.renderPosition);
             this._setPosition(this.renderPosition);
         }
     }, {

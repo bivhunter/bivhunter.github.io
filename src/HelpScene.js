@@ -1,13 +1,13 @@
 class HelpScene {
-    constructor (game) {
+    constructor(game) {
         this._game = game;
         this._itemsObj = {
-            Up: "↑",
-            Down: "↓",
-            Left: "←",
-            Right: "→",
+            Up: "↑  or  W",
+            Down: "↓  or  S",
+            Left: "←  or  A",
+            Right: "→  or  D",
             "Select, Pause": "ENTER",
-            "Quit": "ESC",
+            "Quit, Back": "ESC",
             "Run ball": "SPACE"
         };
 
@@ -30,7 +30,7 @@ class HelpScene {
         trHead.innerHTML = `<th>Action: </th> <th>Key</th>`;
         table.appendChild(trHead);
 
-        for(let key in this._itemsObj) {
+        for (let key in this._itemsObj) {
             let tr = document.createElement("tr");
             tr.innerHTML = `<td>${key}: </td> <td>${this._itemsObj[key]}</td>`;
             table.appendChild(tr);

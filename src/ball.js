@@ -24,7 +24,7 @@ class Ball {
 
     //відмальовка шара
     render(dt) {
-        console.log("render", this.renderPosition);
+        // console.log("render", this.renderPosition);
         this._setPosition(this.renderPosition);
     }
 

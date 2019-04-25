@@ -10,12 +10,12 @@ var HelpScene = function () {
 
         this._game = game;
         this._itemsObj = {
-            Up: "↑",
-            Down: "↓",
-            Left: "←",
-            Right: "→",
+            Up: "↑  or  W",
+            Down: "↓  or  S",
+            Left: "←  or  A",
+            Right: "→  or  D",
             "Select, Pause": "ENTER",
-            "Quit": "ESC",
+            "Quit, Back": "ESC",
             "Run ball": "SPACE"
         };
 
