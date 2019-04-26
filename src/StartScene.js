@@ -35,7 +35,7 @@ class StartScene extends GameScene {
 			speed: 300,
 			direction: {
 				x: 1,
-				y: -1
+				y: -0.01
 			}
 		});
 		this._ballElem = this._ball.getElem();

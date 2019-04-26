@@ -281,7 +281,7 @@ class GameScene {
 		ball.speed = vectorScalar(dt * ball.speedCoef, ball.direction);
 		this._excessBallSpeed(ball.speed);
 
-		this._calcBallPosition(ball);
+		this._calcBallPosition(dt, ball);
 		//console.log(ballPos);
 		//ball.setPos(ballPos);
 	}
@@ -318,7 +318,7 @@ class GameScene {
 
 	}
 
-	_calcBallPosition(ball) {
+	_calcBallPosition(dt, ball) {
 		ball.touchedElem = {};
 		//console.log("befor move", ball.position);
 		ball.position = vectorSum(ball.speed, ball.position);
@@ -356,7 +356,10 @@ class GameScene {
 		if (distance !== 0) {
 			ball.speedCoef += this._acceleration;
 			//console.log(ball.speedCoef);
-			this._calcBallPosition(ball);
+			// Предотвращает потерю динамики игры при маленьком угле движения
+			//относительно горизонтали
+			this._corectionDirection(dt, ball);
+			this._calcBallPosition(dt, ball);
 		} else {
 			//console.log("render");
 			ball.renderPosition = vectorScalar(1, ball.position);
@@ -365,6 +368,16 @@ class GameScene {
 		//console.log("end position2: ", ball.position);
 		//this._touchBlock(this._newPosition);
 		//this._position = this._newPosition;
+	}
+
+	_corectionDirection(dt, ball) {
+		if (Math.abs(ball.direction.x / ball.direction.y) > 10) {
+			ball.direction.x = 10 * ball.direction.y;
+			ball.direction = vectorNorm(ball.direction);
+            ball.speed = vectorScalar(dt * ball.speedCoef, ball.direction);
+			console.log("corection");
+		}
+		console.log(ball.direction.x / ball.direction.y);
 	}
 
 	_calcTouchedBoardPos(ball, board) {
