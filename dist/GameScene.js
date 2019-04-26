@@ -490,7 +490,7 @@ var GameScene = function () {
 		key: "_calcTouchedBorderPos",
 		value: function _calcTouchedBorderPos(position, ball) {
 			var rightBorder = this._game.gameField.clientWidth - ball.radius;
-			var bottomBorder = this._game.gameField.clientHeight - ball.radius;
+			var bottomBorder = this._game.gameField.clientHeight - ball.radius - 5;
 			var topBorder = ball.radius;
 			var leftBorder = ball.radius;
 

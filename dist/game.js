@@ -69,6 +69,7 @@ var Game = function () {
     key: "returnScene",
     value: function returnScene() {
       this.gameField.innerHTML = "";
+      console.log(this._sceneArr);
       this.activeScene = this._sceneArr.pop();
     }
 

@@ -57,7 +57,9 @@ class Game {
 
   returnScene() {
     this.gameField.innerHTML = "";
+      console.log(this._sceneArr);
     this.activeScene = this._sceneArr.pop();
+
   }
 
   /* _pressEnter() {

@@ -484,7 +484,7 @@ class GameScene {
 
 	_calcTouchedBorderPos(position, ball) {
 		let rightBorder = this._game.gameField.clientWidth - ball.radius;
-		let bottomBorder = this._game.gameField.clientHeight - ball.radius;
+		let bottomBorder = this._game.gameField.clientHeight - ball.radius - 5;
 		let topBorder = ball.radius;
 		let leftBorder = ball.radius;
 

@@ -51,11 +51,12 @@ var GameOverScene = function () {
                     if (this._isLoss) {
                         this._game.lifes--;
                         if (this._game.lifes > 0) {
-                            this._game.setScene({
+                            /*this._game.setScene({
                                 scene: GameScene,
                                 round: this._round,
                                 isClear: true
-                            });
+                            });*/
+                            this._game.returnScene();
                         } else {
                             this._initGameOverMenu();
                         }
