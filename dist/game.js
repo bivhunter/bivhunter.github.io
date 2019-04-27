@@ -67,10 +67,14 @@ var Game = function () {
     }
   }, {
     key: "returnScene",
-    value: function returnScene() {
+    value: function returnScene(isOnBoard) {
+      var lastScene = this._sceneArr.pop();
+      if (isOnBoard) {
+        lastScene.ballOnBoard = true;
+      }
       this.gameField.innerHTML = "";
       console.log(this._sceneArr);
-      this.activeScene = this._sceneArr.pop();
+      this.activeScene = lastScene;
     }
 
     /* _pressEnter() {

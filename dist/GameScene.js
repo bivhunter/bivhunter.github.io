@@ -13,6 +13,7 @@ var GameScene = function () {
 		this._acceleration = 0.2;
 		this._startInfoTime = 0;
 		this._endInfoTime = 10;
+		this.ballOnBoard = true;
 		this._initRound();
 
 		this._renderCount = 0;
@@ -59,7 +60,6 @@ var GameScene = function () {
 				}
 			});
 			this._ballElem = this._ball.getElem();
-			this._ball.isOnBoard = true;
 			//this._updateBall(0, this._ball);
 			//this._ball.render();
 			//this._game.gameField.appendChild(this._ballElem);
@@ -81,7 +81,7 @@ var GameScene = function () {
 		value: function _initBlocks(round) {
 			this._blockArr = [];
 			this._blockForRemove = [];
-			// this._isPause = true;
+			// this.isPause = true;
 			this._blockCount = 0;
 			var block = void 0;
 			for (var i = 0; i < round.length; i++) {
@@ -113,7 +113,7 @@ var GameScene = function () {
 		key: "_checkKeys",
 		value: function _checkKeys() {
 			if (this._game.checkKeyPress(32)) {
-				this._ball.isOnBoard = false;
+				this.ballOnBoard = false;
 			}
 
 			if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {
@@ -122,7 +122,7 @@ var GameScene = function () {
 					scene: PauseScene,
 					isClear: false
 				});
-				this._isPause = true;
+				this.isPause = true;
 			}
 
 			this._checkKeysBoard(this._board);
@@ -211,11 +211,11 @@ var GameScene = function () {
 		value: function _renderBlock() {
 			var _this = this;
 
-			if (this._isPause) {
+			if (this.isPause) {
 				this._blockArr.forEach(function (block) {
 					_this._game.gameField.appendChild(block.getElem());
 				});
-				this._isPause = false;
+				this.isPause = false;
 				this._blockCount === this._blockArr.length;
 			}
 
@@ -247,10 +247,14 @@ var GameScene = function () {
 				info.animate(dt, 5, this._infoText);
 				console.log(this._startInfoTime);
 				this._isShowInfo = true;
+
+				// Щоб після визову returnScene з HelpScene під час інфо, шар був на дошці.
+
 				return;
 			}
 
 			info.disableAnimation();
+
 			this._isShowInfo = false;
 		}
 	}, {
@@ -270,7 +274,7 @@ var GameScene = function () {
 		key: "_updateBall",
 		value: function _updateBall(dt, ball) {
 
-			if (ball.isOnBoard) {
+			if (this.ballOnBoard) {
 				ball.sendToBoard(this._board);
 				return;
 			}
@@ -377,9 +381,9 @@ var GameScene = function () {
 				ball.direction.x = 10 * ball.direction.y;
 				ball.direction = vectorNorm(ball.direction);
 				ball.speed = vectorScalar(dt * ball.speedCoef, ball.direction);
-				console.log("corection");
+				//console.log("corection");
 			}
-			console.log(ball.direction.x / ball.direction.y);
+			//console.log(ball.direction.x / ball.direction.y);
 		}
 	}, {
 		key: "_calcTouchedBoardPos",
@@ -798,7 +802,7 @@ var GameScene = function () {
 	}, {
 		key: "gameOver",
 		value: function gameOver(isLoss) {
-
+			this.isPause = true;
 			this._game.setScene({
 				scene: GameOverScene,
 				round: this._game.round,

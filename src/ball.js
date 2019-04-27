@@ -67,6 +67,11 @@ class Ball {
             x = 450;
             y = 557;
         }
+        console.log("send to board", x, y);
+        this.direction = vectorNorm({
+            x: 1,
+            y: -2
+        });
         this.renderPosition.x = x;
         this.renderPosition.y = y;
         this.position.x = x;
@@ -75,6 +80,7 @@ class Ball {
     }
 
     _setPosition(coord) {
+        console.log(coord);
         this._ball.style.left = coord.x - this.radius + "px";
         this._ball.style.top = coord.y - this.radius + "px";
     }

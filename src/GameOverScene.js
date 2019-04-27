@@ -48,7 +48,7 @@ class GameOverScene {
                             round: this._round,
                             isClear: true
                         });*/
-                        this._game.returnScene();
+                        this._game.returnScene(true);
                     } else {
                         this._initGameOverMenu();
                     }

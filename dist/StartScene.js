@@ -49,14 +49,13 @@ var StartScene = function (_GameScene) {
 		value: function _initBall() {
 			this._ball = new Ball({
 				game: this,
-				speed: 300,
+				speed: 1000,
 				direction: {
 					x: 1,
 					y: -0.01
 				}
 			});
 			this._ballElem = this._ball.getElem();
-			this._ball.isOnBoard = true;
 		}
 	}, {
 		key: "update",
@@ -98,7 +97,7 @@ var StartScene = function (_GameScene) {
 						});
 						break;
 					case "menu-help":
-						this._isPause = true;
+						this.isPause = true;
 						this._game.setScene({
 							scene: HelpScene,
 							isClear: true
@@ -123,7 +122,7 @@ var StartScene = function (_GameScene) {
 		key: "_updateBall",
 		value: function _updateBall(dt, ball) {
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_updateBall", this).call(this, dt, ball);
-			ball.isOnBoard = false;
+			this.ballOnBoard = false;
 		}
 	}, {
 		key: "gameOver",

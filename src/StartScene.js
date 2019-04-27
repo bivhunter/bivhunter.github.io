@@ -32,14 +32,13 @@ class StartScene extends GameScene {
 	_initBall() {
 		this._ball = new Ball({
 			game: this,
-			speed: 300,
+			speed: 1000,
 			direction: {
 				x: 1,
 				y: -0.01
 			}
 		});
 		this._ballElem = this._ball.getElem();
-		this._ball.isOnBoard = true;
 	}
 
 	update(dt) {
@@ -78,7 +77,7 @@ class StartScene extends GameScene {
 					});
 					break;
 				case "menu-help":
-					this._isPause = true;
+					this.isPause = true;
 					this._game.setScene({
 						scene: HelpScene,
 						isClear: true
@@ -101,7 +100,7 @@ class StartScene extends GameScene {
 
 	_updateBall(dt, ball) {
 		super._updateBall(dt, ball);
-		ball.isOnBoard = false;
+		this.ballOnBoard = false;
 	}
 
 	gameOver() {

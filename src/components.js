@@ -160,18 +160,9 @@ class Round {
 				"    p        p    "
 			],
 			round_1: [
-				"                    ",
                 "                    ",
                 "                    ",
-                "    p        p    ",
-                "   p p      p p   ",
-                "  p p p    p p p  ",
-                " p p p p  p p p p ",
-                "p p p p pp p p p p",
-                " p p p p  p p p p ",
-                "  p p p    p p p  ",
-                "   p p      p p   ",
-                "    p        p    "
+                "         p          "
 		]
 			/*,
 						round_2: [

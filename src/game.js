@@ -55,10 +55,14 @@ class Game {
     this.activeScene = scene;
   }
 
-  returnScene() {
+  returnScene(isOnBoard) {
+    let lastScene = this._sceneArr.pop();
+    if(isOnBoard) {
+        lastScene.ballOnBoard = true;
+    }
     this.gameField.innerHTML = "";
       console.log(this._sceneArr);
-    this.activeScene = this._sceneArr.pop();
+    this.activeScene = lastScene;
 
   }
 
