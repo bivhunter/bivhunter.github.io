@@ -5,11 +5,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FinalScene = function () {
-    function FinalScene(game, round) {
+    function FinalScene(game, gameStatus) {
         _classCallCheck(this, FinalScene);
 
         this._game = game;
-        this._round = round;
+        this._round = game.round;
+        this._gameStatus = gameStatus;
+
         this._time = 0;
         this._init();
     }
@@ -19,13 +21,17 @@ var FinalScene = function () {
         value: function _init() {
             var text = void 0;
             this._game.gameField.innerHTML = "";
-            if (this._round === null) {
-                text = "You Won!!! Your Score: " + this._game.score;
-                console.log(text);
-            } else if (this._round === undefined) {
-                text = "Game By Hunter";
-            } else {
-                text = "GameOver";
+
+            switch (this._gameStatus) {
+                case "victory":
+                    text = "You Won!!! Your Score: " + this._game.score;
+                    break;
+                case "noPlay":
+                    text = "Game By Hunter";
+                    break;
+                case "gameOver":
+                    text = "Game Over! Your Score: " + this._game.score;
+                    break;
             }
 
             this._text = text;

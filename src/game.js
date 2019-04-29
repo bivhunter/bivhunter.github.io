@@ -45,7 +45,7 @@ class Game {
       this.headerField.innerHTML = "";
     }
 
-    let scene = new options.scene(this, options.round, options.isLoss);
+    let scene = new options.scene(this, options.gameStatus);
     if (scene instanceof GameScene || scene instanceof StartScene) {
       this._sceneArr = [];
     }

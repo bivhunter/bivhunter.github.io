@@ -1,6 +1,6 @@
 class StartScene extends GameScene {
-	constructor(game, round) {
-		super(game, round);
+	constructor(game) {
+		super(game);
 	}
 
 	_initRound(round) {
@@ -70,9 +70,9 @@ class StartScene extends GameScene {
 				case "menu-start-game":
 					this._game.lifes = 2;
 					this._game.score = 0;
+                    this._game.round.getFirstRound();
 					this._game.setScene({
 						scene: GameScene,
-						round: this._game.round.getFirstRound(),
 						isClear: true
 					});
 					break;
@@ -86,6 +86,7 @@ class StartScene extends GameScene {
 				case "menu-quit":
 					this._game.setScene({
 						scene: FinalScene,
+						gameStatus: "noPlay",
 						isClear: true
 					});
 					break;
@@ -106,7 +107,6 @@ class StartScene extends GameScene {
 	gameOver() {
 		this._game.setScene({
 			scene: StartScene,
-			round: this._game.round,
 			isClear: true
 		});
 	}

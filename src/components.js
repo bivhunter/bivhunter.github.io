@@ -164,12 +164,12 @@ class Round {
                 "                    ",
                 "         p          "
 		]
-			/*,
+			,
 						round_2: [
 							"                    ",
 							"                    ",
 							"         b          ",
-						],
+						]/*,
 						round_4: [
 							"                    ",
 							"                    ",
@@ -197,8 +197,8 @@ class Round {
 							"  p p p    p p p  ",
 							"   p p      p p   ",
 							"    p        p    "
-				]*/
-
+				]
+*/
 		};
 		this._activeRound = this._rounds.round_Demo;
 		this._activeRoundNum = "Demo";

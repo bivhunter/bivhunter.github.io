@@ -56,7 +56,7 @@ var Game = function () {
         this.headerField.innerHTML = "";
       }
 
-      var scene = new options.scene(this, options.round, options.isLoss);
+      var scene = new options.scene(this, options.gameStatus);
       if (scene instanceof GameScene || scene instanceof StartScene) {
         this._sceneArr = [];
       }

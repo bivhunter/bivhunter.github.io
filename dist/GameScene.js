@@ -5,11 +5,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var GameScene = function () {
-	function GameScene(game, round) {
+	function GameScene(game) {
 		_classCallCheck(this, GameScene);
 
 		this._game = game;
-		this._round = round;
+		this._round = game.round;
 		this._acceleration = 0.2;
 		this._startInfoTime = 0;
 		this._endInfoTime = 10;
@@ -49,7 +49,7 @@ var GameScene = function () {
 		value: function _initBall() {
 			this._ball = new Ball({
 				game: this,
-				speed: 100,
+				speed: 200,
 				/*position: {
     	x: -20,
     	y: -20
@@ -519,7 +519,7 @@ var GameScene = function () {
 			}
 
 			if (position.y > bottomBorder) {
-				this.gameOver(true);
+				this.gameOver("loss");
 				//console.log("bottom dist", distance);
 			}
 
@@ -784,7 +784,7 @@ var GameScene = function () {
 
 			this._blockForRemove = [];
 			if (this._blockArr.length === 0) {
-				this.gameOver(false);
+				this.gameOver("victory");
 			}
 		}
 	}, {
@@ -801,13 +801,12 @@ var GameScene = function () {
 		}
 	}, {
 		key: "gameOver",
-		value: function gameOver(isLoss) {
+		value: function gameOver(gameStatus) {
 			this.isPause = true;
 			this._game.setScene({
 				scene: GameOverScene,
-				round: this._game.round,
 				isClear: false,
-				isLoss: isLoss
+				gameStatus: gameStatus
 			});
 		}
 	}, {

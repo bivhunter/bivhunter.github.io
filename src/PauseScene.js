@@ -1,6 +1,6 @@
 class PauseScene {
-	constructor(game, round) {
-		this._round = round;
+	constructor(game) {
+		this._round = game.round;
 		this._game = game;
 		this._init();
 	}
@@ -46,9 +46,8 @@ class PauseScene {
 				case "menu-restart":
 					this._game.setScene({
 						scene: GameOverScene,
-						round: this._game.round,
 						isClear: true,
-						isLoss: true
+						gameStatus: "restart"
 					});
 					break;
 				case "menu-help":
@@ -61,9 +60,8 @@ class PauseScene {
 					this._game.lifes = 0;
 					this._game.setScene({
 						scene: GameOverScene,
-						round: this._game.round,
-						isClear: true,
-						isLoss: true
+						gameStatus: "quit",
+						isClear: true
 					});
 					break;
 			}

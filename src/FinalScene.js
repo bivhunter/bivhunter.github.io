@@ -1,7 +1,9 @@
 class FinalScene {
-    constructor(game, round) {
+    constructor(game, gameStatus) {
         this._game = game;
-        this._round = round;
+        this._round = game.round;
+        this._gameStatus = gameStatus;
+
         this._time = 0;
         this._init();
     }
@@ -9,18 +11,21 @@ class FinalScene {
     _init() {
         let text;
         this._game.gameField.innerHTML = "";
-        if (this._round === null) {
-            text = `You Won!!! Your Score: ${this._game.score}`;
-            console.log(text);
-        } else if (this._round === undefined) {
-            text = "Game By Hunter";
-        } else {
-            text = "GameOver";
+
+        switch (this._gameStatus) {
+            case "victory" :
+                text = `You Won!!! Your Score: ${this._game.score}`;
+                break;
+            case "noPlay" :
+                text = "Game By Hunter";
+                break;
+            case "gameOver" :
+                text = `Game Over! Your Score: ${this._game.score}`;
+                break;
         }
 
         this._text = text;
         this._info = new Info("");
-
 
     }
 

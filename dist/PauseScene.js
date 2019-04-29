@@ -5,10 +5,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var PauseScene = function () {
-	function PauseScene(game, round) {
+	function PauseScene(game) {
 		_classCallCheck(this, PauseScene);
 
-		this._round = round;
+		this._round = game.round;
 		this._game = game;
 		this._init();
 	}
@@ -50,9 +50,8 @@ var PauseScene = function () {
 					case "menu-restart":
 						this._game.setScene({
 							scene: GameOverScene,
-							round: this._game.round,
 							isClear: true,
-							isLoss: true
+							gameStatus: "restart"
 						});
 						break;
 					case "menu-help":
@@ -65,9 +64,8 @@ var PauseScene = function () {
 						this._game.lifes = 0;
 						this._game.setScene({
 							scene: GameOverScene,
-							round: this._game.round,
-							isClear: true,
-							isLoss: true
+							gameStatus: "quit",
+							isClear: true
 						});
 						break;
 				}

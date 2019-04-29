@@ -13,10 +13,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var StartScene = function (_GameScene) {
 	_inherits(StartScene, _GameScene);
 
-	function StartScene(game, round) {
+	function StartScene(game) {
 		_classCallCheck(this, StartScene);
 
-		return _possibleConstructorReturn(this, (StartScene.__proto__ || Object.getPrototypeOf(StartScene)).call(this, game, round));
+		return _possibleConstructorReturn(this, (StartScene.__proto__ || Object.getPrototypeOf(StartScene)).call(this, game));
 	}
 
 	_createClass(StartScene, [{
@@ -90,9 +90,9 @@ var StartScene = function (_GameScene) {
 					case "menu-start-game":
 						this._game.lifes = 2;
 						this._game.score = 0;
+						this._game.round.getFirstRound();
 						this._game.setScene({
 							scene: GameScene,
-							round: this._game.round.getFirstRound(),
 							isClear: true
 						});
 						break;
@@ -106,6 +106,7 @@ var StartScene = function (_GameScene) {
 					case "menu-quit":
 						this._game.setScene({
 							scene: FinalScene,
+							gameStatus: "noPlay",
 							isClear: true
 						});
 						break;
@@ -129,7 +130,6 @@ var StartScene = function (_GameScene) {
 		value: function gameOver() {
 			this._game.setScene({
 				scene: StartScene,
-				round: this._game.round,
 				isClear: true
 			});
 		}
