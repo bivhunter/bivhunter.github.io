@@ -41,11 +41,13 @@ var Board = function () {
 
             this.topPosition = this._gameField.clientHeight - this._elem.offsetHeight / 2 - 2;
             this.position = this._gameField.clientWidth / 2;
+
             this.renderPosition = this.position;
+            console.log("board position", this.position, this.renderPosition);
             this.setPosition(this.position);
             this._boardPointInit();
             //this._testPoint();
-            //console.log(this.width, this.height);
+            console.log("board size", this.width, this.height);
         }
     }, {
         key: "_testPoint",

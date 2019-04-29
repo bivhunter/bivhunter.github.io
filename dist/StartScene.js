@@ -68,7 +68,6 @@ var StartScene = function (_GameScene) {
 		value: function render(dt) {
 			if (!this._game.gameField.contains(this._menuElem)) {
 				this._game.gameField.appendChild(this._menuElem);
-				console.log("append child");
 			}
 
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "render", this).call(this, dt);
@@ -88,7 +87,7 @@ var StartScene = function (_GameScene) {
 
 				switch (this._menu.getSelectedItem().classList[0]) {
 					case "menu-start-game":
-						this._game.lifes = 2;
+						this._game.lifes = 20;
 						this._game.score = 0;
 						this._game.round.getFirstRound();
 						this._game.setScene({
@@ -116,7 +115,9 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "_updateBoard",
 		value: function _updateBoard(dt, board) {
-			board.position = this._ball.renderPosition.x;
+			//ініт шара проходить після ініт боард,
+			// тому для першого апдейту добавлено" || this._game.gameField.clientWidth / 2;"
+			board.position = this._ball.renderPosition.x || this._game.gameField.clientWidth / 2;
 			this._calcBoardPos(board);
 		}
 	}, {

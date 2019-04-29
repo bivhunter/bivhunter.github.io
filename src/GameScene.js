@@ -70,8 +70,10 @@ class GameScene {
 		this._boardElem = this._board.getElem();
 		this._game.gameField.appendChild(this._boardElem);
 		this._board.init();
+        console.log("board init", this._board.renderPosition);
 		this._boardMinPosition = this._boardElem.offsetWidth / 2;
 		this._boardMaxPosition = this._game.gameField.clientWidth - this._boardElem.offsetWidth / 2;
+		console.log("this._boars masx min", this._boardMaxPosition, this._boardMinPosition);
 	}
 
 	_initBlocks(round) {
@@ -227,7 +229,7 @@ class GameScene {
 
 		let speed = Math.min(dt * 100 * board.moveMult, 200);
 		board.speed = board.direction * speed;
-		//console.log("speed: ", board.speed, "direction: ", board.direction);
+		console.log("speed: ", board.speed, "direction: ", board.direction);
 		board.position += board.speed;
 		this._calcBoardPos(board)
 
@@ -240,7 +242,7 @@ class GameScene {
 			this._startInfoTime += dt;
 			info.enableAnimation();
 			info.animate(dt, 5, this._infoText);
-			console.log(this._startInfoTime);
+			//console.log(this._startInfoTime);
 			this._isShowInfo = true;
 
 			// Щоб після визову returnScene з HelpScene під час інфо, шар був на дошці.
@@ -263,7 +265,7 @@ class GameScene {
 			board.position = this._boardMinPosition;
 		}
 		board.renderPosition = board.position;
-		//console.log("render pos: ", board.renderPosition);
+//		console.log("render pos: ", board.renderPosition, board.position);
 	}
 
 	_updateBall(dt, ball) {
@@ -439,7 +441,7 @@ class GameScene {
 	_findTouchedBoardPoint(ball, board) {
 
 		let numPoints = this._findBoardTouchedPoints(ball, board).length;
-		//console.log("numPoints: ", numPoints);
+		console.log("numPoints: ", numPoints);
 		let resPoint;
 		if (numPoints === 0) {
 			//console.log("point === null");
@@ -447,17 +449,17 @@ class GameScene {
 		}
 
 		if (numPoints === 1) {
-			//console.log("pointNum === 1: ", this._boardPointTouchedArr[0]);
+			console.log("pointNum === 1: ", this._boardPointTouchedArr[0]);
 			return this._boardPointTouchedArr[0];
 		}
 
 		if (numPoints === 2) {
-			//console.log("pointNum === 2: ");
+			console.log("pointNum === 2: ");
 			return (ball.direction.x > 0) ? this._boardPointTouchedArr[0] : this._boardPointTouchedArr[1];
 		}
 
 		if (numPoints === 3) {
-			//console.log("pointNum === 3: ");
+			console.log("pointNum === 3: ");
 			return this._boardPointTouchedArr[1];
 		}
 		if (ball.direction.x > 0) {
@@ -525,13 +527,13 @@ class GameScene {
 						x: -1 * ball.direction.x,
 						y: ball.direction.y
 					};
-					console.log("left, right");
+					//console.log("left, right");
 				} else {
 					ball.newDirection = {
 						x: ball.direction.x,
 						y: -1 * ball.direction.y
 					};
-					console.log("top, bottom");
+					//console.log("top, bottom");
 				}
 			}
 		}

@@ -77,10 +77,11 @@ var Ball = function () {
 
             //можливо перешкоджає залипанню шара
             if (isNaN(x) || isNaN(y)) {
+                alert("x == NaN || y == NaN");
                 x = 450;
                 y = 557;
             }
-            console.log("send to board", x, y);
+            //console.log("send to board", x, y);
             this.direction = vectorNorm({
                 x: 1,
                 y: -2
@@ -94,7 +95,7 @@ var Ball = function () {
     }, {
         key: "_setPosition",
         value: function _setPosition(coord) {
-            console.log(coord);
+            //console.log(coord);
             this._ball.style.left = coord.x - this.radius + "px";
             this._ball.style.top = coord.y - this.radius + "px";
         }
