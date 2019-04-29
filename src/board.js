@@ -84,7 +84,16 @@ class Board {
         let a = this.width / 2 + 3;
         let y_0 = this.topPosition;
         let x_0 = this.position;
+        let bottom = this._gameField.clientHeight;
         console.log(x_0, y_0);
+
+        for (let i = bottom; i > y_0; i--) {
+            pointArr.push({
+                x: x_0 - a,
+                y: i
+            });
+        }
+
         for (let i = -a; i <= a; i++ ) {
             let y = y_0 - (b / a) * Math.sqrt(a * a - i * i);
             pointArr.push({
@@ -92,9 +101,17 @@ class Board {
                 y: y
             });
         }
+
+        for (let i = y_0 + 1; i < bottom ; i++) {
+            pointArr.push({
+                x: x_0 + a,
+                y: i
+            });
+        }
+
         this.pointerArr = pointArr;
         this._x_0 = x_0;
-        //console.log(pointArr);
+        console.log(pointArr);
     }
 
     render(dt) {

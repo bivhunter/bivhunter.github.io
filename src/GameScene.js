@@ -165,6 +165,7 @@ class GameScene {
 		this._checkKeys();
 
 		this._updateBoard(dt, this._board);
+        this._boardTest = false;
 		this._updateBall(dt, this._ball);
 
 
@@ -226,6 +227,8 @@ class GameScene {
 	}
 
 	_updateBoard(dt, board) {
+
+
 
 		let speed = Math.min(dt * 100 * board.moveMult, 200);
 		board.speed = board.direction * speed;
@@ -394,6 +397,11 @@ class GameScene {
 		if (point === null) {
 			return;
 		}
+
+		if(this._boardTest) {
+			alert("bag ball vs board rebound");
+		}
+		this._boardTest = true;
 		ball.board.position = ball.calcCentr(point);
 		let vecCentrToVertex = vectorDiff(point, ball.board.position);
 		//console.log("point: ", point, " ball.board.position: ", ball.board.position);

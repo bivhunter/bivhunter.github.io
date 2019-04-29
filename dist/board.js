@@ -92,17 +92,34 @@ var Board = function () {
             var a = this.width / 2 + 3;
             var y_0 = this.topPosition;
             var x_0 = this.position;
+            var bottom = this._gameField.clientHeight;
             console.log(x_0, y_0);
-            for (var i = -a; i <= a; i++) {
-                var y = y_0 - b / a * Math.sqrt(a * a - i * i);
+
+            for (var i = bottom; i > y_0; i--) {
                 pointArr.push({
-                    x: x_0 + i,
+                    x: x_0 - a,
+                    y: i
+                });
+            }
+
+            for (var _i = -a; _i <= a; _i++) {
+                var y = y_0 - b / a * Math.sqrt(a * a - _i * _i);
+                pointArr.push({
+                    x: x_0 + _i,
                     y: y
                 });
             }
+
+            for (var _i2 = y_0 + 1; _i2 < bottom; _i2++) {
+                pointArr.push({
+                    x: x_0 + a,
+                    y: _i2
+                });
+            }
+
             this.pointerArr = pointArr;
             this._x_0 = x_0;
-            //console.log(pointArr);
+            console.log(pointArr);
         }
     }, {
         key: "render",
