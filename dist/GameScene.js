@@ -11,7 +11,7 @@ var GameScene = function () {
 		this._game = game;
 		this._round = game.round;
 
-		this._SPEED_COEF = 300;
+		this._SPEED_COEF = 150;
 		this._BOARD_MOVE_MULT = 0.08;
 
 		this._acceleration = 0.2;

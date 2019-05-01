@@ -9,10 +9,7 @@ var Board = function () {
         _classCallCheck(this, Board);
 
         this._gameField = options.gameField;
-
         this.moveMult = 0;
-
-        this._K = 20;
         this._init();
     }
 
@@ -23,14 +20,7 @@ var Board = function () {
             var board = document.createElement("div");
             board.classList.add("board");
 
-            /*let boardRadius = document.createElement("div");
-            let boardRadius_2 = document.createElement("div");
-              boardRadius.classList.add("board-radius");
-            boardRadius_2.classList.add("board-radius-2");
-              board.appendChild(boardRadius);*/
-            //board.appendChild(boardRadius_2);
             this._elem = board;
-            //this._moveTo(this._position);
         }
     }, {
         key: "init",
@@ -41,13 +31,56 @@ var Board = function () {
 
             this.topPosition = this._gameField.clientHeight - this._elem.offsetHeight / 2 - 2;
             this.position = this._gameField.clientWidth / 2;
-
             this.renderPosition = this.position;
-            console.log("board position", this.position, this.renderPosition);
+            //console.log("board position", this.position, this.renderPosition);
             this.setPosition(this.position);
             this._boardPointInit();
-            this._testPoint();
-            console.log("board size", this.width, this.height);
+            //this._testPoint();
+            // console.log("board size", this.width, this.height);
+        }
+    }, {
+        key: "_boardPointInit",
+        value: function _boardPointInit() {
+            //Для знаходження точок границі використовується рівняння еліпса
+            //a, b - мала і велика осі
+            //x_0, y_0 - центр еліпса
+            //крок дискретизації 1px
+            var pointArr = [];
+            var b = this.height / 2 + 3;
+            var a = this.width / 2 + 3;
+            var y_0 = this.topPosition;
+            var x_0 = this.position;
+            var bottom = this._gameField.clientHeight;
+            console.log(x_0, y_0);
+
+            //точки лівої границі
+            for (var i = bottom; i > y_0; i--) {
+                pointArr.push({
+                    x: x_0 - a,
+                    y: i
+                });
+            }
+
+            //точки верхньої границі
+            for (var _i = -a; _i <= a; _i++) {
+                var y = y_0 - b / a * Math.sqrt(a * a - _i * _i);
+                pointArr.push({
+                    x: x_0 + _i,
+                    y: y
+                });
+            }
+
+            //точки правої границі
+            for (var _i2 = y_0 + 1; _i2 < bottom; _i2++) {
+                pointArr.push({
+                    x: x_0 + a,
+                    y: _i2
+                });
+            }
+
+            this.pointerArr = pointArr;
+            this._x_0 = x_0;
+            //console.log(pointArr);
         }
     }, {
         key: "_testPoint",
@@ -83,43 +116,6 @@ var Board = function () {
                 });
             });
             return resArr;
-        }
-    }, {
-        key: "_boardPointInit",
-        value: function _boardPointInit() {
-            var pointArr = [];
-            var b = this.height / 2 + 3;
-            var a = this.width / 2 + 3;
-            var y_0 = this.topPosition;
-            var x_0 = this.position;
-            var bottom = this._gameField.clientHeight;
-            console.log(x_0, y_0);
-
-            for (var i = bottom; i > y_0; i--) {
-                pointArr.push({
-                    x: x_0 - a,
-                    y: i
-                });
-            }
-
-            for (var _i = -a; _i <= a; _i++) {
-                var y = y_0 - b / a * Math.sqrt(a * a - _i * _i);
-                pointArr.push({
-                    x: x_0 + _i,
-                    y: y
-                });
-            }
-
-            for (var _i2 = y_0 + 1; _i2 < bottom; _i2++) {
-                pointArr.push({
-                    x: x_0 + a,
-                    y: _i2
-                });
-            }
-
-            this.pointerArr = pointArr;
-            this._x_0 = x_0;
-            console.log(pointArr);
         }
     }, {
         key: "render",
