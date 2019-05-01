@@ -40,6 +40,7 @@ var Game = function () {
 
         console.log("down", e.which);
       });
+
       document.addEventListener("keyup", function (e) {
         _this.keys[e.which] = false;
         /*if (e.which === 13) {
@@ -47,6 +48,18 @@ var Game = function () {
         }*/
         //console.log("up", e.which);
       });
+
+      document.addEventListener("dragstart", noDefault);
+
+      document.addEventListener("contextmenu", function (event) {
+        var wrapper = document.querySelector(".wrapper");
+        if (!wrapper.contains(event.target)) {
+          return;
+        }
+        event.preventDefault();
+      });
+
+      document.addEventListener("mousedown", noDefault);
     }
   }, {
     key: "setScene",
@@ -188,6 +201,14 @@ var Game = function () {
 
   return Game;
 }();
+
+function noDefault(event) {
+  /* let wrapper = document.querySelector(".wrapper");
+   if (!wrapper.contains(event.target)) {
+       return;
+   }*/
+  event.preventDefault();
+}
 
 function vectorNorm(vec) {
   var x = vec.x,

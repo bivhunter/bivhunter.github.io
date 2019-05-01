@@ -20,6 +20,10 @@ body {
     -4px -4px 2px 4px rgb(86,86,15);
 }
 
+.wrapper:hover {
+    cursor: none;
+}
+
 
 .header {
   width: 900px;

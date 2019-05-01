@@ -470,10 +470,10 @@ class GameScene {
 			return (ball.direction.x > 0) ? this._boardPointTouchedArr[0] : this._boardPointTouchedArr[1];
 		}
 
-		if (numPoints === 3) {
+		/*if (numPoints === 3) {
 			console.log("pointNum === 3: ");
 			return this._boardPointTouchedArr[1];
-		}
+		}*/
 
 		//первый вариант, большая погрешность, меньше ресурсов
 		/*if (ball.direction.x < 0) {
