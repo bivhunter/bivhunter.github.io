@@ -6,6 +6,10 @@ class GameScene {
 	constructor(game) {
 		this._game = game;
 		this._round = game.round;
+
+		this._SPEED_COEF = 300;
+        this._BOARD_MOVE_MULT = 0.08;
+
 		this._acceleration = 0.2;
 		this._startInfoTime = 0;
 		this._endInfoTime = 10;
@@ -46,7 +50,7 @@ class GameScene {
 	_initBall() {
 		this._ball = new Ball({
 			game: this,
-			speed: 200,
+			speed: this._SPEED_COEF,
 			/*position: {
 				x: -20,
 				y: -20
@@ -67,6 +71,7 @@ class GameScene {
 		this._board = new Board({
 			gameField: this._game.gameField
 		});
+		this._board.speedCoef = this._SPEED_COEF;
 		this._boardElem = this._board.getElem();
 		this._game.gameField.appendChild(this._boardElem);
 		this._board.init();
@@ -135,7 +140,7 @@ class GameScene {
 			board.moveMult = 0;
 			// console.log("no press");
 		} else {
-			board.moveMult += 0.7;
+			board.moveMult += this._BOARD_MOVE_MULT;
 			if (this._game.keys["37"] || this._game.keys["A".charCodeAt(0) + ""]) {
 				if (board.direction > 0) {
 					board.moveMult = 0;
@@ -165,7 +170,7 @@ class GameScene {
 		this._checkKeys();
 
 		this._updateBoard(dt, this._board);
-        this._boardTest = false;
+        //this._boardTest = false;
 		this._updateBall(dt, this._ball);
 
 
@@ -228,11 +233,9 @@ class GameScene {
 
 	_updateBoard(dt, board) {
 
-
-
-		let speed = Math.min(dt * 100 * board.moveMult, 200);
+		let speed = Math.min(dt * board.speedCoef * board.moveMult, 150);
 		board.speed = board.direction * speed;
-		console.log("speed: ", board.speed, "direction: ", board.direction);
+		//console.log("speed: ", board.speed, "direction: ", board.direction);
 		board.position += board.speed;
 		this._calcBoardPos(board)
 
@@ -364,6 +367,7 @@ class GameScene {
 		//console.log(ball.position, ball.speed, ball.direction);
 		if (distance !== 0) {
 			ball.speedCoef += this._acceleration;
+			this._board.speedCoef = ball.speedCoef;
 			//console.log(ball.speedCoef);
 			// Предотвращает потерю динамики игры при маленьком угле движения
 			//относительно горизонтали
@@ -398,10 +402,10 @@ class GameScene {
 			return;
 		}
 
-		if(this._boardTest) {
+		/*if(this._boardTest) {
 			alert("bag ball vs board rebound");
 		}
-		this._boardTest = true;
+		this._boardTest = true;*/
 		ball.board.position = ball.calcCentr(point);
 		let vecCentrToVertex = vectorDiff(point, ball.board.position);
 		//console.log("point: ", point, " ball.board.position: ", ball.board.position);
@@ -470,12 +474,22 @@ class GameScene {
 			console.log("pointNum === 3: ");
 			return this._boardPointTouchedArr[1];
 		}
-		if (ball.direction.x > 0) {
+
+		//первый вариант, большая погрешность, меньше ресурсов
+		/*if (ball.direction.x < 0) {
 			//resPoint = this._boardPointTouchedArr[0];
 			resPoint = this._boardPointTouchedArr[Math.floor(numPoints / 2) - 1];
 		} else {
 			resPoint = this._boardPointTouchedArr[Math.floor(numPoints / 2) + numPoints % 2];
-		}
+		}*/
+
+        if (ball.direction.x > 0) {
+            //resPoint = this._boardPointTouchedArr[0];
+            resPoint = this._boardPointTouchedArr[numPoints - 2];
+        } else {
+            resPoint = this._boardPointTouchedArr[1];
+        }
+
 		ball.board.position = ball.calcCentr(resPoint);
 		let module = vectorModule(vectorDiff(ball.board.position, resPoint));
 		//console.log("before recurse: ", numPoints, "module: ", module, "ball.board.position: ", ball.board.position, resPoint);

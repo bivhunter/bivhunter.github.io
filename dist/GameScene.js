@@ -10,6 +10,10 @@ var GameScene = function () {
 
 		this._game = game;
 		this._round = game.round;
+
+		this._SPEED_COEF = 300;
+		this._BOARD_MOVE_MULT = 0.08;
+
 		this._acceleration = 0.2;
 		this._startInfoTime = 0;
 		this._endInfoTime = 10;
@@ -49,7 +53,7 @@ var GameScene = function () {
 		value: function _initBall() {
 			this._ball = new Ball({
 				game: this,
-				speed: 200,
+				speed: this._SPEED_COEF,
 				/*position: {
     	x: -20,
     	y: -20
@@ -70,6 +74,7 @@ var GameScene = function () {
 			this._board = new Board({
 				gameField: this._game.gameField
 			});
+			this._board.speedCoef = this._SPEED_COEF;
 			this._boardElem = this._board.getElem();
 			this._game.gameField.appendChild(this._boardElem);
 			this._board.init();
@@ -137,7 +142,7 @@ var GameScene = function () {
 				board.moveMult = 0;
 				// console.log("no press");
 			} else {
-				board.moveMult += 0.7;
+				board.moveMult += this._BOARD_MOVE_MULT;
 				if (this._game.keys["37"] || this._game.keys["A".charCodeAt(0) + ""]) {
 					if (board.direction > 0) {
 						board.moveMult = 0;
@@ -168,7 +173,7 @@ var GameScene = function () {
 			this._checkKeys();
 
 			this._updateBoard(dt, this._board);
-			this._boardTest = false;
+			//this._boardTest = false;
 			this._updateBall(dt, this._ball);
 
 			//	this._ball2.update(dt);
@@ -233,9 +238,9 @@ var GameScene = function () {
 		key: "_updateBoard",
 		value: function _updateBoard(dt, board) {
 
-			var speed = Math.min(dt * 100 * board.moveMult, 200);
+			var speed = Math.min(dt * board.speedCoef * board.moveMult, 150);
 			board.speed = board.direction * speed;
-			console.log("speed: ", board.speed, "direction: ", board.direction);
+			//console.log("speed: ", board.speed, "direction: ", board.direction);
 			board.position += board.speed;
 			this._calcBoardPos(board);
 		}
@@ -363,6 +368,7 @@ var GameScene = function () {
 			//console.log(ball.position, ball.speed, ball.direction);
 			if (distance !== 0) {
 				ball.speedCoef += this._acceleration;
+				this._board.speedCoef = ball.speedCoef;
 				//console.log(ball.speedCoef);
 				// Предотвращает потерю динамики игры при маленьком угле движения
 				//относительно горизонтали
@@ -399,10 +405,10 @@ var GameScene = function () {
 				return;
 			}
 
-			if (this._boardTest) {
-				alert("bag ball vs board rebound");
-			}
-			this._boardTest = true;
+			/*if(this._boardTest) {
+   	alert("bag ball vs board rebound");
+   }
+   this._boardTest = true;*/
 			ball.board.position = ball.calcCentr(point);
 			var vecCentrToVertex = vectorDiff(point, ball.board.position);
 			//console.log("point: ", point, " ball.board.position: ", ball.board.position);
@@ -473,12 +479,22 @@ var GameScene = function () {
 				console.log("pointNum === 3: ");
 				return this._boardPointTouchedArr[1];
 			}
+
+			//первый вариант, большая погрешность, меньше ресурсов
+			/*if (ball.direction.x < 0) {
+   	//resPoint = this._boardPointTouchedArr[0];
+   	resPoint = this._boardPointTouchedArr[Math.floor(numPoints / 2) - 1];
+   } else {
+   	resPoint = this._boardPointTouchedArr[Math.floor(numPoints / 2) + numPoints % 2];
+   }*/
+
 			if (ball.direction.x > 0) {
 				//resPoint = this._boardPointTouchedArr[0];
-				resPoint = this._boardPointTouchedArr[Math.floor(numPoints / 2) - 1];
+				resPoint = this._boardPointTouchedArr[numPoints - 2];
 			} else {
-				resPoint = this._boardPointTouchedArr[Math.floor(numPoints / 2) + numPoints % 2];
+				resPoint = this._boardPointTouchedArr[1];
 			}
+
 			ball.board.position = ball.calcCentr(resPoint);
 			var module = vectorModule(vectorDiff(ball.board.position, resPoint));
 			//console.log("before recurse: ", numPoints, "module: ", module, "ball.board.position: ", ball.board.position, resPoint);

@@ -41,7 +41,7 @@ class Board {
         console.log("board position", this.position, this.renderPosition);
         this.setPosition(this.position);
         this._boardPointInit();
-        //this._testPoint();
+        this._testPoint();
         console.log("board size", this.width, this.height);
     }
 
