@@ -20,7 +20,7 @@ var FinalScene = function () {
         key: "_init",
         value: function _init() {
             var text = void 0;
-            this._game.gameField.innerHTML = "";
+            //this._game.gameField.innerHTML = "";
 
             switch (this._gameStatus) {
                 case "victory":

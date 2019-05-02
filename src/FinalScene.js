@@ -10,7 +10,7 @@ class FinalScene {
 
     _init() {
         let text;
-        this._game.gameField.innerHTML = "";
+        //this._game.gameField.innerHTML = "";
 
         switch (this._gameStatus) {
             case "victory" :

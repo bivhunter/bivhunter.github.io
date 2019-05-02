@@ -170,9 +170,9 @@ var Round = function () {
 
 		this._rounds = {
 			round_Demo: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
-			round_1: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
+			round_: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
 
-			round_2: ["                    ", "                    ", "         b          "] /*,
+			round_1: ["                    ", "                    ", "         p          "] /*,
                                                                                      round_4: [
                                                                                      "                    ",
                                                                                      "                    ",

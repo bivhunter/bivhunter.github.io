@@ -66,10 +66,10 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "render",
 		value: function render(dt) {
+
 			if (!this._game.gameField.contains(this._menuElem)) {
 				this._game.gameField.appendChild(this._menuElem);
 			}
-
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "render", this).call(this, dt);
 		}
 	}, {
@@ -87,7 +87,7 @@ var StartScene = function (_GameScene) {
 
 				switch (this._menu.getSelectedItem().classList[0]) {
 					case "menu-start-game":
-						this._game.lifes = 20;
+						this._game.lifes = 1;
 						this._game.score = 0;
 						this._game.round.getFirstRound();
 						this._game.setScene({
@@ -97,16 +97,18 @@ var StartScene = function (_GameScene) {
 						break;
 					case "menu-help":
 						this.isPause = true;
+						this._clearScene();
 						this._game.setScene({
 							scene: HelpScene,
-							isClear: true
+							isClear: false
 						});
 						break;
 					case "menu-quit":
+						this._clearScene();
 						this._game.setScene({
 							scene: FinalScene,
 							gameStatus: "noPlay",
-							isClear: true
+							isClear: false
 						});
 						break;
 				}
@@ -125,6 +127,15 @@ var StartScene = function (_GameScene) {
 		value: function _updateBall(dt, ball) {
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_updateBall", this).call(this, dt, ball);
 			this.ballOnBoard = false;
+		}
+	}, {
+		key: "_clearScene",
+		value: function _clearScene() {
+			if (this._game.gameField.contains(this._menuElem)) {
+				this._game.gameField.removeChild(this._menuElem);
+			}
+
+			if (this._game.gameField.contains(this._info.getElem())) this._game.gameField.removeChild(this._info.getElem());
 		}
 	}, {
 		key: "gameOver",

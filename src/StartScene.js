@@ -47,11 +47,12 @@ class StartScene extends GameScene {
 	}
 
 	render(dt) {
-		if (!this._game.gameField.contains(this._menuElem)) {
-			this._game.gameField.appendChild(this._menuElem);
-		}
 
+        if (!this._game.gameField.contains(this._menuElem)) {
+            this._game.gameField.appendChild(this._menuElem);
+        }
 		super.render(dt);
+
 	}
 
 	_checkKeys() {
@@ -67,7 +68,7 @@ class StartScene extends GameScene {
 
 			switch (this._menu.getSelectedItem().classList[0]) {
 				case "menu-start-game":
-					this._game.lifes = 20;
+					this._game.lifes = 1;
 					this._game.score = 0;
                     this._game.round.getFirstRound();
 					this._game.setScene({
@@ -77,16 +78,18 @@ class StartScene extends GameScene {
 					break;
 				case "menu-help":
 					this.isPause = true;
+                    this._clearScene();
 					this._game.setScene({
 						scene: HelpScene,
-						isClear: true
+						isClear: false
 					});
 					break;
 				case "menu-quit":
+					this._clearScene();
 					this._game.setScene({
 						scene: FinalScene,
 						gameStatus: "noPlay",
-						isClear: true
+						isClear: false
 					});
 					break;
 			}
@@ -104,6 +107,15 @@ class StartScene extends GameScene {
 		super._updateBall(dt, ball);
 		this.ballOnBoard = false;
 	}
+
+    _clearScene() {
+        if (this._game.gameField.contains(this._menuElem)) {
+            this._game.gameField.removeChild(this._menuElem);
+        }
+
+        if (this._game.gameField.contains(this._info.getElem()))
+        this._game.gameField.removeChild(this._info.getElem());
+    }
 
 	gameOver() {
 		this._game.setScene({

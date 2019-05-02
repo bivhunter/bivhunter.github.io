@@ -42,6 +42,7 @@ class HelpScene {
 
     update() {
         if (this._game.checkKeyPress(27) || this._game.checkKeyPress(13)) {
+            this._game.gameField.removeChild(this._menu.getElem());
             this._game.returnScene();
         }
     }

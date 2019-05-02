@@ -34,7 +34,7 @@ var GameOverScene = function () {
             this._menu = menu;
             this._menuElem = menu.getElem();
             this._isMenu = true;
-            this._game.gameField.innerHTML = "";
+            // this._game.gameField.innerHTML = "";
             this._game.lifes = 0;
         }
     }, {
@@ -90,16 +90,18 @@ var GameOverScene = function () {
                         }
                         break;
                     case "menu-help":
+                        this._clearScene();
                         this._game.setScene({
                             scene: HelpScene,
-                            isClear: true
+                            isClear: false
                         });
                         break;
                     case "menu-quit":
+                        this._clearScene();
                         this._game.setScene({
                             scene: FinalScene,
                             gameStatus: "gameOver",
-                            isClear: true
+                            isClear: false
                         });
                         break;
 
@@ -155,10 +157,11 @@ var GameOverScene = function () {
                             });
                         } else {
                             console.log("round", round);
+                            this._clearScene();
                             this._game.setScene({
                                 scene: FinalScene,
                                 gameStatus: "victory",
-                                isClear: true
+                                isClear: false
                             });
                         }
                     }
@@ -172,9 +175,10 @@ var GameOverScene = function () {
                                 isClear: true
                             });
                         } else {
+                            this._clearScene();
                             this._game.setScene({
                                 scene: GameOverScene,
-                                isClear: true,
+                                isClear: false,
                                 gameStatus: "loss"
                             });
                         }
@@ -185,6 +189,7 @@ var GameOverScene = function () {
                         console.log("loss");
                         this._game.lifes--;
                         if (this._game.lifes > 0) {
+                            this._clearScene();
                             this._game.returnScene(true);
                         } else {
                             this._initGameOverMenu();
@@ -197,6 +202,15 @@ var GameOverScene = function () {
                     }
                     break;
             }
+        }
+    }, {
+        key: "_clearScene",
+        value: function _clearScene() {
+            if (this._game.gameField.contains(this._menuElem)) {
+                this._game.gameField.removeChild(this._menuElem);
+            }
+
+            if (this._game.gameField.contains(this._info.getElem())) this._game.gameField.removeChild(this._info.getElem());
         }
     }]);
 

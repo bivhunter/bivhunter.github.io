@@ -73,7 +73,7 @@ class Game {
     if(isOnBoard) {
         lastScene.ballOnBoard = true;
     }
-    this.gameField.innerHTML = "";
+    //this.gameField.innerHTML = "";
       console.log(this._sceneArr);
     this.activeScene = lastScene;
 

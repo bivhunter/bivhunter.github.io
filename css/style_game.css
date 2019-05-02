@@ -137,6 +137,8 @@ body {
     height: 600px;
   margin: 0 auto 0 auto;
   padding-top: 20px;
+    top: 0;
+    left: 0;
  /* vertical-align: center;*/
     position: absolute;
     /* background: rgba(202, 202, 202, 0.7); */

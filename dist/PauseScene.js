@@ -36,6 +36,7 @@ var PauseScene = function () {
 			}
 
 			if (this._game.checkKeyPress(27)) {
+				this._clearScene();
 				this._game.returnScene();
 			}
 
@@ -44,28 +45,32 @@ var PauseScene = function () {
 				switch (this._menu.getSelectedItem().classList[0]) {
 					case "menu-resume":
 						{
+							this._clearScene();
 							this._game.returnScene();
 						}
 						break;
 					case "menu-restart":
+						this._clearScene();
 						this._game.setScene({
 							scene: GameOverScene,
-							isClear: true,
+							isClear: false,
 							gameStatus: "restart"
 						});
 						break;
 					case "menu-help":
+						this._clearScene();
 						this._game.setScene({
 							scene: HelpScene,
-							isClear: true
+							isClear: false
 						});
 						break;
 					case "menu-quit":
+						this._clearScene();
 						this._game.lifes = 0;
 						this._game.setScene({
 							scene: GameOverScene,
 							gameStatus: "quit",
-							isClear: true
+							isClear: false
 						});
 						break;
 				}
@@ -78,6 +83,13 @@ var PauseScene = function () {
 			if (!this._game.gameField.contains(this._menuElem)) {
 				this._game.gameField.appendChild(this._menuElem);
 				console.log("append child");
+			}
+		}
+	}, {
+		key: "_clearScene",
+		value: function _clearScene() {
+			if (this._game.gameField.contains(this._menuElem)) {
+				this._game.gameField.removeChild(this._menuElem);
 			}
 		}
 	}]);
