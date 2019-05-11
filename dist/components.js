@@ -8,7 +8,7 @@ var Menu = function () {
 	function Menu(options) {
 		_classCallCheck(this, Menu);
 
-		this._header = options.header;
+		this._header = options.header || "";
 		this._menuItems = options.menuItems || [];
 		this._init();
 	}
@@ -45,44 +45,50 @@ var Menu = function () {
 			this._elem = menuWrapper;
 			this._menuItems = menuItems;
 
+			this._initMarker();
+
+			//console.log(menuWrapper);
+		}
+	}, {
+		key: "_initMarker",
+		value: function _initMarker() {
 			this.marker = document.createElement("div");
 			this.marker.classList.add("menu-marker");
-			this.selectedItem = menuItems.firstElementChild;
 
-			this.selectedItem.querySelector("span").appendChild(this.marker);
-			this.selectedItem.classList.add("menu-selected");
-			//console.log(menuWrapper);
+			var selectedItem = this._menuItems.firstElementChild;
+			this._selectedItem = selectedItem;
+			this._select(selectedItem);
+		}
+	}, {
+		key: "_select",
+		value: function _select(elem) {
+			this._selectedItem.classList.remove("menu-selected");
+			elem.classList.add("menu-selected");
+			elem.querySelector("span").appendChild(this.marker);
+			this._selectedItem = elem;
 		}
 	}, {
 		key: "selectNext",
 		value: function selectNext() {
-			var selectedItem = this._menuItems.querySelector(".menu-selected");
-			selectedItem.classList.remove("menu-selected");
-			if (selectedItem.nextElementSibling) {
-				selectedItem.nextElementSibling.classList.add("menu-selected");
+			if (this._selectedItem.nextElementSibling) {
+				this._select(this._selectedItem.nextElementSibling);
 			} else {
-				this._menuItems.firstElementChild.classList.add("menu-selected");
+				this._select(this._menuItems.firstElementChild);
 			}
-			selectedItem = this._menuItems.querySelector(".menu-selected");
-			selectedItem.querySelector("span").appendChild(this.marker);
 		}
 	}, {
 		key: "selectPrevious",
 		value: function selectPrevious() {
-			var selectedItem = this._menuItems.querySelector(".menu-selected");
-			selectedItem.classList.remove("menu-selected");
-			if (selectedItem.previousElementSibling) {
-				selectedItem.previousElementSibling.classList.add("menu-selected");
+			if (this._selectedItem.previousElementSibling) {
+				this._select(this._selectedItem.previousElementSibling);
 			} else {
-				this._menuItems.lastElementChild.classList.add("menu-selected");
+				this._select(this._menuItems.lastElementChild);
 			}
-			selectedItem = this._menuItems.querySelector(".menu-selected");
-			selectedItem.querySelector("span").appendChild(this.marker);
 		}
 	}, {
 		key: "getSelectedItem",
 		value: function getSelectedItem() {
-			return this._elem.querySelector(".menu-selected");
+			return this._selectedItem;
 		}
 	}, {
 		key: "getElem",

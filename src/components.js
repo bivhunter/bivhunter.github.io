@@ -1,6 +1,6 @@
 class Menu {
 	constructor(options) {
-		this._header = options.header;
+		this._header = options.header || "";
 		this._menuItems = options.menuItems || [];
 		this._init();
 	}
@@ -27,9 +27,6 @@ class Menu {
 			let temp = item.split(" ");
 			item = temp.join("-");
 			listItem.classList.add("menu-" + item.toLowerCase());
-
-
-
 		});
 
 		menuItems.classList.add("menu-list");
@@ -39,41 +36,47 @@ class Menu {
 		this._elem = menuWrapper;
 		this._menuItems = menuItems;
 
-		this.marker = document.createElement("div");
-		this.marker.classList.add("menu-marker");
-		this.selectedItem = menuItems.firstElementChild;
+		this._initMarker();
 
-		this.selectedItem.querySelector("span").appendChild(this.marker);
-		this.selectedItem.classList.add("menu-selected");
 		//console.log(menuWrapper);
 	}
 
+	_initMarker() {
+        this.marker = document.createElement("div");
+        this.marker.classList.add("menu-marker");
+
+        let selectedItem = this._menuItems.firstElementChild;
+        this._selectedItem = selectedItem;
+        this._select(selectedItem);
+
+
+	}
+
+	_select(elem) {
+		this._selectedItem.classList.remove("menu-selected");
+		elem.classList.add("menu-selected");
+		elem.querySelector("span").appendChild(this.marker);
+		this._selectedItem = elem;
+	}
+
 	selectNext() {
-		let selectedItem = this._menuItems.querySelector(".menu-selected");
-		selectedItem.classList.remove("menu-selected");
-		if (selectedItem.nextElementSibling) {
-			selectedItem.nextElementSibling.classList.add("menu-selected");
+		if (this._selectedItem.nextElementSibling) {
+            this._select(this._selectedItem.nextElementSibling);
 		} else {
-			this._menuItems.firstElementChild.classList.add("menu-selected");
+            this._select(this._menuItems.firstElementChild);
 		}
-		selectedItem = this._menuItems.querySelector(".menu-selected");
-		selectedItem.querySelector("span").appendChild(this.marker);
 	}
 
 	selectPrevious() {
-		let selectedItem = this._menuItems.querySelector(".menu-selected");
-		selectedItem.classList.remove("menu-selected");
-		if (selectedItem.previousElementSibling) {
-			selectedItem.previousElementSibling.classList.add("menu-selected");
+		if (this._selectedItem.previousElementSibling) {
+			this._select(this._selectedItem.previousElementSibling);
 		} else {
-			this._menuItems.lastElementChild.classList.add("menu-selected");
+			this._select(this._menuItems.lastElementChild);
 		}
-		selectedItem = this._menuItems.querySelector(".menu-selected");
-		selectedItem.querySelector("span").appendChild(this.marker);
 	}
 
 	getSelectedItem() {
-		return this._elem.querySelector(".menu-selected");
+		return this._selectedItem;
 	}
 
 	getElem() {
