@@ -86,14 +86,14 @@ class Menu {
 
 class Header {
 	constructor(options) {
-		this.score = options.score || 0;
-		this.life = options.lifes || 0;
-		this.round = options.round || 0;
+		/*this.score = options.score || 0;
+		this.life = options.life || 0;
+		this.round = options.round || 0;*/
 
-		this.options = {
-			Round: this.round,
-			Lifes: this.life,
-			Score: this.score
+		this._options = {
+			Round: options.round || 0,
+			Life: options.life || 0,
+			Score: options.score || 0
 		};
 		this._init();
 	}
@@ -107,13 +107,16 @@ class Header {
 		ul.classList.add("header-list");
 		//		header.appendChild(ul);
 
-		for (let key in this.options) {
+		for (let key in this._options) {
+			if(!this._options.hasOwnProperty(key)) {
+				continue;
+			}
 			let li = document.createElement("li");
 			let span = document.createElement("span");
 			let classStr = "header-" + key.toLowerCase();
 
 			span.classList.add(classStr);
-			span.textContent = `${key}: ${this.options[key]}`;
+			span.textContent = `${key}: ${this._options[key]}`;
 
 			if (key === "Score") {
 				let block = document.createElement("div");
@@ -136,7 +139,7 @@ class Header {
 	}
 
 	setLifes(str) {
-		this._elem.querySelector(".header-lifes").textContent = "Lifes: " + str;
+		this._elem.querySelector(".header-life").textContent = "Lifes: " + str;
 	}
 
 	setScore(str) {
@@ -175,8 +178,7 @@ class Round {
                 "  p p p    p p p  ",
                 "   p p      p p   ",
                 "    p        p    "
-		]
-			,
+			],
 						round_1: [
 							"                    ",
 							"                    ",
@@ -239,11 +241,11 @@ class Round {
 
 	getNextRound() {
 		let round = "round_" + (this._activeRoundNum + 1);
-		if (!this._rounds[round]) {
+		if ( !this._rounds[round] ) {
 			return null;
 		}
 		this._activeRound = this._rounds[round];
-		this._activeRoundNum++
+		this._activeRoundNum ++;
 			return this;
 	}
 }

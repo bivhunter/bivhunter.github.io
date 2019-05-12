@@ -104,14 +104,14 @@ var Header = function () {
 	function Header(options) {
 		_classCallCheck(this, Header);
 
-		this.score = options.score || 0;
-		this.life = options.lifes || 0;
-		this.round = options.round || 0;
+		/*this.score = options.score || 0;
+  this.life = options.life || 0;
+  this.round = options.round || 0;*/
 
-		this.options = {
-			Round: this.round,
-			Lifes: this.life,
-			Score: this.score
+		this._options = {
+			Round: options.round || 0,
+			Life: options.life || 0,
+			Score: options.score || 0
 		};
 		this._init();
 	}
@@ -127,13 +127,16 @@ var Header = function () {
 			ul.classList.add("header-list");
 			//		header.appendChild(ul);
 
-			for (var key in this.options) {
+			for (var key in this._options) {
+				if (!this._options.hasOwnProperty(key)) {
+					continue;
+				}
 				var li = document.createElement("li");
 				var span = document.createElement("span");
 				var classStr = "header-" + key.toLowerCase();
 
 				span.classList.add(classStr);
-				span.textContent = key + ": " + this.options[key];
+				span.textContent = key + ": " + this._options[key];
 
 				if (key === "Score") {
 					var block = document.createElement("div");
@@ -158,7 +161,7 @@ var Header = function () {
 	}, {
 		key: "setLifes",
 		value: function setLifes(str) {
-			this._elem.querySelector(".header-lifes").textContent = "Lifes: " + str;
+			this._elem.querySelector(".header-life").textContent = "Lifes: " + str;
 		}
 	}, {
 		key: "setScore",
@@ -177,7 +180,6 @@ var Round = function () {
 		this._rounds = {
 			round_Demo: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
 			round_: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
-
 			round_1: ["                    ", "                    ", "         p          "] /*,
                                                                                      round_4: [
                                                                                      "                    ",
