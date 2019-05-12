@@ -1,7 +1,7 @@
 class Menu {
 	constructor(options) {
 		this._header = options.header || "";
-		this._menuItems = options.menuItems || [];
+		this._menuList = options.menuItems || [];
 		this._init();
 	}
 
@@ -13,11 +13,11 @@ class Menu {
 		header.textContent = this._header;
 		header.classList.add("menu-header");
 
-		let menuItems = document.createElement("ul");
+		let menuList = document.createElement("ul");
 
-		this._menuItems.forEach(item => {
+		this._menuList.forEach(item => {
 			let listItem = document.createElement("li");
-			menuItems.appendChild(listItem);
+			menuList.appendChild(listItem);
 
 
 			let span = document.createElement("span");
@@ -29,12 +29,12 @@ class Menu {
 			listItem.classList.add("menu-" + item.toLowerCase());
 		});
 
-		menuItems.classList.add("menu-list");
+		menuList.classList.add("menu-list");
 
 		menuWrapper.appendChild(header);
-		menuWrapper.appendChild(menuItems);
+		menuWrapper.appendChild(menuList);
 		this._elem = menuWrapper;
-		this._menuItems = menuItems;
+		this._menuList = menuList;
 
 		this._initMarker();
 
@@ -45,7 +45,7 @@ class Menu {
         this.marker = document.createElement("div");
         this.marker.classList.add("menu-marker");
 
-        let selectedItem = this._menuItems.firstElementChild;
+        let selectedItem = this._menuList.firstElementChild;
         this._selectedItem = selectedItem;
         this._select(selectedItem);
 
@@ -63,7 +63,7 @@ class Menu {
 		if (this._selectedItem.nextElementSibling) {
             this._select(this._selectedItem.nextElementSibling);
 		} else {
-            this._select(this._menuItems.firstElementChild);
+            this._select(this._menuList.firstElementChild);
 		}
 	}
 
@@ -71,7 +71,7 @@ class Menu {
 		if (this._selectedItem.previousElementSibling) {
 			this._select(this._selectedItem.previousElementSibling);
 		} else {
-			this._select(this._menuItems.lastElementChild);
+			this._select(this._menuList.lastElementChild);
 		}
 	}
 

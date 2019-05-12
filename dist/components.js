@@ -9,7 +9,7 @@ var Menu = function () {
 		_classCallCheck(this, Menu);
 
 		this._header = options.header || "";
-		this._menuItems = options.menuItems || [];
+		this._menuList = options.menuItems || [];
 		this._init();
 	}
 
@@ -23,11 +23,11 @@ var Menu = function () {
 			header.textContent = this._header;
 			header.classList.add("menu-header");
 
-			var menuItems = document.createElement("ul");
+			var menuList = document.createElement("ul");
 
-			this._menuItems.forEach(function (item) {
+			this._menuList.forEach(function (item) {
 				var listItem = document.createElement("li");
-				menuItems.appendChild(listItem);
+				menuList.appendChild(listItem);
 
 				var span = document.createElement("span");
 				listItem.appendChild(span);
@@ -38,12 +38,12 @@ var Menu = function () {
 				listItem.classList.add("menu-" + item.toLowerCase());
 			});
 
-			menuItems.classList.add("menu-list");
+			menuList.classList.add("menu-list");
 
 			menuWrapper.appendChild(header);
-			menuWrapper.appendChild(menuItems);
+			menuWrapper.appendChild(menuList);
 			this._elem = menuWrapper;
-			this._menuItems = menuItems;
+			this._menuList = menuList;
 
 			this._initMarker();
 
@@ -55,7 +55,7 @@ var Menu = function () {
 			this.marker = document.createElement("div");
 			this.marker.classList.add("menu-marker");
 
-			var selectedItem = this._menuItems.firstElementChild;
+			var selectedItem = this._menuList.firstElementChild;
 			this._selectedItem = selectedItem;
 			this._select(selectedItem);
 		}
@@ -73,7 +73,7 @@ var Menu = function () {
 			if (this._selectedItem.nextElementSibling) {
 				this._select(this._selectedItem.nextElementSibling);
 			} else {
-				this._select(this._menuItems.firstElementChild);
+				this._select(this._menuList.firstElementChild);
 			}
 		}
 	}, {
@@ -82,7 +82,7 @@ var Menu = function () {
 			if (this._selectedItem.previousElementSibling) {
 				this._select(this._selectedItem.previousElementSibling);
 			} else {
-				this._select(this._menuItems.lastElementChild);
+				this._select(this._menuList.lastElementChild);
 			}
 		}
 	}, {
