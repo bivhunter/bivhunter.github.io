@@ -1,4 +1,3 @@
-"use strict";
 class Block {
 	constructor(options) {
 		this.x = options.x || 0;
@@ -50,15 +49,12 @@ class Block {
 
 	touching() {
 		this.score = 0;
-		if (this._class === "bricks") {
-			this._changeClass("bricks", "bricks-2");
-			this.score = 20;
-		} else if (this._class === "penoblock") {
-			this.remove = true;
-			this.score = 20;
-		} else if (this._class === "bricks-2") {
-			this.remove = true;
+		if (this._class === "block-strong") {
+			this._changeClass("block-strong", "block-weak");
 			this.score = 30;
+		} else if (this._class === "block-weak") {
+			this.remove = true;
+			this.score = 20;
 		}
 	}
 
@@ -70,13 +66,13 @@ class Block {
 		return this._block;
 	}
 
-	getVertexs() {
+	getVertexes() {
 		return [
 			this.A,
 			this.B,
 			this.C,
 			this.D
-		]
+		];
 	}
 
 	right() {

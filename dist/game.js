@@ -121,7 +121,7 @@ var Game = function () {
     key: "_updateHeader",
     value: function _updateHeader(dt) {
       this.header.setScore(this.score);
-      this.header.setLifes(this.lifes);
+      this.header.setLife(this.lifes);
     }
   }, {
     key: "_renderHeader",

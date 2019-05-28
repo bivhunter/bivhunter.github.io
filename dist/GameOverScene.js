@@ -72,7 +72,12 @@ var GameOverScene = function () {
             }
 
             if (this._game.checkKeyPress(27)) {
-                this._game.returnScene();
+                this._clearScene();
+                this._game.setScene({
+                    scene: FinalScene,
+                    gameStatus: "gameOver",
+                    isClear: false
+                });
             }
 
             if (this._game.checkKeyPress(13)) {

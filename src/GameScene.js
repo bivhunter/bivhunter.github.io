@@ -1,13 +1,10 @@
-"use strict";
-
-
 
 class GameScene {
 	constructor(game) {
 		this._game = game;
 		this._round = game.round;
 
-		this._SPEED_COEF = 150;
+		this._SPEED_COEF = 150 + (+this._round.getActiveRoundNum() * 5);
         this._BOARD_MOVE_MULT = 0.08;
 
 		this._acceleration = 0.2;
@@ -85,7 +82,8 @@ class GameScene {
 		this._blockArr = [];
 		this._blockForRemove = [];
 		// this.isPause = true;
-		this._blockCount = 0;
+		//
+		this._blockNumber = 0;
 		let block;
 		for (let i = 0; i < round.length; i++) {
 			let y = i * 20;
@@ -94,17 +92,17 @@ class GameScene {
 				if (round[i][j] === " ") {
 					continue;
 				}
-				if (round[i][j] === "b") {
+				if (round[i][j] === "w") {
 					block = new Block({
 						x: x,
 						y: y,
-						class: "bricks"
+						class: "block-weak"
 					});
-				} else if (round[i][j] === "p") {
+				} else if (round[i][j] === "s") {
 					block = new Block({
 						x: x,
 						y: y,
-						class: "penoblock"
+						class: "block-strong"
 					});
 				}
 
@@ -119,7 +117,7 @@ class GameScene {
 		}
 
 		if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {
-			this._blockCount = 0;
+			this._blockNumber = 0;
 			this._game.setScene({
 				scene: PauseScene,
 				isClear: false
@@ -220,12 +218,12 @@ class GameScene {
 				this._game.gameField.appendChild(block.getElem());
 			});
 			this.isPause = false;
-			this._blockCount === this._blockArr.length;
+			this._blockNumber === this._blockArr.length;
 		}
 
-		if (this._blockCount < this._blockArr.length) {
-			this._game.gameField.appendChild(this._blockArr[this._blockCount].getElem());
-			this._blockCount++;
+		if (this._blockNumber < this._blockArr.length) {
+			this._game.gameField.appendChild(this._blockArr[this._blockNumber].getElem());
+			this._blockNumber++;
 			return;
 		}
 		this._isBlockRender = true;
@@ -643,12 +641,12 @@ class GameScene {
 	}
 
 	_findNearVertex(block, ball) {
-		for (let i = 0; i < block.getVertexs().length; i++) {
-			let d = vectorModule(vectorDiff(block.getVertexs()[i], ball.position));
+		for (let i = 0; i < block.getVertexes().length; i++) {
+			let d = vectorModule(vectorDiff(block.getVertexes()[i], ball.position));
 			//console.log("d: " + d, coord, this.position);
 
 			if (d < ball.radius) {
-				return block.getVertexs()[i];
+				return block.getVertexes()[i];
 			}
 		}
 		return null;

@@ -1,6 +1,6 @@
 body {
   width: 95% ;
-  min-width: 950px;
+  min-width: 1000px;
   max-width: 1200px;
   padding: 0px;
   margin: 0px auto;
@@ -26,7 +26,7 @@ body {
 
 
 .header {
-  width: 900px;
+  width: 950px;
   height: 100px;
   margin: 0px auto 0 auto; 
   
@@ -62,7 +62,7 @@ body {
   font-size: 40px;
 }
 
-.header-lifes {
+.header-life {
 
     text-align: center;
     background-image: url("../images/heart_small.png");
@@ -100,7 +100,7 @@ body {
 }
 
 .game-field {
-  width: 900px;
+  width: 950px;
   height: 600px;
   margin: 0px auto 0 auto;
     padding: 0;
@@ -133,7 +133,7 @@ body {
 
 
 .menu {
-    width: 900px;
+    width: 950px;
     height: 600px;
   margin: 0 auto 0 auto;
   padding-top: 20px;
@@ -142,7 +142,7 @@ body {
  /* vertical-align: center;*/
     position: absolute;
     /* background: rgba(202, 202, 202, 0.7); */
-    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(202, 202, 202, 0.5));
+    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(202, 202, 202, 0.7));
     /*opacity: 0.99;*/
     z-index: 99;
 }
@@ -190,15 +190,15 @@ body {
     top: 14px;
     padding: 0;
     margin: 0;
-    background: radial-gradient(white, #FF2323);
+    background: radial-gradient(rgb(96,255,48), rgb(40,107,20));
     border-radius: 30px;
     border-width: 3px;
-    border-color: #a60000;
+    border-color: rgb(35,92,17);
     border-style: groove ridge ridge groove;
 }
 
 .info {
-    width: 900px;
+    width: 950px;
     height: 600px;
     /* padding: 50px; */
     position: relative;
@@ -211,7 +211,7 @@ body {
     display: table-cell;
     vertical-align: middle;
 
-    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(202, 202, 202, 0.5));
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(202, 202, 202, 0.8));
 }
 
 .info-message {
@@ -266,10 +266,10 @@ body {
   position: absolute;
   padding: 0;
   margin: 0;
-  background: radial-gradient(white, #FF2323);
+  background: radial-gradient(rgb(96,255,48), rgb(40,107,20));
   border-radius: 24px;
   border-width: 3px;
-  border-color: rgb(167,0,0);
+  border-color: rgb(35,92,17);
   border-style: groove ridge ridge groove;
 }
 
@@ -286,9 +286,9 @@ body {
  top: 150px; */
 }
 
-.bricks {
-  background: radial-gradient(white, #A77B5C);
-  border: 3px groove #986C4D;
+.block-strong {
+  background: radial-gradient(white, rgb(208,28,76));
+  border: 3px groove rgb(184,4,52);
 }
 
 .bricks-2 {
@@ -296,7 +296,7 @@ body {
   border: 3px groove #CACACA;
 }
 
-.penoblock {
+.block-weak {
   background: radial-gradient(white, rgb(29,40,163));
   border: 3px groove rgb(6,6,115);
 }

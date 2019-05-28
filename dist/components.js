@@ -159,9 +159,9 @@ var Header = function () {
 			this._elem.querySelector(".header-round").textContent = "Round: " + str;
 		}
 	}, {
-		key: "setLifes",
-		value: function setLifes(str) {
-			this._elem.querySelector(".header-life").textContent = "Lifes: " + str;
+		key: "setLife",
+		value: function setLife(str) {
+			this._elem.querySelector(".header-life").textContent = "Life: " + str;
 		}
 	}, {
 		key: "setScore",
@@ -178,42 +178,22 @@ var Round = function () {
 		_classCallCheck(this, Round);
 
 		this._rounds = {
-			round_Demo: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
-			round_: ["                    ", "                    ", "                    ", "    p        p    ", "   p p      p p   ", "  p p p    p p p  ", " p p p p  p p p p ", "p p p p pp p p p p", " p p p p  p p p p ", "  p p p    p p p  ", "   p p      p p   ", "    p        p    "],
-			round_1: ["                    ", "                    ", "         p          "] /*,
-                                                                                     round_4: [
-                                                                                     "                    ",
-                                                                                     "                    ",
-                                                                                     "                    ",
-                                                                                     "bbbbbbbbbbbbbbbbbb",
-                                                                                     "bbbbbbbbbbbbbbbbbb",
-                                                                                     "bbbbbbbbbbbbbbbbbb",
-                                                                                     "bbbbbbbbbbbbbbbbbb",
-                                                                                     "bbbbbbbbbbbbbbbbbb",
-                                                                                     "bbbbbbbbbbbbbbbbbb",
-                                                                                     "bbbbbbbbbbbbbbbbbb",
-                                                                                     "bbbbbbbbbbbbbbbbbb",
-                                                                                     "bbbbbbbbbbbbbbbbbb"
-                                                                                     ],
-                                                                                     round_3: [
-                                                                                     "                    ",
-                                                                                     "                    ",
-                                                                                     "                    ",
-                                                                                     "    p        p    ",
-                                                                                     "   p p      p p   ",
-                                                                                     "  p p p    p p p  ",
-                                                                                     " p p p p  p p p p ",
-                                                                                     "p p p p pp p p p p",
-                                                                                     " p p p p  p p p p ",
-                                                                                     "  p p p    p p p  ",
-                                                                                     "   p p      p p   ",
-                                                                                     "    p        p    "
-                                                                                     ]
-                                                                                     */
+			round_Demo: ["                   ", "                   ", "                   ", "    w         w    ", "   w w       w w   ", "  w s w     w s w  ", " w s s w s w s s w ", "w s w s w w s w s w", " w s s w s w s s w ", "  w s w     w s w  ", "   w w       w w   ", "    w         w    "],
+			round_1: ["                   ", "                   ", "                   ", "ww w  w  w  wwww  w", "  w  w  w  wwww  w ", " w  w  w  wwww  w  ", "w  w  w  wwww  w  w", "  w  w  wwww  w  w ", " w  w  wwww  w  w  ", "w  w  wwww  w  w  w", "  w  wwww  w  w  w ", " w  wwww  w  w  w  "],
+			round_2: ["                   ", "                   ", "                   ", "    www  w  www    ", "  w  w  www  w  w  ", " www   wwwww   www ", "wwsww wwwswww wwsww", " sws wssswsssw sws ", "wwsww wwwswww wwsww", " www   wwwww   www ", "  w  w  www  w  w  ", "    w w  w  w w    "],
+			round_3: ["                   ", "                   ", "                   ", "wwwww s  w  s wwwww", "swwwss  wsw  sswwws", " www   wsssw   www ", " sws  ws w sw  sws ", "s w  ws wsw sw  w s", "  s ws wsssw sw s  ", "   ws w sws w sw   ", "w ws w  w w  w sw w", " ws w sw w ws w sw "],
+			round_4: ["                   ", "                   ", "                   ", "  sws  wswsw  sws  ", "w wsw  w w w  wsw w", " w s w   w   w s w ", "w  w  wswswsw  w  w", "sswwwsswwwwwsswwwss", "w  w  wswswsw  w  w", " w s w   w   w s w ", "w wsw  w w w  wsw w", "  sws  wswsw  sws  "],
+			round_5: ["                   ", "                   ", "                   ", "s   sss  w  sss   s", "  w  s  w w  s  w  ", " w w   w s w   w w ", "w s wsw sws wsw s w", " sws w swsws w sws ", "w s wsw sws wsw s w", " w w   w s w   w w ", "  w  s  w w  s  w  ", "s   sss  w  sss   s"],
+			round_6: ["                   ", "                   ", "                   ", "    wsw  w  wsw    ", "  w  w  wsw  w  w  ", " wsw   wsssw   wsw ", "wswsw wsswssw wswsw", "swwwswsswwwsswswwws", "wswsw wsswssw wswsw", " wsw   wsssw   wsw ", "  w  w  wsw  w  w  ", "    wsw  w  wsw w  "],
+			round_7: ["                   ", "                   ", "                   ", "s w  s wswsw s  w s", " wsw s w w w s wsw ", "w w w w www w w w w", " wsw swswswsws wsw ", "wswsswswswswswsswsw", " wsw swswswsws wsw ", "w w w w www w w w w", " wsw s w w w s wsw ", "s w  s wswsw s  w s"],
+			round_8: ["                   ", "                   ", "                   ", "swwwsws sws swswwws", " sws ws  w  sw sws ", "w w ws sw ws sw w w", "ws sw  swsws  ws sw", " wswssswswswssswsw ", "sw w s w w w s w ws", " sws swswswsws sws ", "s w s w w w w s w s", "  w s  w w w  s w  "],
+			round_9: ["                   ", "                   ", "                   ", "w s  w  sws  w  s w", " sws   swsws   sws ", "sw ws sws sws sw ws", "w s wsws w swsw s w", " ssssws wsw swssss ", "w s ws wsssw sw s w", "sw wsws wsw swsw ws", " sws sws w sws sws ", "w s   sws sws   s w"],
+			round_10: ["                   ", "                   ", "                   ", "ssswsws wsw swswsss", " w wsw wsssw wsw w ", "s wsssw wsw wsssw s", "wswsssws w swssswsw", "swsswssssssssswssws", "wswsssws w swssswsw", "s wsssw wsw wsssw s", " w wsw wsssw wsw w ", "ssswsws wsw swswsss"]
+
 		};
 		this._activeRound = this._rounds.round_Demo;
 		this._activeRoundNum = "Demo";
-		console.log("round", this._activeRoundNum);
+		//console.log("round", this._activeRoundNum);
 	}
 
 	_createClass(Round, [{
@@ -224,8 +204,8 @@ var Round = function () {
 	}, {
 		key: "getFirstRound",
 		value: function getFirstRound() {
-			this._activeRound = this._rounds.round_1;
-			this._activeRoundNum = 1;
+			this._activeRound = this._rounds.round_10;
+			this._activeRoundNum = 10;
 			return this;
 		}
 	}, {

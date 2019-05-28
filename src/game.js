@@ -106,7 +106,7 @@ class Game {
 
   _updateHeader(dt) {
     this.header.setScore(this.score);
-    this.header.setLifes(this.lifes);
+    this.header.setLife(this.lifes);
   }
 
   _renderHeader(dt) {

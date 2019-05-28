@@ -59,15 +59,12 @@ var Block = function () {
 		key: "touching",
 		value: function touching() {
 			this.score = 0;
-			if (this._class === "bricks") {
-				this._changeClass("bricks", "bricks-2");
-				this.score = 20;
-			} else if (this._class === "penoblock") {
-				this.remove = true;
-				this.score = 20;
-			} else if (this._class === "bricks-2") {
-				this.remove = true;
+			if (this._class === "block-strong") {
+				this._changeClass("block-strong", "block-weak");
 				this.score = 30;
+			} else if (this._class === "block-weak") {
+				this.remove = true;
+				this.score = 20;
 			}
 		}
 	}, {
@@ -81,8 +78,8 @@ var Block = function () {
 			return this._block;
 		}
 	}, {
-		key: "getVertexs",
-		value: function getVertexs() {
+		key: "getVertexes",
+		value: function getVertexes() {
 			return [this.A, this.B, this.C, this.D];
 		}
 	}, {
