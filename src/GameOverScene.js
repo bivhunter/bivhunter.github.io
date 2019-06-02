@@ -142,6 +142,7 @@ class GameOverScene {
         if (this._infoTime > 7) {
             info.disableAnimation();
             this._isShowInfo = false;
+            this._infoTime = 0;
         }
 
         this._infoTime += dt;

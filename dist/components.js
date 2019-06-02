@@ -219,7 +219,7 @@ var Round = function () {
         key: "getFirstRound",
         value: function getFirstRound() {
             this._activeRound = this._rounds.round_test;
-            this._activeRoundNum = 10;
+            this._activeRoundNum = 9;
             return this;
         }
     }, {
@@ -250,6 +250,12 @@ var Round = function () {
     return Round;
 }();
 
+//Виводить повідомлення з анімацією
+//Старт анімації (enableAnimation()),
+//Сама анімація animate(dt, duration, text)
+//Зупинити анімацію disableAnimation();
+
+
 var Info = function () {
     function Info(text) {
         _classCallCheck(this, Info);
@@ -264,6 +270,7 @@ var Info = function () {
             var div = document.createElement("div");
             div.classList.add("info");
             this._elem = div;
+
             var message = document.createElement("p");
             message.classList.add("info-message");
             message.textContent = this._text;
@@ -292,10 +299,8 @@ var Info = function () {
             this._animationTime += dt;
 
             var textNoSpace = text.replace(/\s+/g, "");
-
             //"textNoSpace.length + 1", бо перед показом перщшої літери проходить 1 period
             var period = duration / (textNoSpace.length + 1);
-
             if (this._animationLetterTime < period) {
                 this._animationLetterTime += dt;
 

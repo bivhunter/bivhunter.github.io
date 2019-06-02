@@ -34,8 +34,8 @@ class StartScene extends GameScene {
 			game: this,
 			speed: 1000,
 			direction: {
-				x: 1,
-				y: -0.01
+				x: 0.001,
+				y: -10
 			}
 		});
 		this._ballElem = this._ball.getElem();
@@ -68,7 +68,7 @@ class StartScene extends GameScene {
 
 			switch (this._menu.getSelectedItem().classList[0]) {
 				case "menu-start-game":
-					this._game.lifes = 1;
+					this._game.lifes = 2;
 					this._game.score = 0;
                     this._game.round.getFirstRound();
 					this._game.setScene({

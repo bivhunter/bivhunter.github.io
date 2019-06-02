@@ -333,7 +333,7 @@ class Round {
 
     getFirstRound() {
         this._activeRound = this._rounds.round_test;
-        this._activeRoundNum = 10;
+        this._activeRoundNum = 9;
         return this;
     }
 
@@ -358,6 +358,10 @@ class Round {
     }
 }
 
+//Виводить повідомлення з анімацією
+//Старт анімації (enableAnimation()),
+//Сама анімація animate(dt, duration, text)
+//Зупинити анімацію disableAnimation();
 class Info {
     constructor( text ) {
         this._text = text || "";
@@ -368,6 +372,7 @@ class Info {
         let div = document.createElement( "div" );
         div.classList.add( "info" );
         this._elem = div;
+
         let message = document.createElement( "p" );
         message.classList.add( "info-message" );
         message.textContent = this._text;
@@ -394,26 +399,20 @@ class Info {
         this._animationTime += dt;
 
         let textNoSpace = text.replace( /\s+/g, "" );
-
         //"textNoSpace.length + 1", бо перед показом перщшої літери проходить 1 period
         let period = ( duration  ) / ( textNoSpace.length + 1  );
-
-
         if ( this._animationLetterTime < period ) {
             this._animationLetterTime += dt;
-
             return;
         }
 
         //прибирає затримку на SPACE
         while ( text[ this._letterCount ] === " " ) {
             this.addText( text[ this._letterCount ] );
-           // console.log("regExsp", textNoSpace.length, this._letterCount, text[ this._letterCount ] );
             this._letterCount++;
          }
 
         this.addText( text[ this._letterCount ] );
-       // console.log("regExsp", textNoSpace, this._letterCount, text[ this._letterCount ], this._animationTime );
         this._animationLetterTime -= period ;
         this._letterCount++;
 
