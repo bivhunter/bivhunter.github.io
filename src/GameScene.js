@@ -96,13 +96,13 @@ class GameScene {
 					block = new Block({
 						x: x,
 						y: y,
-						class: "block-weak"
+						blockClass: "block-weak"
 					});
 				} else if (round[i][j] === "s") {
 					block = new Block({
 						x: x,
 						y: y,
-						class: "block-strong"
+						blockClass: "block-strong"
 					});
 				}
 
@@ -784,7 +784,7 @@ class GameScene {
 
 		this._blockForRemove.forEach((block) => {
 			//	console.log("remove: ", block);
-			if (block.remove) {
+			if (block.isRemove()) {
 				let pos = this._blockArr.indexOf(block);
 				/*if (pos === -1) {
 				    this._game.stop();

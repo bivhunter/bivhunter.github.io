@@ -1,48 +1,49 @@
+"use strict";
 class Block {
+
 	constructor(options) {
-		this.x = options.x || 0;
-		this.y = options.y || 0;
-		this._class = options.class || "block";
-		this.remove = false;
+		this._x = options.x || 0;
+		this._y = options.y || 0;
+		this._blockClass = options.blockClass || "block";
+        this._width = options.width || 50;
+        this._height = options.height || 20;
+		this._remove = false;
 		this._init();
+
 	}
 
 	_init() {
 		let block = document.createElement("div");
 		block.classList.add("block");
-		block.classList.add(this._class);
-		/*block.innerHTML = this.x + "   " + this.y;*/
+		block.classList.add(this._blockClass);
 
-		this._width = 50;
-		this._height = 20;
-		block.style.left = this.x + "px";
-		block.style.top = this.y + "px";
-
-		this.A = {
-			x: this.left(),
-			y: this.top()
-		};
-
-		this.B = {
-			x: this.right(),
-			y: this.top()
-		};
-
-		this.C = {
-			x: this.right(),
-			y: this.bottom()
-		};
-
-		this.D = {
-			x: this.left(),
-			y: this.bottom()
-		};
+		
+		block.style.left = this._x + "px";
+		block.style.top = this._y + "px";
 
 		this._block = block;
 	}
 
 	_initVertexes() {
-np
+        this._A = {
+            x: this.left(),
+            y: this.top()
+        };
+
+        this._B = {
+            x: this.right(),
+            y: this.top()
+        };
+
+        this._C = {
+            x: this.right(),
+            y: this.bottom()
+        };
+
+        this._D = {
+            x: this.left(),
+            y: this.bottom()
+        };
 	}
 
 	isContainCoord(vec) {
@@ -52,18 +53,22 @@ np
 
 
 	touching() {
-		this.score = 0;
-		if (this._class === "block-strong") {
+		this._score = 0;
+		if (this._blockClass === "block-strong") {
 			this._changeClass("block-strong", "block-weak");
-			this.score = 30;
-		} else if (this._class === "block-weak") {
-			this.remove = true;
-			this.score = 20;
+			this._score = 30;
+		} else if (this._blockClass === "block-weak") {
+			this._remove = true;
+			this._score = 20;
 		}
 	}
 
+	isRemove() {
+		return this._remove;
+	}
+
 	getScore() {
-		return this.score;
+		return this._score || 0;
 	}
 
 	getElem() {
@@ -71,39 +76,35 @@ np
 	}
 
 	getVertexes() {
+        this._initVertexes();
 		return [
-			this.A,
-			this.B,
-			this.C,
-			this.D
+			this._A,
+			this._B,
+			this._C,
+			this._D
 		];
 	}
 
 	right() {
-		return this.x + this._width;
+		return this._x + this._width;
 	}
 
 	bottom() {
-		return this.y + this._height;
+		return this._y + this._height;
 	}
 
 	top() {
-		return this.y;
+		return this._y;
 	}
 
 	left() {
-		return this.x;
+		return this._x;
 	}
 
 	_changeClass(cls1, cls2) {
 		this._block.classList.remove(cls1);
 		this._block.classList.add(cls2);
-		this._class = cls2;
+		this._blockClass = cls2;
 	}
-
-	/*remove() {
-		this._block.remove();
-	}*/
-
 
 }
