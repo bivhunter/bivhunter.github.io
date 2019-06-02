@@ -8,7 +8,7 @@ class GameScene {
         this._BOARD_MOVE_MULT = 0.08;
 
 		this._acceleration = 0.2;
-		this._startInfoTime = 0;
+		this._infoTime = 0;
 		this._endInfoTime = 10;
         this.ballOnBoard = true;
 		this._initRound();
@@ -235,19 +235,25 @@ class GameScene {
 		board.speed = board.direction * speed;
 		//console.log("speed: ", board.speed, "direction: ", board.direction);
 		board.position += board.speed;
-		this._calcBoardPos(board)
+		this._calcBoardPos(board);
 
 	}
 
 	_updateInfo(dt) {
 		let info = this._info;
+		if ( !this._infoTime ) {
+            info.enableAnimation();
+            this._infoTime += dt;
+            return;
+		}
 
-		if (this._startInfoTime < 5 || !this._isBlockRender) {
-			this._startInfoTime += dt;
-			info.enableAnimation();
-			info.animate(dt, 5, this._infoText);
-			//console.log(this._startInfoTime);
-			this._isShowInfo = true;
+		if (this._infoTime < 5 || !this._isBlockRender) {
+			this._infoTime += dt;
+
+			info.animate(dt, 4, this._infoText);
+			//console.log(this._infoTime);
+
+		//	this._isShowInfo = true;
 
 			// Щоб після визову returnScene з HelpScene під час інфо, шар був на дошці.
 
@@ -257,6 +263,7 @@ class GameScene {
 		info.disableAnimation();
 
 		this._isShowInfo = false;
+        this._infoTime = 0;
 	}
 
 

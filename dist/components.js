@@ -192,6 +192,7 @@ var Round = function () {
         _classCallCheck(this, Round);
 
         this._rounds = {
+            round_test: ["                   ", "                   ", "                   ", "              w    "],
             round_Demo: ["                   ", "                   ", "                   ", "    w         w    ", "   w w       w w   ", "  w s w     w s w  ", " w s s w s w s s w ", "w s w s w w s w s w", " w s s w s w s s w ", "  w s w     w s w  ", "   w w       w w   ", "    w         w    "],
             round_1: ["                   ", "                   ", "                   ", "ww w  w  w  wwww  w", "  w  w  w  wwww  w ", " w  w  w  wwww  w  ", "w  w  w  wwww  w  w", "  w  w  wwww  w  w ", " w  w  wwww  w  w  ", "w  w  wwww  w  w  w", "  w  wwww  w  w  w ", " w  wwww  w  w  w  "],
             round_2: ["                   ", "                   ", "                   ", "    www  w  www    ", "  w  w  www  w  w  ", " www   wwwww   www ", "wwsww wwwswww wwsww", " sws wssswsssw sws ", "wwsww wwwswww wwsww", " www   wwwww   www ", "  w  w  www  w  w  ", "    w w  w  w w    "],
@@ -217,8 +218,8 @@ var Round = function () {
     }, {
         key: "getFirstRound",
         value: function getFirstRound() {
-            this._activeRound = this._rounds.round_1;
-            this._activeRoundNum = 1;
+            this._activeRound = this._rounds.round_test;
+            this._activeRoundNum = 10;
             return this;
         }
     }, {
@@ -253,10 +254,7 @@ var Info = function () {
     function Info(text) {
         _classCallCheck(this, Info);
 
-        this._text = text;
-        this.time = 0;
-        this.animationTime = 0;
-        this.count = 0;
+        this._text = text || "";
         this._init();
     }
 
@@ -275,36 +273,46 @@ var Info = function () {
     }, {
         key: "enableAnimation",
         value: function enableAnimation() {
-            this.isAnimation = true;
+            this._isAnimation = true;
+            this._animationLetterTime = 0;
+            this._animationTime = 0;
+            this._letterCount = 0;
         }
     }, {
         key: "disableAnimation",
         value: function disableAnimation() {
-            this.isAnimation = false;
-            this.time = 0;
-            this.animationTime = 0;
-            this.count = 0;
+            this._isAnimation = false;
         }
     }, {
         key: "animate",
         value: function animate(dt, duration, text) {
-            if (!this.isAnimation) {
+            if (!this._isAnimation || this._animationTime > duration || this._letterCount >= text.length) {
+                return;
+            }
+            this._animationTime += dt;
+
+            var textNoSpace = text.replace(/\s+/g, "");
+
+            //"textNoSpace.length + 1", бо перед показом перщшої літери проходить 1 period
+            var period = duration / (textNoSpace.length + 1);
+
+            if (this._animationLetterTime < period) {
+                this._animationLetterTime += dt;
+
                 return;
             }
 
-            if (this.time < duration) {
-                this.time += dt;
-                var period = duration / (text.length + 5);
-                if (this.animationTime < period) {
-                    this.animationTime += dt;
-                } else {
-                    if (this.count < text.length) {
-                        this.addText(text[this.count]);
-                        this.animationTime = 0;
-                        this.count++;
-                    }
-                }
+            //прибирає затримку на SPACE
+            while (text[this._letterCount] === " ") {
+                this.addText(text[this._letterCount]);
+                // console.log("regExsp", textNoSpace.length, this._letterCount, text[ this._letterCount ] );
+                this._letterCount++;
             }
+
+            this.addText(text[this._letterCount]);
+            // console.log("regExsp", textNoSpace, this._letterCount, text[ this._letterCount ], this._animationTime );
+            this._animationLetterTime -= period;
+            this._letterCount++;
         }
     }, {
         key: "getElem",

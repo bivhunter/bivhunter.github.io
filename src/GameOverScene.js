@@ -4,7 +4,7 @@ class GameOverScene {
         this._gameStatus = gameStatus;
         this._round = game.round;
 
-        this._time = 0;
+        this._infoTime = 0;
         this._init();
     }
 
@@ -129,16 +129,26 @@ class GameOverScene {
 
 
     _showInfo(dt, info, text) {
-        if (this._isShowInfo) {
-            this._time += dt;
-            info.enableAnimation();
-            info.animate(dt, 6, text);
-            if (this._time > 6) {
-                info.disableAnimation();
-                this._isShowInfo = false;
-            }
+        if (!this._isShowInfo) {
+            return;
         }
-    }
+
+        if ( !this._infoTime) {
+            info.enableAnimation();
+            this._infoTime += dt;
+            return;
+        }
+
+        if (this._infoTime > 7) {
+            info.disableAnimation();
+            this._isShowInfo = false;
+        }
+
+        this._infoTime += dt;
+        info.animate(dt, 5, text);
+
+        }
+
 
 
 

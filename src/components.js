@@ -161,6 +161,12 @@ class Header {
 class Round {
     constructor() {
         this._rounds = {
+            round_test: [
+                "                   ",
+                "                   ",
+                "                   ",
+                "              w    ",
+            ],
             round_Demo: [
                 "                   ",
                 "                   ",
@@ -326,8 +332,8 @@ class Round {
     }
 
     getFirstRound() {
-        this._activeRound = this._rounds.round_1;
-        this._activeRoundNum = 1;
+        this._activeRound = this._rounds.round_test;
+        this._activeRoundNum = 10;
         return this;
     }
 
@@ -354,10 +360,7 @@ class Round {
 
 class Info {
     constructor( text ) {
-        this._text = text;
-        this.time = 0;
-        this.animationTime = 0;
-        this.count = 0;
+        this._text = text || "";
         this._init();
     }
 
@@ -374,35 +377,46 @@ class Info {
     }
 
     enableAnimation() {
-        this.isAnimation = true;
+        this._isAnimation = true;
+        this._animationLetterTime = 0;
+        this._animationTime = 0;
+        this._letterCount = 0;
     }
 
     disableAnimation() {
-        this.isAnimation = false;
-        this.time = 0;
-        this.animationTime = 0;
-        this.count = 0;
+        this._isAnimation = false;
     }
 
     animate( dt, duration, text ) {
-        if ( !this.isAnimation ) {
+        if ( !this._isAnimation || this._animationTime > duration || this._letterCount >= text.length ) {
+            return;
+        }
+        this._animationTime += dt;
+
+        let textNoSpace = text.replace( /\s+/g, "" );
+
+        //"textNoSpace.length + 1", бо перед показом перщшої літери проходить 1 period
+        let period = ( duration  ) / ( textNoSpace.length + 1  );
+
+
+        if ( this._animationLetterTime < period ) {
+            this._animationLetterTime += dt;
+
             return;
         }
 
-        if ( this.time < duration ) {
-            this.time += dt;
-            let period = duration / ( text.length + 5 );
-            if ( this.animationTime < period ) {
-                this.animationTime += dt;
-            } else {
-                if ( this.count < text.length ) {
-                    this.addText( text[ this.count ] );
-                    this.animationTime = 0;
-                    this.count++;
-                }
-            }
+        //прибирає затримку на SPACE
+        while ( text[ this._letterCount ] === " " ) {
+            this.addText( text[ this._letterCount ] );
+           // console.log("regExsp", textNoSpace.length, this._letterCount, text[ this._letterCount ] );
+            this._letterCount++;
+         }
 
-        }
+        this.addText( text[ this._letterCount ] );
+       // console.log("regExsp", textNoSpace, this._letterCount, text[ this._letterCount ], this._animationTime );
+        this._animationLetterTime -= period ;
+        this._letterCount++;
+
     }
 
     getElem() {
