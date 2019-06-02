@@ -117,10 +117,6 @@ var Header = function () {
 	function Header(options) {
 		_classCallCheck(this, Header);
 
-		/*this.score = options.score || 0;
-  this.life = options.life || 0;
-  this.round = options.round || 0;*/
-
 		this._options = {
 			Round: options.round || 0,
 			Life: options.life || 0,
@@ -132,9 +128,6 @@ var Header = function () {
 	_createClass(Header, [{
 		key: "_init",
 		value: function _init() {
-
-			/*let header = document.createElement("div");
-   header.classList.add("header");*/
 
 			var ul = document.createElement("ul");
 			ul.classList.add("header-list");
@@ -151,6 +144,7 @@ var Header = function () {
 				span.classList.add(classStr);
 				span.textContent = key + ": " + this._options[key];
 
+				//Додає обгортку для показу блоку біля поля Score
 				if (key === "Score") {
 					var block = document.createElement("div");
 					block.classList.add("header-block");
