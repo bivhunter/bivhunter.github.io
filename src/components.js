@@ -1,49 +1,61 @@
+"use strict";
+
+//Параметри текст заголовку і пунктів меню
+//Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
+//CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
+//об'єктами після підтвердження вибору конкретного пункту меню
 class Menu {
 	constructor(options) {
-		this._header = options.header || "";
-		this._menuList = options.menuItems || [];
+		this._headerText = options.header || "";
+		this._menuItemsList = options.menuItems || [];
 		this._init();
 	}
 
 	_init() {
 		let menuWrapper = document.createElement("div");
 		menuWrapper.classList.add("menu");
+		
+        this._initMenuList();
 
-		let header = document.createElement("h1");
-		header.textContent = this._header;
-		header.classList.add("menu-header");
+        menuWrapper.appendChild(this._initHeader());
+        menuWrapper.appendChild(this._menuList);
 
-		let menuList = document.createElement("ul");
-
-		this._menuList.forEach(item => {
-			let listItem = document.createElement("li");
-			menuList.appendChild(listItem);
-
-
-			let span = document.createElement("span");
-			listItem.appendChild(span);
-			span.textContent = item;
-
-			let temp = item.split(" ");
-			item = temp.join("-");
-			listItem.classList.add("menu-" + item.toLowerCase());
-		});
-
-		menuList.classList.add("menu-list");
-
-		menuWrapper.appendChild(header);
-		menuWrapper.appendChild(menuList);
+        
 		this._elem = menuWrapper;
-		this._menuList = menuList;
-
 		this._initMarker();
 
 		//console.log(menuWrapper);
 	}
 
+	_initHeader() {
+        let header = document.createElement("h1");
+        header.textContent = this._headerText;
+        header.classList.add("menu-header");
+        return header;
+    }
+	
+	_initMenuList() {
+        let menuList = document.createElement("ul");
+        this._menuItemsList.forEach(item => {
+            let listItem = document.createElement("li");
+            menuList.appendChild(listItem);
+
+            let span = document.createElement("span");
+            listItem.appendChild(span);
+            span.textContent = item;
+
+            let temp = item.split(" ");
+            item = temp.join("-");
+            listItem.classList.add("menu-" + item.toLowerCase());
+        });
+        menuList.classList.add("menu-list");
+        
+        this._menuList = menuList;
+    }
+	
 	_initMarker() {
-        this.marker = document.createElement("div");
-        this.marker.classList.add("menu-marker");
+        this._marker = document.createElement("div");
+        this._marker.classList.add("menu-marker");
 
         let selectedItem = this._menuList.firstElementChild;
         this._selectedItem = selectedItem;
@@ -55,7 +67,7 @@ class Menu {
 	_select(elem) {
 		this._selectedItem.classList.remove("menu-selected");
 		elem.classList.add("menu-selected");
-		elem.querySelector("span").appendChild(this.marker);
+		elem.querySelector("span").appendChild(this._marker);
 		this._selectedItem = elem;
 	}
 
