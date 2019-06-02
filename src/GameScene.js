@@ -54,7 +54,7 @@ class GameScene {
 			},*/
 			direction: {
 				x: 1,
-				y: -2
+				y: -6
 			}
 		});
 		this._ballElem = this._ball.getElem();

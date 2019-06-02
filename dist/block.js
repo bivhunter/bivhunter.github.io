@@ -51,6 +51,11 @@ var Block = function () {
 			this._block = block;
 		}
 	}, {
+		key: "_initVertexes",
+		value: function _initVertexes() {
+			np;
+		}
+	}, {
 		key: "isContainCoord",
 		value: function isContainCoord(vec) {
 			return vec.x > this.left() && vec.x < this.right() && vec.y > this.top() && vec.y < this.bottom();

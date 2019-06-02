@@ -41,6 +41,10 @@ class Block {
 		this._block = block;
 	}
 
+	_initVertexes() {
+np
+	}
+
 	isContainCoord(vec) {
 		return (vec.x > this.left() && vec.x < this.right() &&
 			vec.y > this.top() && vec.y < this.bottom());
