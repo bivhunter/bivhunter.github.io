@@ -303,19 +303,16 @@ var Info = function () {
             var period = duration / (textNoSpace.length + 1);
             if (this._animationLetterTime < period) {
                 this._animationLetterTime += dt;
-
                 return;
             }
 
             //прибирає затримку на SPACE
             while (text[this._letterCount] === " ") {
                 this.addText(text[this._letterCount]);
-                // console.log("regExsp", textNoSpace.length, this._letterCount, text[ this._letterCount ] );
                 this._letterCount++;
             }
 
             this.addText(text[this._letterCount]);
-            // console.log("regExsp", textNoSpace, this._letterCount, text[ this._letterCount ], this._animationTime );
             this._animationLetterTime -= period;
             this._letterCount++;
         }
