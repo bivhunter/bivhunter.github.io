@@ -381,7 +381,8 @@ class GameScene {
 			this._calcBallPosition(dt, ball);
 		} else {
 			//console.log("render");
-			ball.renderPosition = vectorScalar(1, ball.position);
+			//ball.renderPosition = vectorScalar(1, ball.position);
+            ball.renderPosition = ball.position;
 		}
 
 		//console.log("end position2: ", ball.position);
