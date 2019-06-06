@@ -1,43 +1,49 @@
+
+
 "use strict";
 
 class Ball {
     constructor(options) {
-        //розмір шару
+
         this._game = options.game;
+        this.speedCoef = options.speed || 100;
+        this._startDirection = options.direction || {
+            x: 0.1,
+            y: -1
+        };
+        this._radius = 15;
 
         this.position = {};
         this.renderPosition = {};
-        this.speedCoef = options.speed || 100;
+        this._init();
+    }
 
-        this.direction = options.direction || {
-            x: 0.01,
-            y: -1
-        };
-        this.radius = 15;
+    get radius() {
+        return this._radius;
     }
 
     _init() {
         this._ball = document.createElement("div");
         this._ball.classList.add("ball");
-        this.direction = vectorNorm(this.direction);
+        this.direction = vectorNorm(this._startDirection);
     }
 
-    //відмальовка шара
     render(dt) {
         // console.log("render", this.renderPosition);
         this._setPosition(this.renderPosition);
     }
 
     getNormal(direction) {
-        return vectorSum(this.position, vectorScalar(this.radius, direction));
+        return vectorSum(this.position, vectorScalar(this._radius, direction));
     }
 
+    //Пошук координат центру кола, яке проходить через coord і має напрямок this.direction
     calcCentr(coord) {
         let k = this.direction.y / this.direction.x;
         let d = this.position.y - k * this.position.x;
         let a = 1 + k * k;
         let b = -2 * coord.x + 2 * k * d - 2 * k * coord.y;
-        let c = coord.x * coord.x + d * d - 2 * d * coord.y + coord.y * coord.y - this.radius * this.radius;
+        let c = coord.x * coord.x + d * d - 2 * d * coord.y + coord.y * coord.y - this._radius * this._radius;
         let resX = calcQuad(a, b, c);
         if (!resX) {
             let error = new ErrorEvent("Not found coord centr of ball");
@@ -59,20 +65,18 @@ class Ball {
 
     sendToBoard(board) {
         let x = board.renderPosition;
-        let y = (board.topPosition - board.height / 2 - board.borderWidth - this.radius);
-        console.log(x, y);
+        let y = (board.topPosition - board.height / 2 - board.borderWidth - this._radius);
+        //console.log(x, y);
 
         //можливо перешкоджає залипанню шара
-        if (isNaN(x) || isNaN(y)) {
+        /*if (isNaN(x) || isNaN(y)) {
             alert("x == NaN || y == NaN");
             x = 450;
             y = 557;
-        }
+        }*/
         //console.log("send to board", x, y);
-        this.direction = vectorNorm({
-            x: 1,
-            y: -2
-        });
+        
+        this.direction = vectorNorm(this._startDirection);
         this.renderPosition.x = x;
         this.renderPosition.y = y;
         this.position.x = x;
@@ -82,12 +86,12 @@ class Ball {
 
     _setPosition(coord) {
         //console.log(coord);
-        this._ball.style.left = coord.x - this.radius + "px";
-        this._ball.style.top = coord.y - this.radius + "px";
+        this._ball.style.left = coord.x - this._radius + "px";
+        this._ball.style.top = coord.y - this._radius + "px";
     }
 
     getElem() {
-        this._init();
+
         return this._ball;
     }
 

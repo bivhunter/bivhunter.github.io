@@ -51,8 +51,8 @@ var StartScene = function (_GameScene) {
 				game: this,
 				speed: 1000,
 				direction: {
-					x: 0.001,
-					y: -10
+					x: 0.1,
+					y: -1
 				}
 			});
 			this._ballElem = this._ball.getElem();

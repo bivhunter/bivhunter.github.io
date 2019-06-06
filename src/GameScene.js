@@ -1,4 +1,5 @@
-
+/*jshint esversion: 6 */
+"use strict";
 class GameScene {
 	constructor(game) {
 		this._game = game;
@@ -380,7 +381,8 @@ class GameScene {
 			this._calcBallPosition(dt, ball);
 		} else {
 			//console.log("render");
-			ball.renderPosition = vectorScalar(1, ball.position);
+			//ball.renderPosition = vectorScalar(1, ball.position);
+            ball.renderPosition = ball.position;
 		}
 
 		//console.log("end position2: ", ball.position);

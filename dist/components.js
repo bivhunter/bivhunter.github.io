@@ -1,14 +1,13 @@
 "use strict";
 
-//Параметри текст заголовку і пунктів меню
-//Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
-//CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
-//об'єктами після підтвердження вибору конкретного пункту меню
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+//Параметри текст заголовку і пунктів меню
+//Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
+//CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
+//об'єктами після підтвердження вибору конкретного пункту меню
 var Menu = function () {
     function Menu(options) {
         _classCallCheck(this, Menu);
