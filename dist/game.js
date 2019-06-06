@@ -192,45 +192,65 @@ var Game = function () {
 }();
 
 var Vector = function () {
-    function Vector() {
+    function Vector(x, y) {
         _classCallCheck(this, Vector);
+
+        this.x = x;
+        this.y = y;
     }
 
-    _createClass(Vector, null, [{
+    _createClass(Vector, [{
+        key: "setValue",
+        value: function setValue() {
+            if (arguments.length === 2) {
+                this.x = arguments[0];
+                this.y = arguments[1];
+            } else {
+                this.x = arguments[0].x;
+                this.y = arguments[0].y;
+            }
+        }
+    }, {
         key: "norm",
-        value: function norm(vec) {
-            var x = vec.x,
-                y = vec.y,
+        value: function norm() {
+            var x = this.x,
+                y = this.y,
                 d = Math.sqrt(x * x + y * y);
-
-            return {
-                x: x / d,
-                y: y / d
-            };
+            return new Vector(x / d, y / d);
         }
     }, {
         key: "sum",
-        value: function sum(vec1, vec2) {
-            return {
-                x: vec1.x + vec2.x,
-                y: vec1.y + vec2.y
-            };
+        value: function sum(vec) {
+
+            return new Vector(this.x + vec.x, this.y + vec.y);
         }
     }, {
         key: "scalar",
-        value: function scalar(num, vec) {
-            return {
-                x: vec.x * num,
-                y: vec.y * num
-            };
+        value: function scalar(num) {
+
+            return new Vector(this.x * num, this.y * num);
         }
     }, {
         key: "diff",
-        value: function diff(vec1, vec2) {
-            return {
-                x: vec1.x - vec2.x,
-                y: vec1.y - vec2.y
-            };
+        value: function diff(vec) {
+
+            return new Vector(this.x - vec.x, this.y - vec.y);
+        }
+    }, {
+        key: "module",
+        value: function module() {
+            return Math.sqrt(this.x * this.x + this.y * this.y);
+        }
+    }, {
+        key: "turnAngle",
+        value: function turnAngle(angle) {
+            this.setValue(this.x * Math.cos(angle) - this.y * Math.sin(angle), this.x * Math.sin(angle) + this.y * Math.cos(angle));
+            return this;
+        }
+    }], [{
+        key: "vectorFromObj",
+        value: function vectorFromObj(obj) {
+            return new Vector(obj.x, obj.y);
         }
     }, {
         key: "turn",
@@ -244,19 +264,6 @@ var Vector = function () {
         key: "scalarMult",
         value: function scalarMult(vec1, vec2) {
             return vec1.x * vec2.x + vec1.y * vec2.y;
-        }
-    }, {
-        key: "module",
-        value: function module(vec) {
-            return Math.sqrt(vec.x * vec.x + vec.y * vec.y);
-        }
-    }, {
-        key: "turnAngle",
-        value: function turnAngle(vec, angle) {
-            return {
-                x: vec.x * Math.cos(angle) - vec.y * Math.sin(angle),
-                y: vec.x * Math.sin(angle) + vec.y * Math.cos(angle)
-            };
         }
     }]);
 

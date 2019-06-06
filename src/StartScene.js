@@ -99,8 +99,13 @@ class StartScene extends GameScene {
 	_updateBoard(dt, board) {
 		//ініт шара проходить після ініт боард,
 		// тому для першого апдейту добавлено" || this._game.gameField.clientWidth / 2;"
-		board.position = this._ball.renderPosition.x || this._game.gameField.clientWidth / 2;
-		this._calcBoardPos(board)
+		if (! this._ball.renderPosition) {
+            board.position = this._game.gameField.clientWidth / 2;
+		} else {
+            board.position = this._ball.renderPosition.x;
+        }
+
+		this._calcBoardPos(board);
 	}
 
 	_updateBall(dt, ball) {

@@ -168,38 +168,45 @@ class Game {
 }
 
 class Vector {
-    constructor() {}
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
 
-    static norm(vec) {
-        let x = vec.x,
-            y = vec.y,
+    static vectorFromObj(obj) {
+        return new Vector(obj.x, obj.y);
+    }
+
+    setValue() {
+        if (arguments.length === 2) {
+            this.x = arguments[0];
+            this.y = arguments[1];
+        } else {
+            this.x = arguments[0].x;
+            this.y = arguments[0].y;
+        }
+    }
+
+    norm() {
+        let x = this.x,
+            y = this.y,
             d = Math.sqrt( x * x + y * y );
-
-        return {
-            x: x / d,
-            y: y / d
-        };
+        return new Vector (x / d, y / d);
     }
 
-    static sum ( vec1, vec2 ) {
-        return {
-            x: vec1.x + vec2.x,
-            y: vec1.y + vec2.y
-        };
+    sum ( vec ) {
+
+        return new Vector(this.x + vec.x, this.y + vec.y);
     }
 
-    static scalar ( num, vec ) {
-        return {
-            x: vec.x * num,
-            y: vec.y * num
-        };
+    scalar ( num ) {
+
+        return new Vector(this.x * num, this.y * num);
     }
 
-    static diff (vec1, vec2 ) {
-        return {
-            x: vec1.x - vec2.x,
-            y: vec1.y - vec2.y
-        };
+    diff ( vec ) {
+
+        return new Vector( this.x - vec.x, this.y - vec.y );
     }
 
     static turn ( vec1, vec2 ) {
@@ -213,15 +220,14 @@ class Vector {
         return vec1.x * vec2.x + vec1.y * vec2.y;
     }
 
-    static module ( vec ) {
-        return Math.sqrt( vec.x * vec.x + vec.y * vec.y );
+    module () {
+        return Math.sqrt( this.x * this.x + this.y * this.y );
     }
 
-    static turnAngle ( vec, angle ) {
-        return {
-            x: vec.x * Math.cos( angle ) - vec.y * Math.sin( angle ),
-            y: vec.x * Math.sin( angle ) + vec.y * Math.cos( angle )
-        };
+    turnAngle ( angle ) {
+        this.setValue(this.x * Math.cos( angle ) - this.y * Math.sin( angle ),
+            this.x * Math.sin( angle ) + this.y * Math.cos( angle ));
+        return this;
     }
 }
 

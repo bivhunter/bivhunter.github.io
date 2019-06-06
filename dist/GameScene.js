@@ -55,13 +55,9 @@ var GameScene = function () {
 			this._ball = new Ball({
 				game: this,
 				speed: this._SPEED_COEF,
-				/*position: {
-    	x: -20,
-    	y: -20
-    },*/
 				direction: {
 					x: 1,
-					y: -6
+					y: -10
 				}
 			});
 			this._ballElem = this._ball.getElem();
@@ -303,7 +299,9 @@ var GameScene = function () {
 			if (ball.direction.y === 0) {
 				ball.direction.y = 0.01;
 			}
-			ball.speed = vectorScalar(dt * ball.speedCoef, ball.direction);
+
+			console.log(ball.direction);
+			ball.speed = Vector.vectorFromObj(ball.direction.scalar(dt * ball.speedCoef));
 			this._excessBallSpeed(ball.speed);
 
 			this._calcBallPosition(dt, ball);
@@ -318,7 +316,7 @@ var GameScene = function () {
 				var error = new Error("big speed: ");
 				this.stop();
 				console.log(error);
-				console.log(speed);
+				console.log(speed, this._ball.direction);
 			}
 
 			/*if (this._count > 1) {
@@ -345,7 +343,7 @@ var GameScene = function () {
 		value: function _calcBallPosition(dt, ball) {
 			ball.touchedElem = {};
 			//console.log("befor move", ball.position);
-			ball.position = vectorSum(ball.speed, ball.position);
+			ball.position = ball.position.sum(ball.speed);
 			//console.log("after move", ball.position);
 			if (this._isTouchedBorder(ball.position, ball)) {
 				this._calcTouchedBorderPos(ball.position, ball);
@@ -385,8 +383,7 @@ var GameScene = function () {
 				this._calcBallPosition(dt, ball);
 			} else {
 				//console.log("render");
-				//ball.renderPosition = vectorScalar(1, ball.position);
-				ball.renderPosition = ball.position;
+				ball.renderPosition.setValue(ball.position);
 			}
 
 			//console.log("end position2: ", ball.position);
@@ -398,8 +395,8 @@ var GameScene = function () {
 		value: function _corectionDirection(dt, ball) {
 			if (Math.abs(ball.direction.x / ball.direction.y) > 10) {
 				ball.direction.x = 10 * ball.direction.y;
-				ball.direction = vectorNorm(ball.direction);
-				ball.speed = vectorScalar(dt * ball.speedCoef, ball.direction);
+				ball.direction = ball.direction.norm();
+				ball.speed.setValue(ball.direction.scalar(dt * ball.speedCoef));
 				//console.log("corection");
 			}
 			//console.log(ball.direction.x / ball.direction.y);
@@ -408,7 +405,7 @@ var GameScene = function () {
 		key: "_calcTouchedBoardPos",
 		value: function _calcTouchedBoardPos(ball, board) {
 			ball.board = {};
-			ball.board.position = vectorScalar(1, ball.position);
+			ball.board.position = Vector.vectorFromObj(ball.position);
 			var point = this._findTouchedBoardPoint(ball, board);
 
 			if (point === null) {
@@ -420,32 +417,28 @@ var GameScene = function () {
    }
    this._boardTest = true;*/
 			ball.board.position = ball.calcCentr(point);
-			var vecCentrToVertex = vectorDiff(point, ball.board.position);
-			//console.log("point: ", point, " ball.board.position: ", ball.board.position);
-			var normal = {
-				x: -vecCentrToVertex.y,
-				y: vecCentrToVertex.x
-			};
-			//console.log(vectorTurn(vecCentrToVertex, {x: -1, y: 1}));
-			//console.log(this.direction);
+			var vecCentrToVertex = point.diff(ball.board.position);
+
+			var normal = new Vector(-vecCentrToVertex.y, vecCentrToVertex.x);
+
 			//кут між напрямком руху і вектором з центра до вершини до вершини
-			var angle = Math.acos(vectorScalarMult(ball.direction, vectorNorm(vecCentrToVertex)));
+			var angle = Math.acos(Vector.scalarMult(ball.direction, vecCentrToVertex.norm()));
 
-			//console.log(vectorScalarMult(normal, vecCentrToVertex));
+			//console.log(Vector.scalarMult(normal, vecCentrToVertex));
 
-			var sign = Math.sign(vectorScalarMult(normal, ball.direction));
-			//console.log(vectorScalarMult(normal, vecCentrToVertex));
+			var sign = Math.sign(Vector.scalarMult(normal, ball.direction));
+			//console.log(Vector.scalarMult(normal, vecCentrToVertex));
 
-			var distance = vectorModule(vectorDiff(ball.position, ball.board.position));
+			var distance = ball.position.diff(ball.board.position).module();
 
 			ball.touchedElem.board = distance;
 			//console.log("distance: ", distance);
-			ball.board.direction = vectorNorm(vectorTurnAngle(ball.direction, Math.PI - sign * 2 * angle));
+			ball.board.direction = ball.direction.turnAngle(Math.PI - sign * 2 * angle).norm();
 			//console.log(vectorModule(this.direction));
 			//console.log("angle: " + angle);
 			//this._game.stop();
 
-			ball.board.speed = vectorScalar(distance, ball.board.direction);
+			ball.board.speed = ball.board.direction.scalar(distance);
 		}
 	}, {
 		key: "_findBoardTouchedPoints",
@@ -456,7 +449,7 @@ var GameScene = function () {
 			var pointArr = board.getPointArr();
 			pointArr.forEach(function (point) {
 				//округления для нейтрализации ошибки вычисления
-				var distance = Math.round(vectorModule(vectorDiff(ball.board.position, point)) * 100) / 100;
+				var distance = Math.round(ball.board.position.diff(point).module() * 100) / 100;
 				if (distance <= ball.radius) {
 					_this2._boardPointTouchedArr.push(point);
 				}
@@ -468,7 +461,7 @@ var GameScene = function () {
 		value: function _findTouchedBoardPoint(ball, board) {
 
 			var numPoints = this._findBoardTouchedPoints(ball, board).length;
-			console.log("numPoints: ", numPoints);
+			//console.log("numPoints: ", numPoints);
 			var resPoint = void 0;
 			if (numPoints === 0) {
 				//console.log("point === null");
@@ -476,12 +469,12 @@ var GameScene = function () {
 			}
 
 			if (numPoints === 1) {
-				console.log("pointNum === 1: ", this._boardPointTouchedArr[0]);
+				//console.log("pointNum === 1: ", this._boardPointTouchedArr[0]);
 				return this._boardPointTouchedArr[0];
 			}
 
 			if (numPoints === 2) {
-				console.log("pointNum === 2: ");
+				//console.log("pointNum === 2: ");
 				return ball.direction.x > 0 ? this._boardPointTouchedArr[0] : this._boardPointTouchedArr[1];
 			}
 
@@ -506,8 +499,6 @@ var GameScene = function () {
 			}
 
 			ball.board.position = ball.calcCentr(resPoint);
-			var module = vectorModule(vectorDiff(ball.board.position, resPoint));
-			//console.log("before recurse: ", numPoints, "module: ", module, "ball.board.position: ", ball.board.position, resPoint);
 			return this._findTouchedBoardPoint(ball, board);
 		}
 	}, {
@@ -561,30 +552,19 @@ var GameScene = function () {
 				if (obj[key] > distance) {
 					distance = obj[key];
 					if (key === "left" || key === "right") {
-						ball.newDirection = {
-							x: -1 * ball.direction.x,
-							y: ball.direction.y
-						};
-						//console.log("left, right");
+						ball.newDirection = new Vector(-1 * ball.direction.x, ball.direction.y);
 					} else {
-						ball.newDirection = {
-							x: ball.direction.x,
-							y: -1 * ball.direction.y
-						};
-						//console.log("top, bottom");
+						ball.newDirection = new Vector(ball.direction.x, -1 * ball.direction.y);
 					}
 				}
 			}
 
 			ball.touchedElem.border = distance;
-			var over = vectorScalar(distance, ball.direction);
-			ball.border.speed = vectorScalar(distance, ball.newDirection);
-			ball.border.direction = {
-				x: ball.newDirection.x,
-				y: ball.newDirection.y
-			};
+			var over = ball.direction.scalar(distance);
+			ball.border.speed = ball.newDirection.scalar(distance);
+			ball.border.direction = Vector.vectorFromObj(ball.newDirection);
 
-			ball.border.position = vectorDiff(position, over);
+			ball.border.position = position.diff(over);
 			//console.log("borderTouch: ", position, ball.border.position);
 		}
 	}, {
@@ -593,21 +573,17 @@ var GameScene = function () {
 			ball.block = {};
 			this._calcCentrOver(ball);
 			//  console.log("coord before: ", coord, this._centrOver);
-			ball.position = vectorDiff(ball.position, vectorScalar(ball.centrOver, ball.direction));
+			ball.position = ball.position.diff(ball.direction.scalar(ball.centrOver));
 			// console.log("coord: ", coord);
 			ball.touchSide = false;
 
 			//console.log(blockArr);
 			//console.log(blockArr, this._touchedBlockArr);
-			var normalH = ball.getNormal({
-				x: Math.sign(ball.direction.x),
-				y: 0
-			});
 
-			var normalV = ball.getNormal({
-				x: 0,
-				y: Math.sign(ball.direction.y)
-			});
+			var normalH = ball.getNormal(new Vector(Math.sign(ball.direction.x), 0));
+
+			var normalV = ball.getNormal(new Vector(0, Math.sign(ball.direction.y)));
+
 			//якщо є дотик до сторони, то не перевіряти далі
 			this._calcSideBlockRebound(normalH, normalV, ball);
 			if (ball.touchSide) {
@@ -628,33 +604,29 @@ var GameScene = function () {
 			//якщо нема вершини ближче радіуса то не перевіряти далі
 			//console.log(vertex);
 			ball.block.position = ball.calcCentr(vertex);
-			var vecCentrToVertex = vectorDiff(vertex, ball.block.position);
+			var vecCentrToVertex = vertex.diff(ball.block.position);
 
-			var normal = {
-				x: -vecCentrToVertex.y,
-				y: vecCentrToVertex.x
-			};
-			//console.log(vectorTurn(vecCentrToVertex, {x: -1, y: 1}));
-			//console.log(this.direction);
-			//кут між напрямком руху і вектором з центра до вершини до вершини
-			var angle = Math.acos(vectorScalarMult(ball.direction, vectorNorm(vecCentrToVertex)));
+			var normal = new Vector(-vecCentrToVertex.y, vecCentrToVertex.x);
 
-			//console.log(vectorScalarMult(normal, vecCentrToVertex));
+			//кут між напрямком руху і вектором з центра до вершини
+			var angle = Math.acos(Vector.scalarMult(ball.direction, vecCentrToVertex.norm()));
 
-			var sign = Math.sign(vectorScalarMult(normal, ball.direction));
-			//console.log(vectorScalarMult(normal, vecCentrToVertex));
+			//console.log(Vector.scalarMult(normal, vecCentrToVertex));
 
-			var distance = vectorModule(vectorDiff(ball.position, vertex)) + ball.centrOver;
+			var sign = Math.sign(Vector.scalarMult(normal, ball.direction));
+			//console.log(Vector.scalarMult(normal, vecCentrToVertex));
+
+			var distance = ball.position.diff(vertex).module() + ball.centrOver;
 
 			this._touchingBlock(block);
 
 			ball.touchedElem.block = distance;
-			ball.block.direction = vectorNorm(vectorTurnAngle(ball.direction, Math.PI - sign * 2 * angle));
+			ball.block.direction = ball.direction.turnAngle(Math.PI - sign * 2 * angle).norm();
 			//console.log(vectorModule(this.direction));
 			//console.log("angle: " + angle);
 			//this._game.stop();
 
-			ball.block.speed = vectorScalar(distance, ball.block.direction);
+			ball.block.speed = ball.block.direction.scalar(distance);
 
 			//console.log("touch vertex", ball.position, ball.block.position, block);
 		}
@@ -662,8 +634,7 @@ var GameScene = function () {
 		key: "_findNearVertex",
 		value: function _findNearVertex(block, ball) {
 			for (var i = 0; i < block.getVertexes().length; i++) {
-				var d = vectorModule(vectorDiff(block.getVertexes()[i], ball.position));
-				//console.log("d: " + d, coord, this.position);
+				var d = block.getVertexes()[i].diff(ball.position).module();
 
 				if (d < ball.radius) {
 					return block.getVertexes()[i];
@@ -701,35 +672,21 @@ var GameScene = function () {
 			if (distH > distV) {
 				dist = distH;
 				block = blockH;
-				ball.newDirection = {
-					x: -Math.sign(normalH.x) * ball.direction.x,
-					y: ball.direction.y
-				};
-				//console.log("horizont");
+				ball.newDirection = new Vector(-Math.sign(normalH.x) * ball.direction.x, ball.direction.y);
 			} else {
 				dist = distV;
 				block = blockV;
-				ball.newDirection = {
-					x: ball.direction.x,
-					y: -Math.sign(normalV.y) * ball.direction.y
-				};
-				//console.log("vertical");
+				ball.newDirection = new Vector(ball.direction.x, -Math.sign(normalV.y) * ball.direction.y);
 			}
-			//console.log("distV: ", distV, "distH: ", distH);
+
 			ball.touchSide = true;
-
 			this._touchingBlock(block);
-
 			ball.touchedElem.block = dist + ball.centrOver;
-			var over = vectorScalar(dist + ball.centrOver, ball.direction);
-			ball.block.speed = vectorScalar(dist + ball.centrOver, ball.newDirection);
-			ball.block.direction = {
-				x: ball.newDirection.x,
-				y: ball.newDirection.y
-			};
 
-			ball.block.position = vectorDiff(ball.position, over);
-			//console.log("blockSideTouch: ", ball.touchedElem.block, ball.centrOver, ball.position, ball.speed, ball.direction, ball.block);
+			var over = ball.direction.scalar(dist + ball.centrOver);
+			ball.block.speed = ball.newDirection.scalar(dist + ball.centrOver);
+			ball.block.direction = Vector.vectorFromObj(ball.newDirection);
+			ball.block.position = ball.position.diff(over);
 		}
 	}, {
 		key: "_calcCentrOver",

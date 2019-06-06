@@ -55,27 +55,18 @@ var Board = function () {
 
             //точки лівої границі
             for (var i = bottom; i > y_0; i--) {
-                pointArr.push({
-                    x: x_0 - a,
-                    y: i
-                });
+                pointArr.push(new Vector(x_0 - a, i));
             }
 
             //точки верхньої границі
             for (var _i = -a; _i <= a; _i++) {
                 var y = y_0 - b / a * Math.sqrt(a * a - _i * _i);
-                pointArr.push({
-                    x: x_0 + _i,
-                    y: y
-                });
+                pointArr.push(new Vector(x_0 + _i, y));
             }
 
             //точки правої границі
             for (var _i2 = y_0 + 1; _i2 < bottom; _i2++) {
-                pointArr.push({
-                    x: x_0 + a,
-                    y: _i2
-                });
+                pointArr.push(new Vector(x_0 + a, _i2));
             }
 
             this.pointerArr = pointArr;
@@ -110,10 +101,7 @@ var Board = function () {
             var delta = this.position - this._x_0;
             var resArr = [];
             this.pointerArr.forEach(function (point) {
-                resArr.push({
-                    x: point.x + delta,
-                    y: point.y
-                });
+                resArr.push(new Vector(point.x + delta, point.y));
             });
             return resArr;
         }
@@ -154,68 +142,7 @@ var Board = function () {
             this._elem.style.left = num - this.width / 2 - this.borderWidth + "px";
             this._elem.style.top = this.topPosition - this.height / 2 - this.borderWidth + "px";
         }
-        /*   _initEvent() {
-            this._documentOnKeyDown = this._documentOnKeyDown.bind(this);
-            this._documentOnKeyUp = this._documentOnKeyUp.bind(this);
-            this._startMove();
-            document.addEventListener("keydown", this._documentOnKeyDown);
-            document.addEventListener("keyup", this._documentOnKeyUp);
-        }
-          _documentOnKeyDown(e) {
-              if(e.keyCode === 37) {
-                console.log("down");
-                if (this._count > -20) {
-                    this._count --;
-                } else {
-                    this._count -= 2;
-                }
-            }
-              if(e.keyCode === 39) {
-                console.log("down");
-                if (this._count < 20) {
-                    this._count++;
-                } else {
-                    this._count += 2;
-                }
-            }
-           // console.log(e.keyCode);
-        }
-          _documentOnKeyUp(e) {
-            console.log("up");
-            if(e.keyCode === 37 || e.keyCode === 39) {
-                this._count = 0;
-            }
-        }
-        */
-
-    }, {
-        key: "_startMove",
-        value: function _startMove() {
-            var _this = this;
-
-            this._count = 0;
-            this._timer = setInterval(function () {
-                _this._calcPosition();
-                _this._moveTo(_this._position);
-            }, 20);
-        }
-    }, {
-        key: "_moveTo",
-        value: function _moveTo(pos) {
-            this._board.style.left = pos + "px";
-        }
-
-        /*_move(shift) {
-            let style = getComputedStyle(this._board);
-            this._setPosition(parseInt(style.left) + shift);
-        }*/
-
     }]);
 
     return Board;
 }();
-
-/*let board = new Board({
-    width: 100
-});
-document.body.appendChild(board.getElem());*/

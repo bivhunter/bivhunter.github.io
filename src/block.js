@@ -25,25 +25,10 @@ class Block {
 	}
 
 	_initVertexes() {
-        this._A = {
-            x: this.left(),
-            y: this.top()
-        };
-
-        this._B = {
-            x: this.right(),
-            y: this.top()
-        };
-
-        this._C = {
-            x: this.right(),
-            y: this.bottom()
-        };
-
-        this._D = {
-            x: this.left(),
-            y: this.bottom()
-        };
+        this._A = new Vector( this.left(), this.top() );
+        this._B = new Vector( this.right(), this.top() );
+        this._C = new Vector( this.right(), this.bottom() );
+        this._D = new Vector( this.left(), this.bottom() );
 	}
 
 	isContainCoord(vec) {
