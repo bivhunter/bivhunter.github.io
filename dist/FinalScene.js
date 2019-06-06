@@ -20,7 +20,6 @@ var FinalScene = function () {
         key: "_init",
         value: function _init() {
             var text = void 0;
-            //this._game.gameField.innerHTML = "";
 
             switch (this._gameStatus) {
                 case "victory":
@@ -34,7 +33,7 @@ var FinalScene = function () {
                     break;
             }
 
-            this._text = text;
+            this._infoText = text;
             this._info = new Info("");
         }
     }, {
@@ -47,7 +46,7 @@ var FinalScene = function () {
             }
 
             if (this._infoTime < 10) {
-                this._info.animate(dt, 10, this._text);
+                this._info.animate(dt, 10, this._infoText);
                 this._infoTime += dt;
                 return;
             }

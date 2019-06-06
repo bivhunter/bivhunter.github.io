@@ -87,7 +87,7 @@ var StartScene = function (_GameScene) {
 
 				switch (this._menu.getSelectedItem().classList[0]) {
 					case "menu-start-game":
-						this._game.lifes = 2;
+						this._game.life = 2;
 						this._game.score = 0;
 						this._game.round.getFirstRound();
 						this._game.setScene({

@@ -25,7 +25,7 @@ class Ball {
     _init() {
         this._ball = document.createElement("div");
         this._ball.classList.add("ball");
-        this.direction = vectorNorm(this._startDirection);
+        this.direction = Vector.norm(this._startDirection);
     }
 
     render(dt) {
@@ -76,7 +76,7 @@ class Ball {
         }*/
         //console.log("send to board", x, y);
         
-        this.direction = vectorNorm(this._startDirection);
+        this.direction = Vector.norm(this._startDirection);
         this.renderPosition.x = x;
         this.renderPosition.y = y;
         this.position.x = x;

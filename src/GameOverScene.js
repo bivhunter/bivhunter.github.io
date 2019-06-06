@@ -28,7 +28,7 @@ class GameOverScene {
         this._menuElem = menu.getElem();
         this._isMenu = true;
        // this._game.gameField.innerHTML = "";
-        this._game.lifes = 0;
+        this._game.life = 0;
     }
 
     update(dt) {
@@ -78,7 +78,7 @@ class GameOverScene {
                 case "menu-new-game":
                     {
                         this._game.round.getDemoRound();
-                        this._game.lifes = 1;
+                        this._game.life = 1;
                         this._game.score = 0;
                         this._game.setScene({
                             scene: StartScene,
@@ -174,8 +174,8 @@ class GameOverScene {
             }
                 break;
             case "restart" : {
-                this._game.lifes--;
-                if (this._game.lifes > 0) {
+                this._game.life--;
+                if (this._game.life > 0) {
                     this._game.setScene({
                         scene: GameScene,
                         isClear: true
@@ -192,8 +192,8 @@ class GameOverScene {
                 break;
             case "loss" : {
                 console.log("loss");
-                this._game.lifes--;
-                if (this._game.lifes > 0) {
+                this._game.life--;
+                if (this._game.life > 0) {
                     this._clearScene();
                     this._game.returnScene(true);
                 } else {

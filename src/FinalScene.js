@@ -11,7 +11,6 @@ class FinalScene {
 
     _init() {
         let text;
-        //this._game.gameField.innerHTML = "";
 
         switch (this._gameStatus) {
             case "victory" :
@@ -25,7 +24,7 @@ class FinalScene {
                 break;
         }
 
-        this._text = text;
+        this._infoText = text;
         this._info = new Info("");
 
     }
@@ -38,7 +37,7 @@ class FinalScene {
         }
 
         if (this._infoTime < 10) {
-            this._info.animate( dt, 10, this._text );
+            this._info.animate( dt, 10, this._infoText );
             this._infoTime += dt;
             return;
         }

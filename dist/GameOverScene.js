@@ -35,7 +35,7 @@ var GameOverScene = function () {
             this._menuElem = menu.getElem();
             this._isMenu = true;
             // this._game.gameField.innerHTML = "";
-            this._game.lifes = 0;
+            this._game.life = 0;
         }
     }, {
         key: "update",
@@ -86,7 +86,7 @@ var GameOverScene = function () {
                     case "menu-new-game":
                         {
                             this._game.round.getDemoRound();
-                            this._game.lifes = 1;
+                            this._game.life = 1;
                             this._game.score = 0;
                             this._game.setScene({
                                 scene: StartScene,
@@ -182,8 +182,8 @@ var GameOverScene = function () {
                     break;
                 case "restart":
                     {
-                        this._game.lifes--;
-                        if (this._game.lifes > 0) {
+                        this._game.life--;
+                        if (this._game.life > 0) {
                             this._game.setScene({
                                 scene: GameScene,
                                 isClear: true
@@ -201,8 +201,8 @@ var GameOverScene = function () {
                 case "loss":
                     {
                         console.log("loss");
-                        this._game.lifes--;
-                        if (this._game.lifes > 0) {
+                        this._game.life--;
+                        if (this._game.life > 0) {
                             this._clearScene();
                             this._game.returnScene(true);
                         } else {
