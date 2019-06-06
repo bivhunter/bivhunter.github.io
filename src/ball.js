@@ -1,19 +1,25 @@
+
+
 "use strict";
 
 class Ball {
     constructor(options) {
-        //розмір шару
+
         this._game = options.game;
-
-        this.position = {};
-        this.renderPosition = {};
         this.speedCoef = options.speed || 100;
-
         this.direction = options.direction || {
             x: 0.01,
             y: -1
         };
-        this.radius = 15;
+        this._radius = 15;
+
+        this.position = {};
+        this.renderPosition = {};
+
+    }
+
+    get radius() {
+        return this._radius;
     }
 
     _init() {

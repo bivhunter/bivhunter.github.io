@@ -1,4 +1,3 @@
-"use strict";
 
 class Game {
   constructor(gameField, headerField) {

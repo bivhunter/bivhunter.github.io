@@ -1,3 +1,5 @@
+
+
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -8,18 +10,16 @@ var Ball = function () {
     function Ball(options) {
         _classCallCheck(this, Ball);
 
-        //розмір шару
         this._game = options.game;
-
-        this.position = {};
-        this.renderPosition = {};
         this.speedCoef = options.speed || 100;
-
         this.direction = options.direction || {
             x: 0.01,
             y: -1
         };
-        this.radius = 15;
+        this._radius = 15;
+
+        this.position = {};
+        this.renderPosition = {};
     }
 
     _createClass(Ball, [{
@@ -104,6 +104,11 @@ var Ball = function () {
         value: function getElem() {
             this._init();
             return this._ball;
+        }
+    }, {
+        key: "radius",
+        get: function get() {
+            return this._radius;
         }
     }]);
 

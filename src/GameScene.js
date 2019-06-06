@@ -1,4 +1,5 @@
-
+/*jshint esversion: 6 */
+"use strict";
 class GameScene {
 	constructor(game) {
 		this._game = game;
