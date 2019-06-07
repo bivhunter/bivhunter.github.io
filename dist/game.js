@@ -4,6 +4,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+//Класс для організаціЇ Game Loop
+//Для організаціЇ гри використовується requestAnimationFrame
 var Game = function () {
     function Game(gameField, headerField) {
         _classCallCheck(this, Game);
@@ -12,7 +14,6 @@ var Game = function () {
         this.headerField = headerField;
         this._life = 0;
         this._score = 0;
-
         this._stop = false;
 
         this.round = new Round();
@@ -67,6 +68,9 @@ var Game = function () {
             }
 
             var scene = new options.scene(this, options.gameStatus);
+
+            //очищення масиву сцен, якщо запускається
+            //GameScene або StartScene
             if (scene instanceof GameScene) {
                 this._gameSceneArr = [];
             }
@@ -132,14 +136,13 @@ var Game = function () {
             var frame = function frame() {
                 now = performance.now();
                 dt = dt + Math.min(1, (now - last) / 1000);
+
                 while (dt > slowStep) {
                     dt = dt - slowStep;
-                    console.log("update dt", dt);
                     _this2.update(step);
                 }
-                last = now;
 
-                console.log("render dt", dt, dt / slomo * fps);
+                last = now;
                 _this2.render(dt / slomo * fps);
 
                 if (!_this2._stop) {
@@ -149,6 +152,10 @@ var Game = function () {
 
             requestAnimationFrame(frame);
         }
+
+        //перевірка натиску кнопки, true лише після зміни статусу
+        // this._lastKeyState
+
     }, {
         key: "checkKeyPress",
         value: function checkKeyPress(keyCode) {
@@ -268,6 +275,9 @@ var Vector = function () {
 
     return Vector;
 }();
+
+//Пошук коренів квадратного рівняння
+
 
 function calcQuad(a, b, c) {
     var d = b * b - 4 * a * c;

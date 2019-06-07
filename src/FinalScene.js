@@ -26,7 +26,6 @@ class FinalScene {
 
         this._infoText = text;
         this._info = new Info("");
-
     }
 
     update(dt) {

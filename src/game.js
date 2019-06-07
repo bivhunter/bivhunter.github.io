@@ -1,10 +1,11 @@
+//Класс для організаціЇ Game Loop
+//Для організаціЇ гри використовується requestAnimationFrame
 class Game {
     constructor( gameField, headerField ) {
         this.gameField = gameField;
         this.headerField = headerField;
         this._life = 0;
         this._score = 0;
-
         this._stop = false;
 
         this.round = new Round();
@@ -37,6 +38,7 @@ class Game {
         this._score = value;
         this.header.setScore( value );
     }
+
     _initEvent() {
         this.keys = {};
         document.addEventListener( "keydown", ( e ) => {
@@ -71,6 +73,9 @@ class Game {
         }
 
         let scene = new options.scene( this, options.gameStatus );
+
+        //очищення масиву сцен, якщо запускається
+        //GameScene або StartScene
         if ( scene instanceof GameScene ) {
             this._gameSceneArr = [];
         }
@@ -114,7 +119,6 @@ class Game {
     //ззовні Game зупиняє вже початий requestAnimationFrame, а наступний викликається
     //this._stop допомагає не створювати новий requestAnimationFrame
     start() {
-
         this._stop = false;
         let last = performance.now(),
             fps = 60,
@@ -127,15 +131,14 @@ class Game {
         let frame = () => {
             now = performance.now();
             dt = dt + Math.min( 1, ( now - last ) / 1000 );
+
             while ( dt > slowStep ) {
                 dt = dt - slowStep;
-                console.log("update dt", dt);
                 this.update( step );
 
             }
-            last = now;
 
-            console.log("render dt", dt, dt / slomo * fps);
+            last = now;
             this.render( dt / slomo * fps );
 
             if ( !this._stop ) {
@@ -146,6 +149,8 @@ class Game {
         requestAnimationFrame( frame );
     }
 
+    //перевірка натиску кнопки, true лише після зміни статусу
+    // this._lastKeyState
     checkKeyPress( keyCode ) {
         let isKeyPressed = !!this.keys[ keyCode ];
         this._lastKeyState = this._lastKeyState || {};
@@ -230,6 +235,7 @@ class Vector {
     }
 }
 
+//Пошук коренів квадратного рівняння
 function calcQuad( a, b, c ) {
     let d = b * b - 4 * a * c;
     if ( d < 0 ) {
