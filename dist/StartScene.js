@@ -10,6 +10,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+//Початкова сцена Гри з показом демо на фоні
 var StartScene = function (_GameScene) {
 	_inherits(StartScene, _GameScene);
 
@@ -30,6 +31,8 @@ var StartScene = function (_GameScene) {
 		value: function _initInfo() {
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_initInfo", this).call(this);
 			this._infoText = "Demo";
+
+			//Щоб Info на задньому плані було нижче Menu
 			this._info.getElem().style.background = "inherit";
 			this._info.getElem().style.verticalAlign = "bottom";
 		}
@@ -66,7 +69,6 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "render",
 		value: function render(dt) {
-
 			if (!this._game.gameField.contains(this._menuElem)) {
 				this._game.gameField.appendChild(this._menuElem);
 			}
@@ -84,7 +86,6 @@ var StartScene = function (_GameScene) {
 			}
 
 			if (this._game.checkKeyPress(13)) {
-
 				switch (this._menu.getSelectedItem().classList[0]) {
 					case "menu-start-game":
 						this._game.life = 2;
@@ -114,11 +115,13 @@ var StartScene = function (_GameScene) {
 				}
 			}
 		}
+
+		//ініт ball проходить після ініт board,
+		// тому для першого апдейту добавлено" this._game.gameField.clientWidth / 2;"
+
 	}, {
 		key: "_updateBoard",
 		value: function _updateBoard(dt, board) {
-			//ініт шара проходить після ініт боард,
-			// тому для першого апдейту добавлено" || this._game.gameField.clientWidth / 2;"
 			if (!this._ball.renderPosition) {
 				board.position = this._game.gameField.clientWidth / 2;
 			} else {
@@ -131,6 +134,7 @@ var StartScene = function (_GameScene) {
 		key: "_updateBall",
 		value: function _updateBall(dt, ball) {
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_updateBall", this).call(this, dt, ball);
+			//Дозволити політ шара після початкового встановлення на дошку
 			this.ballOnBoard = false;
 		}
 	}, {

@@ -1,3 +1,5 @@
+//Початкова сцена Гри з показом демо на фоні
+//і початковим меню
 class StartScene extends GameScene {
 	constructor(game) {
 		super(game);
@@ -11,6 +13,8 @@ class StartScene extends GameScene {
 	_initInfo() {
 		super._initInfo();
 		this._infoText = "Demo";
+
+		//Щоб Info на задньому плані було нижче Menu
 		this._info.getElem().style.background = "inherit";
 		this._info.getElem().style.verticalAlign = "bottom";
 	}
@@ -47,12 +51,10 @@ class StartScene extends GameScene {
 	}
 
 	render(dt) {
-
         if (!this._game.gameField.contains(this._menuElem)) {
             this._game.gameField.appendChild(this._menuElem);
         }
 		super.render(dt);
-
 	}
 
 	_checkKeys() {
@@ -65,7 +67,6 @@ class StartScene extends GameScene {
 		}
 
 		if (this._game.checkKeyPress(13)) {
-
 			switch (this._menu.getSelectedItem().classList[0]) {
 				case "menu-start-game":
 					this._game.life = 2;
@@ -96,10 +97,10 @@ class StartScene extends GameScene {
 		}
 	}
 
+    //ініт ball проходить після ініт board,
+    // тому для першого апдейту добавлено" this._game.gameField.clientWidth / 2;"
 	_updateBoard(dt, board) {
-		//ініт шара проходить після ініт боард,
-		// тому для першого апдейту добавлено" || this._game.gameField.clientWidth / 2;"
-		if (! this._ball.renderPosition) {
+		if (!this._ball.renderPosition) {
             board.position = this._game.gameField.clientWidth / 2;
 		} else {
             board.position = this._ball.renderPosition.x;
@@ -110,6 +111,7 @@ class StartScene extends GameScene {
 
 	_updateBall(dt, ball) {
 		super._updateBall(dt, ball);
+		//Дозволити політ шара після початкового встановлення на дошку
 		this.ballOnBoard = false;
 	}
 
