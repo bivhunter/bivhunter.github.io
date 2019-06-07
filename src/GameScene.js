@@ -1,179 +1,330 @@
-
+//Основна сцена гри, в якій відбуваються всі події
 class GameScene {
 	constructor(game) {
 		this._game = game;
 		this._round = game.round;
 
+		//впливає на швидкість гри, більший левел більша швидкість
 		this._SPEED_COEF = 150 + (+this._round.getActiveRoundNum() * 5);
+		//впливає на прискорення дошки
         this._BOARD_MOVE_MULT = 0.08;
-
+		//впливає на зростання швидкості при відбиванні 
 		this._acceleration = 0.2;
 		this._infoTime = 0;
-        this.ballOnBoard = true;
+        this._ballOnBoard = true;
 		this._initRound();
-		this._renderCount = 0;
-		this._updateCount = 0;
 	}
 
 	_initRound() {
-		// this._ballCoord = this._ball.getCoord();
-		//ініціалізація шара
 		this._game.header.setRound(this._round.getActiveRoundNum());
 		this._initBoard();
 		this._initBall();
-
 		this._initBlocks(this._round.getActiveRound());
-
 		this._initInfo();
-
-
-
-		//ініціалізація блоків
-
-
 	}
 
-	_initInfo(round) {
+    _initBoard() {
+        this._board = new Board({
+            gameField: this._game.gameField
+        });
+        this._board.speedCoef = this._SPEED_COEF;
+        this._boardElem = this._board.getElem();
+        this._game.gameField.appendChild(this._boardElem);
 
+        this._board.init();
+        this._boardMinPosition = this._boardElem.offsetWidth / 2;
+        this._boardMaxPosition = this._game.gameField.clientWidth - this._boardElem.offsetWidth / 2;
+    }
+
+    _initBall() {
+        this._ball = new Ball({
+            game: this,
+            speed: this._SPEED_COEF,
+            direction: {
+                x: 1,
+                y: -10
+            }
+        });
+        this._ballElem = this._ball.getElem();
+    }
+
+    _initBlocks(round) {
+        this._blockArr = [];
+        this._blockForRemove = [];
+        //використовується для поступового заповнення блоками ігрового простору
+        this._blockNumber = 0;
+
+        let block;
+        for (let i = 0; i < round.length; i++) {
+            let y = i * 20;
+            for (let j = 0; j < round[i].length; j++) {
+                let x = j * 50;
+                if (round[i][j] === " ") {
+                    continue;
+                }
+
+                if (round[i][j] === "w") {
+                    block = new Block( {
+                        x: x,
+                        y: y,
+                        blockClass: "block-weak"
+                    } );
+                }
+
+                if (round[i][j] === "s") {
+                    block = new Block({
+                        x: x,
+                        y: y,
+                        blockClass: "block-strong"
+                    });
+                }
+
+                this._blockArr.push(block);
+            }
+        }
+    }
+
+    _initInfo(round) {
 		this._info = new Info("");
 		this._isShowInfo = true;
 		this._infoText = "Round " + this._round.getActiveRoundNum();
 	}
 
-
-
-	_initBall() {
-		this._ball = new Ball({
-			game: this,
-			speed: this._SPEED_COEF,
-			direction: {
-				x: 1,
-				y: -10
-			}
-		});
-		this._ballElem = this._ball.getElem();
-		//this._updateBall(0, this._ball);
-		//this._ball.render();
-		//this._game.gameField.appendChild(this._ballElem);
-
-	}
-
-	_initBoard() {
-		this._board = new Board({
-			gameField: this._game.gameField
-		});
-		this._board.speedCoef = this._SPEED_COEF;
-		this._boardElem = this._board.getElem();
-		this._game.gameField.appendChild(this._boardElem);
-		this._board.init();
-        //console.log("board init", this._board.renderPosition);
-		this._boardMinPosition = this._boardElem.offsetWidth / 2;
-		this._boardMaxPosition = this._game.gameField.clientWidth - this._boardElem.offsetWidth / 2;
-		//console.log("this._boars masx min", this._boardMaxPosition, this._boardMinPosition);
-	}
-
-	_initBlocks(round) {
-		this._blockArr = [];
-		this._blockForRemove = [];
-		// this.isPause = true;
-		//
-		this._blockNumber = 0;
-		let block;
-		for (let i = 0; i < round.length; i++) {
-			let y = i * 20;
-			for (let j = 0; j < round[i].length; j++) {
-				let x = j * 50;
-				if (round[i][j] === " ") {
-					continue;
-				}
-				if (round[i][j] === "w") {
-					block = new Block({
-						x: x,
-						y: y,
-						blockClass: "block-weak"
-					});
-				} else if (round[i][j] === "s") {
-					block = new Block({
-						x: x,
-						y: y,
-						blockClass: "block-strong"
-					});
-				}
-
-				this._blockArr.push(block);
-			}
-		}
-	}
-
-	_checkKeys() {
-		if (this._game.checkKeyPress(32)) {
-			this.ballOnBoard = false;
-		}
-
-		if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {
-			this._blockNumber = 0;
-			this._game.setScene({
-				scene: PauseScene,
-				isClear: false
-			});
-			this.isPause = true;
-		}
-
-		this._checkKeysBoard(this._board);
-	}
-
-	_checkKeysBoard(board) {
-		if (((this._game.keys["37"] || this._game.keys["A".charCodeAt(0) + ""]) &&
-				(this._game.keys["39"] || this._game.keys["D".charCodeAt(0) + ""])) ||
-			(!this._game.keys["37"] && !this._game.keys["39"] &&
-				!this._game.keys["A".charCodeAt(0) + ""] &&
-				!this._game.keys["D".charCodeAt(0) + ""])) {
-			board.direction = 0;
-			board.moveMult = 0;
-			// console.log("no press");
-		} else {
-			board.moveMult += this._BOARD_MOVE_MULT;
-			if (this._game.keys["37"] || this._game.keys["A".charCodeAt(0) + ""]) {
-				if (board.direction > 0) {
-					board.moveMult = 0;
-				}
-				board.direction = -1;
-				// console.log("left press");
-			} else if (this._game.keys["39"] || this._game.keys["D".charCodeAt(0) + ""]) {
-				if (board.direction < 0) {
-					board.moveMult = 0;
-				}
-				board.direction = 1;
-				// console.log("right press");
-			}
-		}
-	}
-
 	update(dt) {
-
-		//console.log(this._position);
-
-
 		this._updateInfo(dt);
 		if (this._isShowInfo) {
 			return;
 		}
 
-
-
 		this._updateBoard(dt, this._board);
-        //this._boardTest = false;
 		this._updateBall(dt, this._ball);
-
         this._checkKeys();
-
-		//	this._ball2.update(dt);
-		//this._updateCount++;
-
-		//console.log("update" + dt);
 	}
 
-	render(dt) {
+    _updateInfo(dt) {
+        let info = this._info;
+        if ( !this._infoTime ) {
+            info.enableAnimation();
+            this._infoTime += dt;
+            return;
+        }
+
+        if (this._infoTime < 5 || !this._isBlockRender) {
+            this._infoTime += dt;
+            info.animate(dt, 4, this._infoText);
+            return;
+        }
+
+        info.disableAnimation();
+        this._isShowInfo = false;
+        this._infoTime = 0;
+    }
+
+    _updateBoard(dt, board) {
+        let speed = Math.min(dt * board.speedCoef * board.moveMult, 150);
+        board.speed = board.direction * speed;
+        board.position += board.speed;
+        this._calcBoardPos(board);
+    }
+
+    _calcBoardPos(board) {
+        if (this._boardMaxPosition < board.position) {
+            board.position = this._boardMaxPosition;
+        }
+        if (this._boardMinPosition > board.position) {
+            board.position = this._boardMinPosition;
+        }
+        //board.renderPosition використовуєть в board._update
+        board.renderPosition = board.position;
+    }
+
+    _updateBall(dt, ball) {
+        if (this._ballOnBoard) {
+            ball.sendToBoard(this._board);
+            return;
+        }
+
+        if (ball.direction.x === 0) {
+            ball.direction.x = 0.01;
+        }
+
+        if (ball.direction.y === 0) {
+            ball.direction.y = 0.01;
+        }
+
+        ball.speed = Vector.FromObj(ball.direction.scalar(dt * ball.speedCoef));
+        //генерує помилку при перевищенні швидкості в 30
+		//всі розрахунки проводилися для меншої швидкості
+		//метод в основному потрібний при розробці
+        this._excessBallSpeed(ball.speed);
+        this._calcBallPosition(dt, ball);
+    }
+
+    _excessBallSpeed(speed) {
+        if (speed.x >= 30 || speed.y >= 30) {
+            let error = new Error("big speed: ");
+            this.stop();
+            console.log(error);
+            console.log(speed, this._ball.direction);
+        }
+    }
+
+    //при розрахунку позиції шара і зміни руху враховуються три різних можливих зіткнень:
+	//з границею ігрового поля, дошкою, блоком
+	//шукається найближчий об'єкт з яким відбулося
+    _calcBallPosition(dt, ball) {
+		//об'єкт в який буде зберігатися з чим було зіткнення
+		//і зміна speed, direction, position
+        ball.touchedElem = {};
+        ball.position = ball.position.sum(ball.speed);
+
+        if (this._isTouchedBorder(ball.position, ball)) {
+            this._calcTouchedBorderPos(ball.position, ball);
+        }
+
+        if (this._isTouchBlocksVsBall(ball)) {
+            //console.log("touch block", ball.position);
+            this._calcTouchedBlockPos(ball);
+            this._touchedBlockArr = [];
+        }
+
+        if (ball.direction.y > 0) {
+            if (this._isTouchBlockVsBall(this._board, ball)) {
+                //  console.log("touch board border", ball.touchedElem.board, ball.board);
+                this._calcTouchedBoardPos(ball, this._board);
+
+            }
+        }
+
+        let distance = 0;
+        for (let key in ball.touchedElem) {
+            if (+ball.touchedElem[key] > distance) {
+                distance = +ball.touchedElem[key];
+
+                ball.position = ball[key].position;
+                ball.speed = ball[key].speed;
+                ball.direction = ball[key].direction;
+            }
+        }
+        //distance це відстань на яку шар залетів за точку дотику при зіткненні
+		//для якого об'єкту ця теоретична відстань більша, від того і буде прораховуватися
+		//відскок
+        if (distance !== 0) {
+            ball.speedCoef += this._acceleration;
+            this._board.speedCoef = ball.speedCoef;
+            this._corectionDirection(dt, ball);
+            this._calcBallPosition(dt, ball);
+        } else {
+            //console.log("render");
+            ball.renderPosition.setValue(ball.position);
+        }
+    }
+
+    _isTouchedBorder(position, ball) {
+        let rightBorder = this._game.gameField.clientWidth - ball.radius;
+        let bottomBorder = this._game.gameField.clientHeight - ball.radius;
+        let topBorder = ball.radius;
+        let leftBorder = ball.radius;
+
+        if (position.x - leftBorder < 0 || position.y - topBorder < 0 ||
+            position.x - rightBorder > 0 || position.y - bottomBorder > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    _calcTouchedBorderPos(position, ball) {
+        let rightBorder = this._game.gameField.clientWidth - ball.radius;
+        let bottomBorder = this._game.gameField.clientHeight - ball.radius - 5;
+        let topBorder = ball.radius;
+        let leftBorder = ball.radius;
+
+        let distance = 0;
+        ball.border = {};
+        let obj = {};
+
+        if (position.x - leftBorder < 0) {
+            obj.left = (position.x - leftBorder) / ball.direction.x;
+        }
+
+        if (position.y - topBorder < 0) {
+            obj.top = (position.y - topBorder) / ball.direction.y;
+        }
+
+        if (position.x > rightBorder) {
+            obj.right = (position.x - rightBorder) / ball.direction.x;
+        }
+
+        if (position.y > bottomBorder) {
+            this.gameOver("loss");
+        }
+
+        //distance найбюільша відстань на яку шар вийшов за границю поля
+        for (let key in obj) {
+            if (obj[key] > distance) {
+                distance = obj[key];
+                if (key === "left" || key === "right") {
+                    ball.newDirection = new Vector( -1 * ball.direction.x, ball.direction.y );
+                } else {
+                    ball.newDirection = new Vector ( ball.direction.x, -1 * ball.direction.y);
+                }
+            }
+        }
+
+        ball.touchedElem.border = distance;
+        let over = ball.direction.scalar(distance);
+        ball.border.speed = ball.newDirection.scalar(distance);
+        ball.border.direction = Vector.FromObj( ball.newDirection );
+
+        ball.border.position = position.diff(over);
+    }
+
+    _checkKeys() {
+        if (this._game.checkKeyPress(32)) {
+            this._ballOnBoard = false;
+        }
+
+        if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {
+            this._blockNumber = 0;
+            this._game.setScene({
+                scene: PauseScene,
+                isClear: false
+            });
+            this.isPause = true;
+        }
+        this._checkKeysBoard(this._board);
+    }
+
+    _checkKeysBoard(board) {
+        if (((this._game.keys["37"] || this._game.keys["A".charCodeAt(0) + ""]) &&
+            (this._game.keys["39"] || this._game.keys["D".charCodeAt(0) + ""])) ||
+            (!this._game.keys["37"] && !this._game.keys["39"] &&
+                !this._game.keys["A".charCodeAt(0) + ""] &&
+                !this._game.keys["D".charCodeAt(0) + ""])) {
+            //якщо кнопки управління не натиснуті або натиснуто більше однієї
+            //дошка стоїть
+            board.direction = 0;
+            board.moveMult = 0;
+            return;
+        } else {
+            //при зміні напрямку руху коеф прискорення анулюється
+            board.moveMult += this._BOARD_MOVE_MULT;
+            if (this._game.keys["37"] || this._game.keys["A".charCodeAt(0) + ""]) {
+                if (board.direction > 0) {
+                    board.moveMult = 0;
+                }
+                board.direction = -1;
+            } else if (this._game.keys["39"] || this._game.keys["D".charCodeAt(0) + ""]) {
+                if (board.direction < 0) {
+                    board.moveMult = 0;
+                }
+                board.direction = 1;
+            }
+        }
+    }
+
+    render(dt) {
 
 		this._board.render(dt);
 
@@ -223,166 +374,7 @@ class GameScene {
 		this._isBlockRender = true;
 	}
 
-	_updateBoard(dt, board) {
 
-		let speed = Math.min(dt * board.speedCoef * board.moveMult, 150);
-		board.speed = board.direction * speed;
-		console.log("speed: ", board.speed, "direction: ", board.direction);
-		board.position += board.speed;
-		this._calcBoardPos(board);
-
-	}
-
-	_updateInfo(dt) {
-		let info = this._info;
-		if ( !this._infoTime ) {
-            info.enableAnimation();
-            this._infoTime += dt;
-            return;
-		}
-
-		if (this._infoTime < 5 || !this._isBlockRender) {
-			this._infoTime += dt;
-
-			info.animate(dt, 4, this._infoText);
-			//console.log(this._infoTime);
-
-		//	this._isShowInfo = true;
-
-			// Щоб після визову returnScene з HelpScene під час інфо, шар був на дошці.
-
-			return;
-		}
-
-		info.disableAnimation();
-
-		this._isShowInfo = false;
-        this._infoTime = 0;
-	}
-
-
-	_calcBoardPos(board) {
-
-		if (this._boardMaxPosition < board.position) {
-			board.position = this._boardMaxPosition;
-		}
-		if (this._boardMinPosition > board.position) {
-			board.position = this._boardMinPosition;
-		}
-		board.renderPosition = board.position;
-//		console.log("render pos: ", board.renderPosition, board.position);
-	}
-
-	_updateBall(dt, ball) {
-
-
-
-		if (this.ballOnBoard) {
-			ball.sendToBoard(this._board);
-			return;
-		}
-
-		if (ball.direction.x === 0) {
-			ball.direction.x = 0.01;
-		}
-
-		if (ball.direction.y === 0) {
-			ball.direction.y = 0.01;
-		}
-
-		console.log(ball.direction);
-        ball.speed = Vector.FromObj(ball.direction.scalar(dt * ball.speedCoef));
-		this._excessBallSpeed(ball.speed);
-
-		this._calcBallPosition(dt, ball);
-		//console.log(ballPos);
-		//ball.setPos(ballPos);
-	}
-
-	_excessBallSpeed(speed) { //будет в gameScene
-		if (speed.x >= 30 || speed.y >= 30) {
-			let error = new Error("big speed: ");
-            this.stop();
-			console.log(error);
-			console.log(speed, this._ball.direction);
-		}
-
-
-		/*if (this._count > 1) {
-			let error = new Error("doubleTouch vertex");
-			this._game.stop();
-			console.log(error);
-
-		}*/
-
-		/*if (this._sideT > 1 || this._sideL > 1 || this._sideR > 1 || this._sideB > 1) {
-			let error = new Error("doubleTouch border");
-			this._game.stop();
-			console.log(error);
-
-		}*/
-		/*
-				this._count = 0;
-				this._sideT = 0;
-				this._sideB = 0;
-				this._sideR = 0;
-				this._sideL = 0;*/
-		//console.log(this._speed);
-
-	}
-
-	_calcBallPosition(dt, ball) {
-		ball.touchedElem = {};
-		//console.log("befor move", ball.position);
-		ball.position = ball.position.sum(ball.speed);
-		//console.log("after move", ball.position);
-		if (this._isTouchedBorder(ball.position, ball)) {
-			this._calcTouchedBorderPos(ball.position, ball);
-		}
-
-		if (this._isTouchBlocksVsBall(ball)) {
-			//console.log("touch block", ball.position);
-			this._calcTouchedBlockPos(ball);
-			this._touchedBlockArr = [];
-		}
-
-		if (ball.direction.y > 0) {
-			if (this._isTouchBlockVsBall(this._board, ball)) {
-				//  console.log("touch board border", ball.touchedElem.board, ball.board);
-				this._calcTouchedBoardPos(ball, this._board);
-
-			}
-		}
-
-		let distance = 0;
-		for (let key in ball.touchedElem) {
-			if (+ball.touchedElem[key] > distance) {
-				distance = +ball.touchedElem[key];
-
-				ball.position = ball[key].position;
-				ball.speed = ball[key].speed;
-				ball.direction = ball[key].direction;
-
-			}
-		}
-		//console.log(ball.position, ball.speed, ball.direction);
-		if (distance !== 0) {
-			ball.speedCoef += this._acceleration;
-			this._board.speedCoef = ball.speedCoef;
-			//console.log(ball.speedCoef);
-			// Предотвращает потерю динамики игры при маленьком угле движения
-			//относительно горизонтали
-			this._corectionDirection(dt, ball);
-			this._calcBallPosition(dt, ball);
-		} else {
-			//console.log("render");
-            ball.renderPosition.setValue(ball.position);
-		}
-
-		//console.log("end position2: ", ball.position);
-		//this._touchBlock(this._newPosition);
-		//this._position = this._newPosition;
-	}
 
 	_corectionDirection(dt, ball) {
 		if (Math.abs(ball.direction.x / ball.direction.y) > 10) {
@@ -491,70 +483,9 @@ class GameScene {
 		return this._findTouchedBoardPoint(ball, board);
 	}
 
-	_isTouchedBorder(position, ball) {
-		let rightBorder = this._game.gameField.clientWidth - ball.radius;
-		let bottomBorder = this._game.gameField.clientHeight - ball.radius;
-		let topBorder = ball.radius;
-		let leftBorder = ball.radius;
 
-		if (position.x - leftBorder < 0 || position.y - topBorder < 0 ||
-			position.x - rightBorder > 0 || position.y - bottomBorder > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
-	_calcTouchedBorderPos(position, ball) {
-		let rightBorder = this._game.gameField.clientWidth - ball.radius;
-		let bottomBorder = this._game.gameField.clientHeight - ball.radius - 5;
-		let topBorder = ball.radius;
-		let leftBorder = ball.radius;
 
-		let distance = 0;
-		ball.border = {};
-
-		//console.log("pos start touch: ", newPos);
-		let obj = {};
-
-		if (position.x - leftBorder < 0) {
-			obj.left = (position.x - leftBorder) / ball.direction.x;
-		}
-
-		if (position.y - topBorder < 0) {
-			obj.top = (position.y - topBorder) / ball.direction.y;
-			//console.log("top dist", distance);
-		}
-
-		if (position.x > rightBorder) {
-			obj.right = (position.x - rightBorder) / ball.direction.x;
-			//console.log("right dist", distance);
-		}
-
-		if (position.y > bottomBorder) {
-			this.gameOver("loss");
-			//console.log("bottom dist", distance);
-		}
-
-		for (let key in obj) {
-			if (obj[key] > distance) {
-				distance = obj[key];
-				if (key === "left" || key === "right") {
-					ball.newDirection = new Vector( -1 * ball.direction.x, ball.direction.y );
-				} else {
-					ball.newDirection = new Vector ( ball.direction.x, -1 * ball.direction.y);
-				}
-			}
-		}
-
-		ball.touchedElem.border = distance;
-		let over = ball.direction.scalar(distance);
-		ball.border.speed = ball.newDirection.scalar(distance);
-		ball.border.direction = Vector.FromObj( ball.newDirection );
-	
-		ball.border.position = position.diff(over);
-		//console.log("borderTouch: ", position, ball.border.position);
-	}
 
 	_calcTouchedBlockPos(ball) {
 		ball.block = {};
