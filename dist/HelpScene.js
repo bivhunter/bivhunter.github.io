@@ -25,11 +25,10 @@ var HelpScene = function () {
     _createClass(HelpScene, [{
         key: "_init",
         value: function _init() {
-            var menu = new Menu({
+            this._menu = new Menu({
                 header: "Game help",
                 menuItems: ["Back"]
             });
-            this._menu = menu;
 
             this._help = document.createElement("div");
             this._help.classList.add("help");
@@ -41,6 +40,10 @@ var HelpScene = function () {
             table.appendChild(trHead);
 
             for (var key in this._itemsObj) {
+                if (!this._itemsObj.hasOwnProperty(key)) {
+                    continue;
+                }
+
                 var tr = document.createElement("tr");
                 tr.innerHTML = "<td>" + key + ": </td> <td>" + this._itemsObj[key] + "</td>";
                 table.appendChild(tr);

@@ -1,4 +1,4 @@
-"use strict";
+
 class Block {
 
 	constructor(options) {
@@ -9,7 +9,6 @@ class Block {
         this._height = options.height || 20;
 		this._remove = false;
 		this._init();
-
 	}
 
 	_init() {
@@ -17,10 +16,8 @@ class Block {
 		block.classList.add("block");
 		block.classList.add(this._blockClass);
 
-		
 		block.style.left = this._x + "px";
 		block.style.top = this._y + "px";
-
 		this._block = block;
 	}
 
@@ -35,7 +32,6 @@ class Block {
 		return (vec.x > this.left() && vec.x < this.right() &&
 			vec.y > this.top() && vec.y < this.bottom());
 	}
-
 
 	touching() {
 		this._score = 0;
@@ -91,5 +87,4 @@ class Block {
 		this._block.classList.add(cls2);
 		this._blockClass = cls2;
 	}
-
 }

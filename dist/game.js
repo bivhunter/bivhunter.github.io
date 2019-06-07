@@ -254,8 +254,8 @@ var Vector = function () {
             return this;
         }
     }], [{
-        key: "vectorFromObj",
-        value: function vectorFromObj(obj) {
+        key: "FromObj",
+        value: function FromObj(obj) {
             return new Vector(obj.x, obj.y);
         }
     }, {

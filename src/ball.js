@@ -1,23 +1,15 @@
 
-
-"use strict";
-
 class Ball {
     constructor(options) {
-
         this._game = options.game;
         this.speedCoef = options.speed || 100;
-        this._startDirection = new Vector.vectorFromObj(
+        this._startDirection = new Vector.FromObj(
             options.direction || {
             x: 0.1,
             y: -1
         });
 
         this._radius = 15;
-
-       /* this.position = new Vector(null, null);
-        this.renderPosition = {};*/
-
         this._init();
     }
 
@@ -31,7 +23,7 @@ class Ball {
         this.direction = this._startDirection.norm();
     }
 
-    render(dt) {
+    render() {
         // console.log("render", this.renderPosition);
         this._setPosition(this.renderPosition);
     }
@@ -60,21 +52,9 @@ class Ball {
     }
 
     sendToBoard(board) {
-
-        //console.log(x, y);
-
-        //можливо перешкоджає залипанню шара
-        /*if (isNaN(x) || isNaN(y)) {
-            alert("x == NaN || y == NaN");
-            x = 450;
-            y = 557;
-        }*/
-        //console.log("send to board", x, y);
-        
         this.direction = this._startDirection.norm();
         this.renderPosition = board.vecForBallStart(this);
         this.position = board.vecForBallStart(this);
-        // this._setPosition(x, y);
     }
 
     _setPosition(coord) {
@@ -84,9 +64,6 @@ class Ball {
     }
 
     getElem() {
-
         return this._ball;
     }
-
-
 }

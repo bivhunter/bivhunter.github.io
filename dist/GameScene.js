@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -299,7 +298,7 @@ var GameScene = function () {
 			}
 
 			console.log(ball.direction);
-			ball.speed = Vector.vectorFromObj(ball.direction.scalar(dt * ball.speedCoef));
+			ball.speed = Vector.FromObj(ball.direction.scalar(dt * ball.speedCoef));
 			this._excessBallSpeed(ball.speed);
 
 			this._calcBallPosition(dt, ball);
@@ -403,7 +402,7 @@ var GameScene = function () {
 		key: "_calcTouchedBoardPos",
 		value: function _calcTouchedBoardPos(ball, board) {
 			ball.board = {};
-			ball.board.position = Vector.vectorFromObj(ball.position);
+			ball.board.position = Vector.FromObj(ball.position);
 			var point = this._findTouchedBoardPoint(ball, board);
 
 			if (point === null) {
@@ -560,7 +559,7 @@ var GameScene = function () {
 			ball.touchedElem.border = distance;
 			var over = ball.direction.scalar(distance);
 			ball.border.speed = ball.newDirection.scalar(distance);
-			ball.border.direction = Vector.vectorFromObj(ball.newDirection);
+			ball.border.direction = Vector.FromObj(ball.newDirection);
 
 			ball.border.position = position.diff(over);
 			//console.log("borderTouch: ", position, ball.border.position);
@@ -683,7 +682,7 @@ var GameScene = function () {
 
 			var over = ball.direction.scalar(dist + ball.centrOver);
 			ball.block.speed = ball.newDirection.scalar(dist + ball.centrOver);
-			ball.block.direction = Vector.vectorFromObj(ball.newDirection);
+			ball.block.direction = Vector.FromObj(ball.newDirection);
 			ball.block.position = ball.position.diff(over);
 		}
 	}, {

@@ -175,7 +175,7 @@ class Vector {
         this.y = y;
     }
 
-    static vectorFromObj(obj) {
+    static FromObj(obj) {
         return new Vector(obj.x, obj.y);
     }
 

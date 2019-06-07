@@ -26,7 +26,6 @@ var Block = function () {
 
 			block.style.left = this._x + "px";
 			block.style.top = this._y + "px";
-
 			this._block = block;
 		}
 	}, {

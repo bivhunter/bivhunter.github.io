@@ -1,5 +1,3 @@
-
-
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -12,16 +10,12 @@ var Ball = function () {
 
         this._game = options.game;
         this.speedCoef = options.speed || 100;
-        this._startDirection = new Vector.vectorFromObj(options.direction || {
+        this._startDirection = new Vector.FromObj(options.direction || {
             x: 0.1,
             y: -1
         });
 
         this._radius = 15;
-
-        /* this.position = new Vector(null, null);
-         this.renderPosition = {};*/
-
         this._init();
     }
 
@@ -34,7 +28,7 @@ var Ball = function () {
         }
     }, {
         key: "render",
-        value: function render(dt) {
+        value: function render() {
             // console.log("render", this.renderPosition);
             this._setPosition(this.renderPosition);
         }
@@ -68,21 +62,9 @@ var Ball = function () {
     }, {
         key: "sendToBoard",
         value: function sendToBoard(board) {
-
-            //console.log(x, y);
-
-            //можливо перешкоджає залипанню шара
-            /*if (isNaN(x) || isNaN(y)) {
-                alert("x == NaN || y == NaN");
-                x = 450;
-                y = 557;
-            }*/
-            //console.log("send to board", x, y);
-
             this.direction = this._startDirection.norm();
             this.renderPosition = board.vecForBallStart(this);
             this.position = board.vecForBallStart(this);
-            // this._setPosition(x, y);
         }
     }, {
         key: "_setPosition",
@@ -94,7 +76,6 @@ var Ball = function () {
     }, {
         key: "getElem",
         value: function getElem() {
-
             return this._ball;
         }
     }, {

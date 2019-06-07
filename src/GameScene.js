@@ -1,5 +1,4 @@
-/*jshint esversion: 6 */
-"use strict";
+
 class GameScene {
 	constructor(game) {
 		this._game = game;
@@ -292,7 +291,7 @@ class GameScene {
 		}
 
 		console.log(ball.direction);
-        ball.speed = Vector.vectorFromObj(ball.direction.scalar(dt * ball.speedCoef));
+        ball.speed = Vector.FromObj(ball.direction.scalar(dt * ball.speedCoef));
 		this._excessBallSpeed(ball.speed);
 
 		this._calcBallPosition(dt, ball);
@@ -397,7 +396,7 @@ class GameScene {
 
 	_calcTouchedBoardPos(ball, board) {
 		ball.board = {};
-		ball.board.position = Vector.vectorFromObj(ball.position);
+		ball.board.position = Vector.FromObj(ball.position);
 		let point = this._findTouchedBoardPoint(ball, board);
 
 		if (point === null) {
@@ -551,7 +550,7 @@ class GameScene {
 		ball.touchedElem.border = distance;
 		let over = ball.direction.scalar(distance);
 		ball.border.speed = ball.newDirection.scalar(distance);
-		ball.border.direction = Vector.vectorFromObj( ball.newDirection );
+		ball.border.direction = Vector.FromObj( ball.newDirection );
 	
 		ball.border.position = position.diff(over);
 		//console.log("borderTouch: ", position, ball.border.position);
@@ -675,7 +674,7 @@ class GameScene {
 
 		let over = ball.direction.scalar( dist + ball.centrOver );
 		ball.block.speed = ball.newDirection.scalar( dist + ball.centrOver );
-		ball.block.direction = Vector.vectorFromObj( ball.newDirection );
+		ball.block.direction = Vector.FromObj( ball.newDirection );
 		ball.block.position = ball.position.diff( over );
 	}
 

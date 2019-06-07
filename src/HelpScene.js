@@ -15,11 +15,10 @@ class HelpScene {
     }
 
     _init() {
-        let menu = new Menu({
+        this._menu = new Menu({
             header: "Game help",
             menuItems: ["Back"]
         });
-        this._menu = menu;
 
         this._help = document.createElement("div");
         this._help.classList.add("help");
@@ -31,13 +30,16 @@ class HelpScene {
         table.appendChild(trHead);
 
         for (let key in this._itemsObj) {
+            if (!this._itemsObj.hasOwnProperty(key)) {
+                continue;
+            }
+
             let tr = document.createElement("tr");
             tr.innerHTML = `<td>${key}: </td> <td>${this._itemsObj[key]}</td>`;
             table.appendChild(tr);
         }
 
         this._help.appendChild(table);
-
     }
 
     update() {
@@ -55,6 +57,5 @@ class HelpScene {
         if (!this._menu.getElem().contains(this._help)) {
             this._menu.getElem().appendChild(this._help);
         }
-
     }
 }
