@@ -218,7 +218,7 @@ var Round = function () {
         key: "getFirstRound",
         value: function getFirstRound() {
             this._activeRound = this._rounds.round_test;
-            this._activeRoundNum = 9;
+            this._activeRoundNum = 10;
             return this;
         }
     }, {

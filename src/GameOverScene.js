@@ -1,3 +1,6 @@
+//Обирає продовження гри при після закінчення раунда будь яким способом
+//перемога, втрата шара, вихід, рестарт. І повідомляє про це
+//через Info
 class GameOverScene {
     constructor(game, gameStatus) {
         this._game = game;
@@ -14,31 +17,9 @@ class GameOverScene {
         this._info = new Info("");
     }
 
-    _initGameOverMenu() {
-        let menu = new Menu({
-            header: "Game Over",
-            menuItems: [
-                "New Game",
-                "Help",
-                "Quit"
-            ]
-        });
-
-        this._menu = menu;
-        this._menuElem = menu.getElem();
-        this._isMenu = true;
-       // this._game.gameField.innerHTML = "";
-        this._game.life = 0;
-    }
-
     update(dt) {
         if(this._isShowInfo) {
             this._updateInfo(dt);
-            return;
-        }
-
-        if(this._isMenu) {
-            this._updateMenu();
             return;
         }
 
@@ -47,86 +28,20 @@ class GameOverScene {
 
     _updateInfo(dt) {
         let text = this._gameStatus[0].toUpperCase() + this._gameStatus.slice(1) + "!";
-
         this._showInfo(dt, this._info, text);
-        console.log("updateInfo");
     }
 
-
-
-    _updateMenu() {
-        if (this._game.checkKeyPress(38) || this._game.checkKeyPress("W".charCodeAt(0))) {
-            this._menu.selectPrevious();
-        }
-
-        if (this._game.checkKeyPress(40) || this._game.checkKeyPress("S".charCodeAt(0))) {
-            this._menu.selectNext();
-        }
-
-        if (this._game.checkKeyPress(27)) {
-            this._clearScene();
-            this._game.setScene({
-                scene: FinalScene,
-                gameStatus: "gameOver",
-                isClear: false
-            });
-        }
-
-        if (this._game.checkKeyPress(13)) {
-            console.log(this._game.round);
-            switch (this._menu.getSelectedItem().classList[0]) {
-                case "menu-new-game":
-                    {
-                        this._game.round.getDemoRound();
-                        this._game.life = 1;
-                        this._game.score = 0;
-                        this._game.setScene({
-                            scene: StartScene,
-                            isClear: true
-                        });
-                    }
-                    break;
-                case "menu-help":
-                    this._clearScene();
-                    this._game.setScene({
-                        scene: HelpScene,
-                        isClear: false
-                    });
-                    break;
-                case "menu-quit":
-                    this._clearScene();
-                    this._game.setScene({
-                        scene: FinalScene,
-                        gameStatus: "gameOver",
-                        isClear: false
-                    });
-                    break;
-
-            }
-        }
-    }
-
-    render(dt) {
+    render() {
         if (this._isShowInfo) {
             if (!this._game.gameField.contains(this._info.getElem())) {
                 this._game.gameField.appendChild(this._info.getElem());
             }
-            return;
         } else {
             if (this._game.gameField.contains(this._info.getElem())) {
                 this._game.gameField.removeChild(this._info.getElem());
             }
         }
-
-        if (this._isMenu) {
-            if (!this._game.gameField.contains(this._menuElem)) {
-
-                this._game.gameField.appendChild(this._menuElem);
-                console.log("append child");
-            }
-        }
     }
-
 
     _showInfo(dt, info, text) {
         if (!this._isShowInfo) {
@@ -143,17 +58,14 @@ class GameOverScene {
             info.disableAnimation();
             this._isShowInfo = false;
             this._infoTime = 0;
+           // this._clearScene();
         }
 
         this._infoTime += dt;
         info.animate(dt, 5, text);
-
         }
 
-
-
-
-    _chooseContinuation(dt) {
+    _chooseContinuation() {
         switch (this._gameStatus) {
             case "victory" : {
                 let round = this._round.getNextRound();
@@ -163,13 +75,7 @@ class GameOverScene {
                         isClear: true
                     });
                 } else {
-                    console.log("round", round);
-                    this._clearScene();
-                    this._game.setScene({
-                        scene: FinalScene,
-                        gameStatus: "victory",
-                        isClear: false
-                    });
+                    this._setFinalScene("victory");
                 }
             }
                 break;
@@ -181,40 +87,37 @@ class GameOverScene {
                         isClear: true
                     });
                 } else {
-                    this._clearScene();
-                    this._game.setScene({
-                        scene: GameOverScene,
-                        isClear: false,
-                        gameStatus: "loss"
-                    });
+                    this._setFinalScene("gameOver");
                 }
             }
                 break;
             case "loss" : {
-                console.log("loss");
                 this._game.life--;
                 if (this._game.life > 0) {
-                    this._clearScene();
                     this._game.returnScene(true);
                 } else {
-                    this._initGameOverMenu();
+                    this._setFinalScene("gameOver");
                 }
             }
                 break;
             case "quit" : {
-                    this._initGameOverMenu();
+                this._setFinalScene("gameOver");
             }
                 break;
         }
     }
 
-    _clearScene() {
-        if (this._game.gameField.contains(this._menuElem)) {
-            this._game.gameField.removeChild(this._menuElem);
-        }
+    _setFinalScene(gameStatus) {
+        this._clearScene();
+        this._game.setScene({
+            scene: FinalScene,
+            gameStatus: gameStatus,
+            isClear: false
+        });
+    }
 
+    _clearScene() {
         if (this._game.gameField.contains(this._info.getElem()))
             this._game.gameField.removeChild(this._info.getElem());
     }
-
 }

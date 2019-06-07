@@ -10,10 +10,8 @@ class GameScene {
 
 		this._acceleration = 0.2;
 		this._infoTime = 0;
-		this._endInfoTime = 10;
         this.ballOnBoard = true;
 		this._initRound();
-
 		this._renderCount = 0;
 		this._updateCount = 0;
 	}

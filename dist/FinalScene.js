@@ -4,6 +4,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+//Закінчення гри з показом набраних балів через Info
+//Єдине продовження це початок нової після натискання Enter або ESC
 var FinalScene = function () {
     function FinalScene(game, gameStatus) {
         _classCallCheck(this, FinalScene);
@@ -52,7 +54,16 @@ var FinalScene = function () {
             }
 
             this._info.disableAnimation();
-            this._game.stop();
+
+            if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {
+                this._game.round.getDemoRound();
+                this._game.life = 1;
+                this._game.score = 0;
+                this._game.setScene({
+                    scene: StartScene,
+                    isClear: true
+                });
+            }
         }
     }, {
         key: "render",
