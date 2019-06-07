@@ -10,48 +10,60 @@ var Board = function () {
 
         this._gameField = options.gameField;
         this.moveMult = 0;
+        this.direction = 0;
         this._init();
     }
 
     _createClass(Board, [{
         key: "_init",
         value: function _init() {
-
             var board = document.createElement("div");
             board.classList.add("board");
-
             this._elem = board;
         }
+
+        //ініціалізація основних розмірів проходить ззовні, після рендерінгу дошки
+        //щоб в CSS можна було задати різні розміри
+
     }, {
         key: "init",
         value: function init() {
-            this.width = this._elem.clientWidth;
-            this.height = this._elem.clientHeight;
-            this.borderWidth = (this._elem.offsetWidth - this.width) / 2;
+            this._width = this._elem.clientWidth;
+            this._height = this._elem.clientHeight;
+            this._borderWidth = (this._elem.offsetWidth - this._width) / 2;
 
-            this.topPosition = this._gameField.clientHeight - this._elem.offsetHeight / 2 - 2;
+            this._topPosition = this._gameField.clientHeight - this._elem.offsetHeight / 2 - 2;
             this.position = this._gameField.clientWidth / 2;
             this.renderPosition = this.position;
-            //console.log("board position", this.position, this.renderPosition);
-            this.setPosition(this.position);
+
+            this._setPosition(this.position);
             this._boardPointInit();
-            //this._testPoint();
-            // console.log("board size", this.width, this.height);
         }
+
+        //Стартова позиція шара на дошці
+
+    }, {
+        key: "vecForBallStart",
+        value: function vecForBallStart(ball) {
+            var x = this.renderPosition;
+            var y = this._topPosition - this._height / 2 - this._borderWidth - ball.radius;
+            return new Vector(x, y);
+        }
+
+        //Для знаходження точок границі використовується рівняння еліпса
+        //a, b - мала і велика осі
+        //x_0, y_0 - центр еліпса
+        //крок дискретизації 1px
+
     }, {
         key: "_boardPointInit",
         value: function _boardPointInit() {
-            //Для знаходження точок границі використовується рівняння еліпса
-            //a, b - мала і велика осі
-            //x_0, y_0 - центр еліпса
-            //крок дискретизації 1px
             var pointArr = [];
-            var b = this.height / 2 + 3;
-            var a = this.width / 2 + 3;
-            var y_0 = this.topPosition;
+            var b = this._height / 2 + 3;
+            var a = this._width / 2 + 3;
+            var y_0 = this._topPosition;
             var x_0 = this.position;
             var bottom = this._gameField.clientHeight;
-            console.log(x_0, y_0);
 
             //точки лівої границі
             for (var i = bottom; i > y_0; i--) {
@@ -69,14 +81,63 @@ var Board = function () {
                 pointArr.push(new Vector(x_0 + a, _i2));
             }
 
-            this.pointerArr = pointArr;
+            this._pointerArr = pointArr;
             this._x_0 = x_0;
-            //console.log(pointArr);
         }
+    }, {
+        key: "getPointArr",
+        value: function getPointArr() {
+            var delta = this.position - this._x_0;
+            var resArr = [];
+            this._pointerArr.forEach(function (point) {
+                resArr.push(new Vector(point.x + delta, point.y));
+            });
+            return resArr;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            this._setPosition(this.renderPosition);
+        }
+    }, {
+        key: "getElem",
+        value: function getElem() {
+            return this._elem;
+        }
+    }, {
+        key: "right",
+        value: function right() {
+            return this.position + this._width / 2 + this._borderWidth;
+        }
+    }, {
+        key: "bottom",
+        value: function bottom() {
+            return this._topPosition + this._height / 2 + this._borderWidth;
+        }
+    }, {
+        key: "top",
+        value: function top() {
+            return this._topPosition - this._height / 2 - this._borderWidth;
+        }
+    }, {
+        key: "left",
+        value: function left() {
+            return this.position - this._width / 2 - this._borderWidth;
+        }
+    }, {
+        key: "_setPosition",
+        value: function _setPosition(num) {
+            this._elem.style.left = num - this._width / 2 - this._borderWidth + "px";
+            this._elem.style.top = this._topPosition - this._height / 2 - this._borderWidth + "px";
+        }
+
+        //Тестові методи для промальовки точок границі дошки
+        //Додавання до gameField
+
     }, {
         key: "_testPoint",
         value: function _testPoint() {
-            this.pointerArr.forEach(function (point) {
+            this._pointerArr.forEach(function (point) {
                 var elem = document.createElement("div");
                 elem.classList.add("point");
                 elem.style.left = point.x + "px";
@@ -84,6 +145,9 @@ var Board = function () {
                 document.getElementById("game-field").appendChild(elem);
             });
         }
+
+        //змещення точок при зміщенні дошки
+
     }, {
         key: "renderPoint",
         value: function renderPoint() {
@@ -94,53 +158,6 @@ var Board = function () {
             for (var i = 0; i < pointList.length; i++) {
                 pointList[i].style.left = pointArr[i].x + "px";
             }
-        }
-    }, {
-        key: "getPointArr",
-        value: function getPointArr() {
-            var delta = this.position - this._x_0;
-            var resArr = [];
-            this.pointerArr.forEach(function (point) {
-                resArr.push(new Vector(point.x + delta, point.y));
-            });
-            return resArr;
-        }
-    }, {
-        key: "render",
-        value: function render(dt) {
-            this.setPosition(this.renderPosition);
-            //this.renderPoint();
-        }
-    }, {
-        key: "getElem",
-        value: function getElem() {
-            return this._elem;
-        }
-    }, {
-        key: "right",
-        value: function right() {
-            return this.position + this.width / 2 + this.borderWidth;
-        }
-    }, {
-        key: "bottom",
-        value: function bottom() {
-            return this.topPosition + this.height / 2 + this.borderWidth;
-        }
-    }, {
-        key: "top",
-        value: function top() {
-            return this.topPosition - this.height / 2 - this.borderWidth;
-        }
-    }, {
-        key: "left",
-        value: function left() {
-            return this.position - this.width / 2 - this.borderWidth;
-        }
-    }, {
-        key: "setPosition",
-        value: function setPosition(num) {
-            this._elem.style.left = num - this.width / 2 - this.borderWidth + "px";
-            this._elem.style.top = this.topPosition - this.height / 2 - this.borderWidth + "px";
         }
     }]);
 

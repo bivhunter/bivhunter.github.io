@@ -315,7 +315,7 @@ body {
   top:0px;
   border: 3px groove #2A7676;
   background: radial-gradient(white, rgb(132,208,208));
-  z-index: 98;
+/*  z-index: 98;*/
   overflow-scrolling: touch;
 
 }

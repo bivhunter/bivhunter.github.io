@@ -69,10 +69,10 @@ class GameScene {
 		this._boardElem = this._board.getElem();
 		this._game.gameField.appendChild(this._boardElem);
 		this._board.init();
-        console.log("board init", this._board.renderPosition);
+        //console.log("board init", this._board.renderPosition);
 		this._boardMinPosition = this._boardElem.offsetWidth / 2;
 		this._boardMaxPosition = this._game.gameField.clientWidth - this._boardElem.offsetWidth / 2;
-		console.log("this._boars masx min", this._boardMaxPosition, this._boardMinPosition);
+		//console.log("this._boars masx min", this._boardMaxPosition, this._boardMinPosition);
 	}
 
 	_initBlocks(round) {
@@ -162,13 +162,13 @@ class GameScene {
 			return;
 		}
 
-		this._checkKeys();
+
 
 		this._updateBoard(dt, this._board);
         //this._boardTest = false;
 		this._updateBall(dt, this._ball);
 
-
+        this._checkKeys();
 
 		//	this._ball2.update(dt);
 		//this._updateCount++;
@@ -230,7 +230,7 @@ class GameScene {
 
 		let speed = Math.min(dt * board.speedCoef * board.moveMult, 150);
 		board.speed = board.direction * speed;
-		//console.log("speed: ", board.speed, "direction: ", board.direction);
+		console.log("speed: ", board.speed, "direction: ", board.direction);
 		board.position += board.speed;
 		this._calcBoardPos(board);
 

@@ -68,8 +68,7 @@ var Ball = function () {
     }, {
         key: "sendToBoard",
         value: function sendToBoard(board) {
-            var x = board.renderPosition;
-            var y = board.topPosition - board.height / 2 - board.borderWidth - this._radius;
+
             //console.log(x, y);
 
             //можливо перешкоджає залипанню шара
@@ -81,8 +80,8 @@ var Ball = function () {
             //console.log("send to board", x, y);
 
             this.direction = this._startDirection.norm();
-            this.renderPosition = new Vector(x, y);
-            this.position = new Vector(x, y);
+            this.renderPosition = board.vecForBallStart(this);
+            this.position = board.vecForBallStart(this);
             // this._setPosition(x, y);
         }
     }, {

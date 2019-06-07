@@ -10,15 +10,14 @@ var Game = function () {
 
         this.gameField = gameField;
         this.headerField = headerField;
-        this._life = 1;
+        this._life = 0;
         this._score = 0;
 
         this._stop = false;
-        //this._isStart = false;
+
         this.round = new Round();
         this.header = new Header({});
         this._gameSceneArr = [];
-        //this._start();
 
         this._initEvent();
         this.setScene({
@@ -286,36 +285,3 @@ function calcQuad(a, b, c) {
 
 //Запуск гри
 var gameLounch = new Game(document.getElementById("game-field"), document.getElementById("header-field"));
-
-/*document.getElementById("start").addEventListener("click", () => {
-  gameLounch.start();
-  setTimeout(() => {
-    gameLounch.stop();
-  }, 10000);
-});
-
-document.getElementById("stop").addEventListener("click", () => {
-  gameLounch.stop();
-});*/
-/*let last = performance.now(),
-  fps = 60,
-  slomo = 1, // slow motion multiplier
-  step = 1 / fps,
-  slowStep = slomo * step,
-  dt = 0,
-  now;
-
-let frame = () => {
-  now = performance.now();
-  dt = dt + Math.min(1, (now - last) / 1000);
-  while (dt > slowStep) {
-    dt = dt - slowStep;
-    update(step);
-  }
-  last = now;
-
-  render(dt / slomo * fps);
-  requestAnimationFrame(frame);
-}
-
-requestAnimationFrame(frame);*/
