@@ -1,6 +1,5 @@
 class PauseScene {
 	constructor(game) {
-		this._round = game.round;
 		this._game = game;
 		this._init();
 	}
@@ -15,12 +14,10 @@ class PauseScene {
 				"Quit"
 			]
 		});
-		//console.log(menu.getElem());
+
 		this._menu = menu;
 		this._menuElem = menu.getElem();
 	}
-
-
 
 	update() {
 		if (this._game.checkKeyPress(38) || this._game.checkKeyPress("W".charCodeAt(0))) {
@@ -37,7 +34,6 @@ class PauseScene {
 		}
 
 		if (this._game.checkKeyPress(13)) {
-			console.log(this._game.round);
 			switch (this._menu.getSelectedItem().classList[0]) {
 				case "menu-resume":
 					{
@@ -46,41 +42,30 @@ class PauseScene {
 					}
 					break;
 				case "menu-restart":
-                    this._clearScene();
-					this._game.setScene({
-						scene: GameOverScene,
-						isClear: false,
-						gameStatus: "restart"
-					});
+					this._setScene(GameOverScene, "restart");
 					break;
 				case "menu-help":
-                    this._clearScene();
-					this._game.setScene({
-						scene: HelpScene,
-						isClear: false
-					});
+                    this._setScene(HelpScene);
 					break;
 				case "menu-quit":
-                    this._clearScene();
-					this._game.lifes = 0;
-					this._game.setScene({
-						scene: GameOverScene,
-						gameStatus: "quit",
-						isClear: false
-					});
+                    this._setScene(GameOverScene, "quit");
 					break;
 			}
-
-
-
 		}
 	}
 
-	render() {
+	_setScene(scene, gameStatus) {
+        this._clearScene();
+        this._game.setScene({
+            scene: scene,
+            gameStatus: gameStatus,
+            isClear: false
+        });
+	}
 
+	render() {
 		if (!this._game.gameField.contains(this._menuElem)) {
 			this._game.gameField.appendChild(this._menuElem);
-			console.log("append child");
 		}
 	}
 
@@ -89,5 +74,4 @@ class PauseScene {
             this._game.gameField.removeChild(this._menuElem);
         }
 	}
-
 }
