@@ -246,7 +246,7 @@ var GameScene = function () {
             if (distance !== 0) {
                 ball.speedCoef += this._acceleration;
                 this._board.speedCoef = ball.speedCoef;
-                this._correctionDirection(dt, ball);
+                ball.correctionDirection(dt);
                 this._calcBallPosition(dt, ball);
             } else {
                 //кінцева позиція
@@ -261,11 +261,7 @@ var GameScene = function () {
             var topBorder = ball.radius;
             var leftBorder = ball.radius;
 
-            if (position.x - leftBorder < 0 || position.y - topBorder < 0 || position.x - rightBorder > 0 || position.y - bottomBorder > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return position.x - leftBorder < 0 || position.y - topBorder < 0 || position.x - rightBorder > 0 || position.y - bottomBorder > 0;
         }
     }, {
         key: "_calcTouchedBorderPos",
@@ -299,6 +295,10 @@ var GameScene = function () {
             // відстань на яку шар вийшов за границю поля
             //і відскок розраховується від цієї границі поля
             for (var key in obj) {
+                if (!obj.hasOwnProperty(key)) {
+                    continue;
+                }
+
                 if (obj[key] > distance) {
                     distance = obj[key];
                     if (key === "left" || key === "right") {
@@ -357,7 +357,7 @@ var GameScene = function () {
                 return;
             }
 
-            var vertex = this._findNearVertex(this._touchedBlockArr[0], ball);
+            var vertex = Block.findNearVertex(this._touchedBlockArr[0], ball);
             if (vertex === null) {
                 //console.log("vertex null");
                 return;
@@ -424,18 +424,6 @@ var GameScene = function () {
             ball.block.speed = ball.newDirection.scalar(dist + ball.centrOver);
             ball.block.direction = Vector.FromObj(ball.newDirection);
             ball.block.position = ball.position.diff(over);
-        }
-    }, {
-        key: "_findNearVertex",
-        value: function _findNearVertex(block, ball) {
-            for (var i = 0; i < block.getVertexes().length; i++) {
-                var d = block.getVertexes()[i].diff(ball.position).module();
-
-                if (d < ball.radius) {
-                    return block.getVertexes()[i];
-                }
-            }
-            return null;
         }
 
         //вершина буде точкою дотику, тому шукаємо позицію шара 
@@ -567,7 +555,6 @@ var GameScene = function () {
                 //дошка стоїть
                 board.direction = 0;
                 board.moveMult = 0;
-                return;
             } else {
                 //при зміні напрямку руху коеф прискорення анулюється
                 board.moveMult += this._BOARD_MOVE_MULT;
@@ -640,18 +627,6 @@ var GameScene = function () {
                 return;
             }
             this._isBlockRender = true;
-        }
-
-        //корегує напрямок руху, щоб шар не літав майже горизонтально
-
-    }, {
-        key: "_correctionDirection",
-        value: function _correctionDirection(dt, ball) {
-            if (Math.abs(ball.direction.x / ball.direction.y) > 10) {
-                ball.direction.x = 10 * ball.direction.y;
-                ball.direction = ball.direction.norm();
-                ball.speed.setValue(ball.direction.scalar(dt * ball.speedCoef));
-            }
         }
 
         //викликається при зіткненні з блоком

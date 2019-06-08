@@ -51,6 +51,15 @@ class Ball {
         }
     }
 
+    //корегує напрямок руху, щоб шар не літав майже горизонтально
+    correctionDirection(dt) {
+        if (Math.abs(this.direction.x / this.direction.y) > 10) {
+            this.direction.x = 10 * this.direction.y;
+            this.direction = this.direction.norm();
+            this.speed.setValue(this.direction.scalar(dt * this.speedCoef));
+        }
+    }
+    
     sendToBoard(board) {
         this.direction = this._startDirection.norm();
         this.renderPosition = board.vecForBallStart(this);

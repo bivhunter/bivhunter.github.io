@@ -30,6 +30,17 @@ class Block {
         return (xColl && yColl);
     }
 
+    static  findNearVertex( block, ball ) {
+        for ( let i = 0; i < block.getVertexes().length; i++ ) {
+            let d = block.getVertexes()[ i ].diff( ball.position ).module();
+
+            if ( d < ball.radius ) {
+                return block.getVertexes()[ i ];
+            }
+        }
+        return null;
+    }
+
 	_init() {
 		let block = document.createElement("div");
 		block.classList.add("block");

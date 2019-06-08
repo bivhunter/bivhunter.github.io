@@ -119,6 +119,18 @@ var Block = function () {
 
 			return xColl && yColl;
 		}
+	}, {
+		key: "findNearVertex",
+		value: function findNearVertex(block, ball) {
+			for (var i = 0; i < block.getVertexes().length; i++) {
+				var d = block.getVertexes()[i].diff(ball.position).module();
+
+				if (d < ball.radius) {
+					return block.getVertexes()[i];
+				}
+			}
+			return null;
+		}
 	}]);
 
 	return Block;

@@ -59,6 +59,18 @@ var Ball = function () {
                 return new Vector(resX.x_2, k * resX.x_2 + d);
             }
         }
+
+        //корегує напрямок руху, щоб шар не літав майже горизонтально
+
+    }, {
+        key: "correctionDirection",
+        value: function correctionDirection(dt) {
+            if (Math.abs(this.direction.x / this.direction.y) > 10) {
+                this.direction.x = 10 * this.direction.y;
+                this.direction = this.direction.norm();
+                this.speed.setValue(this.direction.scalar(dt * this.speedCoef));
+            }
+        }
     }, {
         key: "sendToBoard",
         value: function sendToBoard(board) {
