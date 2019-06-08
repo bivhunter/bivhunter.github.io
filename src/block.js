@@ -11,6 +11,25 @@ class Block {
 		this._init();
 	}
 
+    static isTouchBlockVsBall(block, ball) {
+        let xColl = false;
+        let yColl = false;
+
+        if ((block.right() > ball.position.x - ball.radius) &&
+            (block.left() < ball.position.x + ball.radius)) {
+            //console.log("collX");
+            xColl = true;
+        }
+
+        if ((block.bottom() > ball.position.y - ball.radius) &&
+            (block.top() < ball.position.y + ball.radius)) {
+            //console.log("collY");
+            yColl = true;
+        }
+
+        return (xColl && yColl);
+    }
+
 	_init() {
 		let block = document.createElement("div");
 		block.classList.add("block");

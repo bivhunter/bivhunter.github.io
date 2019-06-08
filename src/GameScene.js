@@ -1,35 +1,35 @@
 //Основна сцена гри, в якій відбуваються всі події
 class GameScene {
-	constructor(game) {
-		this._game = game;
-		this._round = game.round;
+    constructor( game ) {
+        this._game = game;
+        this._round = game.round;
 
-		//впливає на швидкість гри, більший левел більша швидкість
-		this._SPEED_COEF = 150 + (+this._round.getActiveRoundNum() * 5);
-		//впливає на прискорення дошки
+        //впливає на швидкість гри, більший левел більша швидкість
+        this._SPEED_COEF = 150 + ( +this._round.getActiveRoundNum() * 5 );
+        //впливає на прискорення дошки
         this._BOARD_MOVE_MULT = 0.08;
-		//впливає на зростання швидкості при відбиванні 
-		this._acceleration = 0.2;
-		this._infoTime = 0;
+        //впливає на зростання швидкості при відбиванні
+        this._acceleration = 0.2;
+        this._infoTime = 0;
         this._ballOnBoard = true;
-		this._initRound();
-	}
+        this._initRound();
+    }
 
-	_initRound() {
-		this._game.header.setRound(this._round.getActiveRoundNum());
-		this._initBoard();
-		this._initBall();
-		this._initBlocks(this._round.getActiveRound());
-		this._initInfo();
-	}
+    _initRound() {
+        this._game.header.setRound( this._round.getActiveRoundNum() );
+        this._initBoard();
+        this._initBall();
+        this._initBlocks( this._round.getActiveRound() );
+        this._initInfo();
+    }
 
     _initBoard() {
-        this._board = new Board({
+        this._board = new Board( {
             gameField: this._game.gameField
-        });
+        } );
         this._board.speedCoef = this._SPEED_COEF;
         this._boardElem = this._board.getElem();
-        this._game.gameField.appendChild(this._boardElem);
+        this._game.gameField.appendChild( this._boardElem );
 
         this._board.init();
         this._boardMinPosition = this._boardElem.offsetWidth / 2;
@@ -37,33 +37,33 @@ class GameScene {
     }
 
     _initBall() {
-        this._ball = new Ball({
+        this._ball = new Ball( {
             game: this,
             speed: this._SPEED_COEF,
             direction: {
                 x: 1,
                 y: -10
             }
-        });
+        } );
         this._ballElem = this._ball.getElem();
     }
 
-    _initBlocks(round) {
+    _initBlocks( round ) {
         this._blockArr = [];
         this._blockForRemove = [];
         //використовується для поступового заповнення блоками ігрового простору
         this._blockNumber = 0;
 
         let block;
-        for (let i = 0; i < round.length; i++) {
+        for ( let i = 0; i < round.length; i++ ) {
             let y = i * 20;
-            for (let j = 0; j < round[i].length; j++) {
+            for ( let j = 0; j < round[ i ].length; j++ ) {
                 let x = j * 50;
-                if (round[i][j] === " ") {
+                if ( round[ i ][ j ] === " " ) {
                     continue;
                 }
 
-                if (round[i][j] === "w") {
+                if ( round[ i ][ j ] === "w" ) {
                     block = new Block( {
                         x: x,
                         y: y,
@@ -71,37 +71,37 @@ class GameScene {
                     } );
                 }
 
-                if (round[i][j] === "s") {
-                    block = new Block({
+                if ( round[ i ][ j ] === "s" ) {
+                    block = new Block( {
                         x: x,
                         y: y,
                         blockClass: "block-strong"
-                    });
+                    } );
                 }
 
-                this._blockArr.push(block);
+                this._blockArr.push( block );
             }
         }
     }
 
-    _initInfo(round) {
-		this._info = new Info("");
-		this._isShowInfo = true;
-		this._infoText = "Round " + this._round.getActiveRoundNum();
-	}
+    _initInfo( round ) {
+        this._info = new Info( "" );
+        this._isShowInfo = true;
+        this._infoText = "Round " + this._round.getActiveRoundNum();
+    }
 
-	update(dt) {
-		this._updateInfo(dt);
-		if (this._isShowInfo) {
-			return;
-		}
+    update( dt ) {
+        this._updateInfo( dt );
+        if ( this._isShowInfo ) {
+            return;
+        }
 
-		this._updateBoard(dt, this._board);
-		this._updateBall(dt, this._ball);
+        this._updateBoard( dt, this._board );
+        this._updateBall( dt, this._ball );
         this._checkKeys();
-	}
+    }
 
-    _updateInfo(dt) {
+    _updateInfo( dt ) {
         let info = this._info;
         if ( !this._infoTime ) {
             info.enableAnimation();
@@ -109,9 +109,9 @@ class GameScene {
             return;
         }
 
-        if (this._infoTime < 5 || !this._isBlockRender) {
+        if ( this._infoTime < 5 || !this._isBlockRender ) {
             this._infoTime += dt;
-            info.animate(dt, 4, this._infoText);
+            info.animate( dt, 4, this._infoText );
             return;
         }
 
@@ -120,121 +120,134 @@ class GameScene {
         this._infoTime = 0;
     }
 
-    _updateBoard(dt, board) {
-        let speed = Math.min(dt * board.speedCoef * board.moveMult, 150);
+    _updateBoard( dt, board ) {
+        let speed = Math.min( dt * board.speedCoef * board.moveMult, 150 );
         board.speed = board.direction * speed;
         board.position += board.speed;
-        this._calcBoardPos(board);
+        this._calcBoardPos( board );
     }
 
-    _calcBoardPos(board) {
-        if (this._boardMaxPosition < board.position) {
+    _calcBoardPos( board ) {
+        if ( this._boardMaxPosition < board.position ) {
             board.position = this._boardMaxPosition;
         }
-        if (this._boardMinPosition > board.position) {
+        if ( this._boardMinPosition > board.position ) {
             board.position = this._boardMinPosition;
         }
         //board.renderPosition використовуєть в board._update
         board.renderPosition = board.position;
     }
 
-    _updateBall(dt, ball) {
-        if (this._ballOnBoard) {
-            ball.sendToBoard(this._board);
+    _updateBall( dt, ball ) {
+        if ( this._ballOnBoard ) {
+            ball.sendToBoard( this._board );
             return;
         }
 
-        if (ball.direction.x === 0) {
+        if ( ball.direction.x === 0 ) {
             ball.direction.x = 0.01;
         }
 
-        if (ball.direction.y === 0) {
+        if ( ball.direction.y === 0 ) {
             ball.direction.y = 0.01;
         }
 
-        ball.speed = Vector.FromObj(ball.direction.scalar(dt * ball.speedCoef));
+        ball.speed = Vector.FromObj( ball.direction.scalar( dt * ball.speedCoef ) );
         //генерує помилку при перевищенні швидкості в 30
-		//всі розрахунки проводилися для меншої швидкості
-		//метод в основному потрібний при розробці
-        this._excessBallSpeed(ball.speed);
-        this._calcBallPosition(dt, ball);
+        //всі розрахунки проводилися для меншої швидкості
+        //метод в основному потрібний при розробці
+        this._excessBallSpeed( ball.speed );
+        this._calcBallPosition( dt, ball );
     }
 
-    _excessBallSpeed(speed) {
-        if (speed.x >= 30 || speed.y >= 30) {
-            let error = new Error("big speed: ");
+    _excessBallSpeed( speed ) {
+        if ( speed.x >= 30 || speed.y >= 30 ) {
+            let error = new Error( "big speed: " );
             this.stop();
-            console.log(error);
-            console.log(speed, this._ball.direction);
+            console.log( error );
+            console.log( speed, this._ball.direction );
         }
     }
 
-    //при розрахунку позиції шара і зміни руху враховуються три різних можливих зіткнень:
-	//з границею ігрового поля, дошкою, блоком
-	//шукається найближчий об'єкт з яким відбулося
-    _calcBallPosition(dt, ball) {
-		//об'єкт в який буде зберігатися з чим було зіткнення
-		//і зміна speed, direction, position
-        ball.touchedElem = {};
-        ball.position = ball.position.sum(ball.speed);
+    //основні значення шара це швидкість ball.speed - яку відстань пролетить шар за один кадр
+    //координати на полі (ball.position)
+    // ball.direction напрямок руху задається одиничним вектором
 
-        if (this._isTouchedBorder(ball.position, ball)) {
-            this._calcTouchedBorderPos(ball.position, ball);
+    //Позиція розраховується методом  _calcBallPosition так:
+    //розраховується позиція шара наступного кадру, і переверіяться чи не залетить шар
+    //на якийсь об'єкт.
+    //Якщо шар при цій позиції залетів на якийсь об'єкт (або декілька), то
+    //шукається відстань до точки дотику кожного об'єкту і береться найбільша.
+    //І вже від цього об'єкту розраховується відскок (шукається напрямок direction).
+    //Відстань (швидкість) відскоку розраховується, як швидкість мінус відстань перельоту
+    //І повторно запускається метод  _calcBallPosition() для цієї швидкості і напрямкому
+    //і так доки шар не пройде всю відстань початкової швидкості (speed)
+    //Ця нова позиція записується в ball.renderPosition, яка використовується
+    //для відмальовки шара в наступному кадрі.
+
+    _calcBallPosition( dt, ball ) {
+        //об'єкт в який буде зберігатися з чим було зіткнення
+        //і зміна speed, direction, position
+        ball.touchedElem = {};
+        ball.position = ball.position.sum( ball.speed );
+
+        if ( this._isTouchedBorder( ball.position, ball ) ) {
+            this._calcTouchedBorderPos( ball.position, ball );
         }
 
-        if (this._isTouchBlocksVsBall(ball)) {
-            //console.log("touch block", ball.position);
-            this._calcTouchedBlockPos(ball);
+        if ( this._isTouchBlocksVsBall( ball ) ) {
+            this._calcTouchedBlockPos( ball );
             this._touchedBlockArr = [];
         }
 
-        if (ball.direction.y > 0) {
-            if (this._isTouchBlockVsBall(this._board, ball)) {
+        if ( ball.direction.y > 0 ) {
+            if ( Block.isTouchBlockVsBall( this._board, ball ) ) {
                 //  console.log("touch board border", ball.touchedElem.board, ball.board);
-                this._calcTouchedBoardPos(ball, this._board);
+                this._calcTouchedBoardPos( ball, this._board );
 
             }
         }
 
         let distance = 0;
-        for (let key in ball.touchedElem) {
-            if (+ball.touchedElem[key] > distance) {
-                distance = +ball.touchedElem[key];
+        //шукаємо об'єкт, з яким першим відбулося зіткнення
+        for ( let key in ball.touchedElem ) {
+            if ( +ball.touchedElem[ key ] > distance ) {
+                distance = +ball.touchedElem[ key ];
 
-                ball.position = ball[key].position;
-                ball.speed = ball[key].speed;
-                ball.direction = ball[key].direction;
+                ball.position = ball[ key ].position;
+                ball.speed = ball[ key ].speed;
+                ball.direction = ball[ key ].direction;
             }
         }
-        //distance це відстань на яку шар залетів за точку дотику при зіткненні
-		//для якого об'єкту ця теоретична відстань більша, від того і буде прораховуватися
-		//відскок
-        if (distance !== 0) {
+
+        //якщо distance = 0, то зіткнення нема, інакше розраховуємо
+        //позицію після відскоку з залишковою швидкістю
+        if ( distance !== 0 ) {
             ball.speedCoef += this._acceleration;
             this._board.speedCoef = ball.speedCoef;
-            this._corectionDirection(dt, ball);
-            this._calcBallPosition(dt, ball);
+            this._correctionDirection( dt, ball );
+            this._calcBallPosition( dt, ball );
         } else {
-            //console.log("render");
-            ball.renderPosition.setValue(ball.position);
+            //кінцева позиція
+            ball.renderPosition.setValue( ball.position );
         }
     }
 
-    _isTouchedBorder(position, ball) {
+    _isTouchedBorder( position, ball ) {
         let rightBorder = this._game.gameField.clientWidth - ball.radius;
         let bottomBorder = this._game.gameField.clientHeight - ball.radius;
         let topBorder = ball.radius;
         let leftBorder = ball.radius;
 
-        if (position.x - leftBorder < 0 || position.y - topBorder < 0 ||
-            position.x - rightBorder > 0 || position.y - bottomBorder > 0) {
+        if ( position.x - leftBorder < 0 || position.y - topBorder < 0 ||
+            position.x - rightBorder > 0 || position.y - bottomBorder > 0 ) {
             return true;
         } else {
             return false;
         }
     }
 
-    _calcTouchedBorderPos(position, ball) {
+    _calcTouchedBorderPos( position, ball ) {
         let rightBorder = this._game.gameField.clientWidth - ball.radius;
         let bottomBorder = this._game.gameField.clientHeight - ball.radius - 5;
         let topBorder = ball.radius;
@@ -244,42 +257,249 @@ class GameScene {
         ball.border = {};
         let obj = {};
 
-        if (position.x - leftBorder < 0) {
-            obj.left = (position.x - leftBorder) / ball.direction.x;
+        if ( position.x - leftBorder < 0 ) {
+            obj.left = ( position.x - leftBorder ) / ball.direction.x;
         }
 
-        if (position.y - topBorder < 0) {
-            obj.top = (position.y - topBorder) / ball.direction.y;
+        if ( position.y - topBorder < 0 ) {
+            obj.top = ( position.y - topBorder ) / ball.direction.y;
         }
 
-        if (position.x > rightBorder) {
-            obj.right = (position.x - rightBorder) / ball.direction.x;
+        if ( position.x > rightBorder ) {
+            obj.right = ( position.x - rightBorder ) / ball.direction.x;
         }
 
-        if (position.y > bottomBorder) {
-            this.gameOver("loss");
+        if ( position.y > bottomBorder ) {
+            this.gameOver( "loss" );
         }
 
-        //distance найбюільша відстань на яку шар вийшов за границю поля
-        for (let key in obj) {
-            if (obj[key] > distance) {
-                distance = obj[key];
-                if (key === "left" || key === "right") {
+        //distance найбюільша (якщо виліт за дві границі)
+        // відстань на яку шар вийшов за границю поля
+        //і відскок розраховується від цієї границі поля
+        for ( let key in obj ) {
+            if ( obj[ key ] > distance ) {
+                distance = obj[ key ];
+                if ( key === "left" || key === "right" ) {
                     ball.newDirection = new Vector( -1 * ball.direction.x, ball.direction.y );
                 } else {
-                    ball.newDirection = new Vector ( ball.direction.x, -1 * ball.direction.y);
+                    ball.newDirection = new Vector( ball.direction.x, -1 * ball.direction.y );
                 }
             }
         }
 
         ball.touchedElem.border = distance;
-        let over = ball.direction.scalar(distance);
-        ball.border.speed = ball.newDirection.scalar(distance);
+        let over = ball.direction.scalar( distance );
+        ball.border.speed = ball.newDirection.scalar( distance );
         ball.border.direction = Vector.FromObj( ball.newDirection );
-
-        ball.border.position = position.diff(over);
+        ball.border.position = position.diff( over );
     }
 
+    //грубий пошук всіх блоків, на які залетить шар
+    _isTouchBlocksVsBall( ball ) {
+        this._touchedBlockArr = [];
+        this._blockArr.forEach( ( block ) => {
+            if ( Block.isTouchBlockVsBall( block, ball ) ) {
+                this._touchedBlockArr.push( block );
+            }
+        } );
+
+        return this._touchedBlockArr.length !== 0;
+    }
+
+    // Відскок від блоку ділиться на два варіанти
+    //відскок від бокової частини _calcSideBlockRebound
+    // або відскок від кута блоку _calcVertexRebound
+    _calcTouchedBlockPos( ball ) {
+        ball.block = {};
+        //перевіряє чи залетить центр шару в блок, якщо так, то для подальших
+        //розрахунків віднімається радіус, це дозволяє досягти швидкості не в 15,
+        //а в 30, це критичні швидкості для розрахунків
+        this._calcCentrOver( ball );
+        ball.position = ball.position.diff( ball.direction.scalar( ball.centrOver ) );
+        ball.touchSide = false;
+
+        //вертикальний та горизонтальний вектори нормалі у напрямку руху шара
+        let normalH = ball.getNormal( new Vector( Math.sign( ball.direction.x ), 0 ) );
+        let normalV = ball.getNormal( new Vector( 0, Math.sign( ball.direction.y ) ) );
+        //якщо є дотик до сторони, то не перевіряти далі
+        this._calcSideBlockRebound( normalH, normalV, ball );
+        if ( ball.touchSide ) {
+            return;
+        }
+
+        let vertex = this._findNearVertex( this._touchedBlockArr[ 0 ], ball );
+        if ( vertex === null ) {
+            //console.log("vertex null");
+            return;
+        }
+        this._calcVertexRebound( this._touchedBlockArr[ 0 ], ball, vertex );
+    }
+
+    _calcCentrOver( ball ) {
+        for ( let i = 0; i < this._touchedBlockArr.length; i++ ) {
+            if ( this._touchedBlockArr[ i ].isContainCoord( ball.position ) ) {
+                ball.centrOver = ball.radius;
+                return;
+            }
+        }
+        ball.centrOver = 0;
+    }
+
+    //за допомогою векторів нормалі шукаємо якого блоку торкнеться спочатку, 
+    //за принципом: вершина якого вектора зайде глибше в блок
+    _calcSideBlockRebound( normalH, normalV, ball ) {
+        let distH = 0,
+            distV = 0,
+            dist = 0;
+
+        let blockH,
+            blockV,
+            block;
+
+        for ( let i = 0; i < this._touchedBlockArr.length; i++ ) {
+            if ( this._touchedBlockArr[ i ].isContainCoord( normalH ) ) {
+                distH = ( ball.radius - Math.min( Math.abs( ball.position.x - this._touchedBlockArr[ i ].right() ),
+                    Math.abs( ball.position.x - this._touchedBlockArr[ i ].left() ) ) ) / Math.abs( ball.direction.x );
+                blockH = this._touchedBlockArr[ i ];
+            }
+
+            if ( this._touchedBlockArr[ i ].isContainCoord( normalV ) ) {
+                distV = ( ball.radius - Math.min( Math.abs( ball.position.y - this._touchedBlockArr[ i ].bottom() ),
+                    Math.abs( ball.position.y - this._touchedBlockArr[ i ].top() ) ) ) / Math.abs( ball.direction.y );
+                blockV = this._touchedBlockArr[ i ];
+            }
+        }
+
+        if ( distH + distV === 0 ) {
+            return;
+        }
+
+        if ( distH > distV ) {
+            dist = distH;
+            block = blockH;
+            ball.newDirection = new Vector( -Math.sign( normalH.x ) * ball.direction.x,
+                ball.direction.y );
+        } else {
+            dist = distV;
+            block = blockV;
+            ball.newDirection = new Vector( ball.direction.x,
+                -Math.sign( normalV.y ) * ball.direction.y );
+        }
+
+        ball.touchSide = true;
+        this._touchingBlock( block );
+        ball.touchedElem.block = dist + ball.centrOver;
+
+        let over = ball.direction.scalar( dist + ball.centrOver );
+        ball.block.speed = ball.newDirection.scalar( dist + ball.centrOver );
+        ball.block.direction = Vector.FromObj( ball.newDirection );
+        ball.block.position = ball.position.diff( over );
+    }
+
+    _findNearVertex( block, ball ) {
+        for ( let i = 0; i < block.getVertexes().length; i++ ) {
+            let d = block.getVertexes()[ i ].diff( ball.position ).module();
+
+            if ( d < ball.radius ) {
+                return block.getVertexes()[ i ];
+            }
+        }
+        return null;
+    }
+
+    //вершина буде точкою дотику, тому шукаємо позицію шара 
+    //з центром на прямій руху і границя якого містить вершину
+    //новий напрямок вираховується як при відскоку від прямої
+    //але яка є дотичною до шара у точці вершини
+    //Для цього рахуємо кут між прямою руху і дотичною і
+    // використовуємо поворот вектора на потрібний кут, який прісля
+    //нормалізації і буде новим напрямком руху
+    _calcVertexRebound( block, ball, vertex ) {
+        ball.block.position = ball.calcCentr( vertex );
+        let vecCentrToVertex = vertex.diff( ball.block.position );
+        let normal = new Vector( -vecCentrToVertex.y, vecCentrToVertex.x );
+
+        //кут між напрямком руху і вектором з центра до вершини
+        let angle = Math.acos( Vector.scalarMult( ball.direction, vecCentrToVertex.norm() ) );
+        let sign = Math.sign( Vector.scalarMult( normal, ball.direction ) );
+        let distance = ball.position.diff( vertex ).module() + ball.centrOver;
+        this._touchingBlock( block );
+
+        ball.touchedElem.block = distance;
+        ball.block.direction = ball.direction.turnAngle( Math.PI - sign * 2 * angle ).norm();
+        ball.block.speed = ball.block.direction.scalar( distance );
+    }
+
+    //Для розрахунку відскоку використовується такий метод
+    //Береться масив точок, які лежать на границі дошки з відстанню 1px одна від одної
+	//знаходяться всі точки, які потраплять в шар після зіткнення
+	//шар зміщується назад так що передостання з дальніх точок лежить на його границі
+	//і так рекурсивно продовжується доки не залишається одна точка, від якої
+	// і разраховується відскок аналогічно до відскоку від вершини блоку
+    _calcTouchedBoardPos(ball, board) {
+        ball.board = {};
+        ball.board.position = Vector.FromObj(ball.position);
+        let point = this._findTouchedBoardPoint(ball, board);
+
+        if (point === null) {
+            return;
+        }
+
+        ball.board.position = ball.calcCentr(point);
+        let vecCentrToVertex = point.diff(ball.board.position);
+
+        let normal = new Vector ( -vecCentrToVertex.y, vecCentrToVertex.x );
+        let angle = Math.acos( Vector.scalarMult(ball.direction, vecCentrToVertex.norm() ) );
+        let sign = Math.sign(Vector.scalarMult(normal, ball.direction));
+        let distance = ball.position.diff(ball.board.position).module();
+
+        ball.touchedElem.board = distance;
+        ball.board.direction = ball.direction.turnAngle(Math.PI - sign * 2 * angle).norm();
+        ball.board.speed = ball.board.direction.scalar(distance);
+    }
+
+    //знаходить всі точки границі дошки, які потраплять до шару
+    _findTouchedBoardPoints(ball, board) {
+        this._boardPointTouchedArr = [];
+        let pointArr = board.getPointArr();
+        pointArr.forEach(point => {
+            //округлення для нейтралізації помилки при розрахунках
+            let distance = Math.round(ball.board.position.diff(point).module() * 100) / 100;
+            if (distance <= ball.radius) {
+                this._boardPointTouchedArr.push(point);
+            }
+        });
+        return this._boardPointTouchedArr;
+    }
+
+    _findTouchedBoardPoint(ball, board) {
+        let numPoints = this._findTouchedBoardPoints(ball, board).length;
+        let resPoint;
+        if (numPoints === 0) {
+            return null;
+        }
+
+        if (numPoints === 1) {
+            return this._boardPointTouchedArr[0];
+        }
+
+        //з двух точок береться ближча
+		//при подальшому продовженні рекурсії може помилково статися так,
+		//що точок в шарі не буде
+        if (numPoints === 2) {
+            return (ball.direction.x > 0) ? this._boardPointTouchedArr[0] : this._boardPointTouchedArr[1];
+        }
+
+        if (ball.direction.x > 0) {
+            resPoint = this._boardPointTouchedArr[numPoints - 2];
+        } else {
+            resPoint = this._boardPointTouchedArr[1];
+        }
+
+        ball.board.position = ball.calcCentr(resPoint);
+        return this._findTouchedBoardPoint(ball, board);
+    }
+    
     _checkKeys() {
         if (this._game.checkKeyPress(32)) {
             this._ballOnBoard = false;
@@ -357,13 +577,15 @@ class GameScene {
 		this._removeBlock();
 	}
 
+	//після паузи блоки вимальовуються миттєво,
+	//при старті раунда по одному в кожному кадрі
 	_renderBlock() {
 		if (this.isPause) {
 			this._blockArr.forEach(block => {
 				this._game.gameField.appendChild(block.getElem());
 			});
 			this.isPause = false;
-			this._blockNumber === this._blockArr.length;
+			this._blockNumber = this._blockArr.length;
 		}
 
 		if (this._blockNumber < this._blockArr.length) {
@@ -374,317 +596,28 @@ class GameScene {
 		this._isBlockRender = true;
 	}
 
-
-
-	_corectionDirection(dt, ball) {
+	//корегує напрямок руху, щоб шар не літав майже горизонтально
+	_correctionDirection(dt, ball) {
 		if (Math.abs(ball.direction.x / ball.direction.y) > 10) {
 			ball.direction.x = 10 * ball.direction.y;
 			ball.direction = ball.direction.norm();
             ball.speed.setValue(ball.direction.scalar(dt * ball.speedCoef));
-			//console.log("corection");
 		}
-		//console.log(ball.direction.x / ball.direction.y);
 	}
 
-	_calcTouchedBoardPos(ball, board) {
-		ball.board = {};
-		ball.board.position = Vector.FromObj(ball.position);
-		let point = this._findTouchedBoardPoint(ball, board);
-
-		if (point === null) {
-			return;
-		}
-
-		/*if(this._boardTest) {
-			alert("bag ball vs board rebound");
-		}
-		this._boardTest = true;*/
-		ball.board.position = ball.calcCentr(point);
-		let vecCentrToVertex = point.diff(ball.board.position);
-
-		let normal = new Vector ( -vecCentrToVertex.y, vecCentrToVertex.x );
-
-		//кут між напрямком руху і вектором з центра до вершини до вершини
-		let angle = Math.acos( Vector.scalarMult(ball.direction, vecCentrToVertex.norm() ) );
-
-		//console.log(Vector.scalarMult(normal, vecCentrToVertex));
-
-		let sign = Math.sign(Vector.scalarMult(normal, ball.direction));
-		//console.log(Vector.scalarMult(normal, vecCentrToVertex));
-
-		let distance = ball.position.diff(ball.board.position).module();
-
-		ball.touchedElem.board = distance;
-		//console.log("distance: ", distance);
-		ball.board.direction = ball.direction.turnAngle(Math.PI - sign * 2 * angle).norm();
-		//console.log(vectorModule(this.direction));
-		//console.log("angle: " + angle);
-		//this._game.stop();
-
-		ball.board.speed = ball.board.direction.scalar(distance);
-
-
-	}
-
-	_findBoardTouchedPoints(ball, board) {
-		this._boardPointTouchedArr = [];
-		let pointArr = board.getPointArr();
-		pointArr.forEach(point => {
-			//округления для нейтрализации ошибки вычисления
-			let distance = Math.round(ball.board.position.diff(point).module() * 100) / 100;
-			if (distance <= ball.radius) {
-				this._boardPointTouchedArr.push(point);
-			}
-		});
-		return this._boardPointTouchedArr;
-	}
-
-	_findTouchedBoardPoint(ball, board) {
-
-		let numPoints = this._findBoardTouchedPoints(ball, board).length;
-		//console.log("numPoints: ", numPoints);
-		let resPoint;
-		if (numPoints === 0) {
-			//console.log("point === null");
-			return null;
-		}
-
-		if (numPoints === 1) {
-			//console.log("pointNum === 1: ", this._boardPointTouchedArr[0]);
-			return this._boardPointTouchedArr[0];
-		}
-
-		if (numPoints === 2) {
-			//console.log("pointNum === 2: ");
-			return (ball.direction.x > 0) ? this._boardPointTouchedArr[0] : this._boardPointTouchedArr[1];
-		}
-
-		/*if (numPoints === 3) {
-			console.log("pointNum === 3: ");
-			return this._boardPointTouchedArr[1];
-		}*/
-
-		//первый вариант, большая погрешность, меньше ресурсов
-		/*if (ball.direction.x < 0) {
-			//resPoint = this._boardPointTouchedArr[0];
-			resPoint = this._boardPointTouchedArr[Math.floor(numPoints / 2) - 1];
-		} else {
-			resPoint = this._boardPointTouchedArr[Math.floor(numPoints / 2) + numPoints % 2];
-		}*/
-
-        if (ball.direction.x > 0) {
-            //resPoint = this._boardPointTouchedArr[0];
-            resPoint = this._boardPointTouchedArr[numPoints - 2];
-        } else {
-            resPoint = this._boardPointTouchedArr[1];
-        }
-
-		ball.board.position = ball.calcCentr(resPoint);
-		return this._findTouchedBoardPoint(ball, board);
-	}
-
-
-
-
-
-	_calcTouchedBlockPos(ball) {
-		ball.block = {};
-		this._calcCentrOver(ball);
-		//  console.log("coord before: ", coord, this._centrOver);
-		ball.position = ball.position.diff(ball.direction.scalar(ball.centrOver));
-		// console.log("coord: ", coord);
-		ball.touchSide = false;
-
-		//console.log(blockArr);
-		//console.log(blockArr, this._touchedBlockArr);
-
-		let normalH = ball.getNormal( new Vector(Math.sign(ball.direction.x), 0));
-
-		let normalV = ball.getNormal( new Vector(0, Math.sign(ball.direction.y)));
-
-		//якщо є дотик до сторони, то не перевіряти далі
-		this._calcSideBlockRebound(normalH, normalV, ball);
-		if (ball.touchSide) {
-			//	console.log("touchBlockSide");
-			return;
-		}
-
-		let vertex = this._findNearVertex(this._touchedBlockArr[0], ball);
-		if (vertex === null) {
-			//console.log("vertex null");
-			return;
-		}
-		this._calcVertexRebound(this._touchedBlockArr[0], ball, vertex);
-	}
-
-	_calcVertexRebound(block, ball, vertex) {
-		//якщо нема вершини ближче радіуса то не перевіряти далі
-		//console.log(vertex);
-		ball.block.position = ball.calcCentr(vertex);
-		let vecCentrToVertex = vertex.diff(ball.block.position);
-
-		let normal = new Vector( -vecCentrToVertex.y, vecCentrToVertex.x);
-		
-		//кут між напрямком руху і вектором з центра до вершини
-		let angle = Math.acos(Vector.scalarMult(ball.direction, vecCentrToVertex.norm()));
-
-		//console.log(Vector.scalarMult(normal, vecCentrToVertex));
-
-		let sign = Math.sign(Vector.scalarMult(normal, ball.direction));
-		//console.log(Vector.scalarMult(normal, vecCentrToVertex));
-
-		let distance = ball.position.diff(vertex).module() + ball.centrOver;
-
-		this._touchingBlock(block);
-
-
-		ball.touchedElem.block = distance;
-		ball.block.direction = ball.direction.turnAngle(Math.PI - sign * 2 * angle).norm();
-		//console.log(vectorModule(this.direction));
-		//console.log("angle: " + angle);
-		//this._game.stop();
-
-		ball.block.speed = ball.block.direction.scalar(distance);
-
-		//console.log("touch vertex", ball.position, ball.block.position, block);
-	}
-
-	_findNearVertex(block, ball) {
-		for (let i = 0; i < block.getVertexes().length; i++) {
-			let d = block.getVertexes()[i].diff(ball.position).module();
-
-			if (d < ball.radius) {
-				return block.getVertexes()[i];
-			}
-		}
-		return null;
-	}
-
-	_calcSideBlockRebound(normalH, normalV, ball) {
-		let distH = 0,
-			distV = 0,
-			dist = 0;
-
-		let blockH,
-			blockV,
-			block;
-
-		for (let i = 0; i < this._touchedBlockArr.length; i++) {
-			if (this._touchedBlockArr[i].isContainCoord(normalH)) {
-				distH = (ball.radius - Math.min(Math.abs(ball.position.x - this._touchedBlockArr[i].right()),
-					Math.abs(ball.position.x - this._touchedBlockArr[i].left()))) / Math.abs(ball.direction.x);
-				blockH = this._touchedBlockArr[i];
-			}
-
-			if (this._touchedBlockArr[i].isContainCoord(normalV)) {
-				distV = (ball.radius - Math.min(Math.abs(ball.position.y - this._touchedBlockArr[i].bottom()),
-					Math.abs(ball.position.y - this._touchedBlockArr[i].top()))) / Math.abs(ball.direction.y);
-				blockV = this._touchedBlockArr[i];
-			}
-		}
-
-		if (distH + distV === 0) {
-			return;
-		}
-
-		if (distH > distV) {
-			dist = distH;
-			block = blockH;
-			ball.newDirection = new Vector( -Math.sign(normalH.x) * ball.direction.x,
-				ball.direction.y);
-		} else {
-			dist = distV;
-			block = blockV;
-			ball.newDirection = new Vector( ball.direction.x,
-				-Math.sign(normalV.y) * ball.direction.y);
-		}
-
-		ball.touchSide = true;
-		this._touchingBlock(block);
-		ball.touchedElem.block = dist + ball.centrOver;
-
-		let over = ball.direction.scalar( dist + ball.centrOver );
-		ball.block.speed = ball.newDirection.scalar( dist + ball.centrOver );
-		ball.block.direction = Vector.FromObj( ball.newDirection );
-		ball.block.position = ball.position.diff( over );
-	}
-
-
-	_calcCentrOver(ball) {
-		//console.log("calcCentr");
-		for (let i = 0; i < this._touchedBlockArr.length; i++) {
-			if (this._touchedBlockArr[i].isContainCoord(ball.position)) {
-				ball.centrOver = ball.radius;
-				// console.log("centrOver: ", this._centrOver, blockArr[i]);
-				return;
-			}
-		}
-		ball.centrOver = 0;
-	}
-
-	_isTouchBlocksVsBall(ball) {
-		this._touchedBlockArr = [];
-		this._blockArr.forEach((block) => {
-			if (this._isTouchBlockVsBall(block, ball)) {
-				this._touchedBlockArr.push(block);
-			}
-		});
-
-		return !(this._touchedBlockArr.length === 0);
-		/*if (this._touchedBlockArr.length === 4) {
-		    console.log("posi: ", this._newPosition, this.speed, coord);
-		    this._game.stop();
-		}*/
-		//console.log("touch blockArr", this._touchedBlockArr.length, this._touchedBlockArr);
-		//console.log("touchBlock");
-
-	}
-
-
-
-	_isTouchBlockVsBall(block, ball) {
-		//console.log(block.right(), block.left(), block.top(), block.bottom());
-		let xColl = false;
-		let yColl = false;
-		//console.log(block_x + " " + block.offsetWidth + " " + ball._ball.newPosition.x);
-		//console.log(block_x + block.offsetWidth >= ball._ball.newPosition.x)
-		//console.log(block);
-		if ((block.right() > ball.position.x - ball.radius) &&
-			(block.left() < ball.position.x + ball.radius)) {
-			//console.log("collX");
-			xColl = true;
-		}
-
-		if ((block.bottom() > ball.position.y - ball.radius) &&
-			(block.top() < ball.position.y + ball.radius)) {
-			//console.log("collY");
-			yColl = true;
-		}
-
-		return (xColl && yColl);
-	}
-
+	//викликається при зіткненні з блоком
 	_touchingBlock(block) {
 		block.touching();
 		this._game.score += block.getScore();
 		this._blockForRemove.push(block);
 	}
 
-
+	//видаляє блоки з масиву блоків і з ігрового поля,
+	// які мають статус block.isRemove true
 	_removeBlock() {
-
-		/*let listBlock = this._game.gameField.querySelectorAll(".remove");
-		for (let i = 0; i < listBlock.length; i++) {
-			this._game.gameField.removeChild(listBlock[i].getElem());
-		}*/
-
 		this._blockForRemove.forEach((block) => {
-			//	console.log("remove: ", block);
 			if (block.isRemove()) {
 				let pos = this._blockArr.indexOf(block);
-				/*if (pos === -1) {
-				    this._game.stop();
-				}*/
 				if (pos >= 0) {
 					this._blockArr.splice(pos, 1);
 					this._game.gameField.removeChild(block.getElem());
@@ -696,17 +629,6 @@ class GameScene {
 		if (this._blockArr.length === 0) {
 			this.gameOver("victory");
 		}
-
-	}
-
-	getBlockArr() {
-		return this._blockArr;
-	}
-
-	_showInfo(text) {
-		this._info.setText(text);
-		console.log("loss");
-		this._endInfoTime = 0;
 	}
 
 	gameOver(gameStatus) {
@@ -716,16 +638,10 @@ class GameScene {
 			isClear: false,
 			gameStatus: gameStatus
 		});
-
-
-
 	}
 
 	stop() {
-		//this._ballElem.remove();
 		this._game.stop();
-		console.log(this._renderCount);
-		console.log(this._updateCount);
 	}
 
 

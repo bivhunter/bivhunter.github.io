@@ -101,6 +101,24 @@ var Block = function () {
 			this._block.classList.add(cls2);
 			this._blockClass = cls2;
 		}
+	}], [{
+		key: "isTouchBlockVsBall",
+		value: function isTouchBlockVsBall(block, ball) {
+			var xColl = false;
+			var yColl = false;
+
+			if (block.right() > ball.position.x - ball.radius && block.left() < ball.position.x + ball.radius) {
+				//console.log("collX");
+				xColl = true;
+			}
+
+			if (block.bottom() > ball.position.y - ball.radius && block.top() < ball.position.y + ball.radius) {
+				//console.log("collY");
+				yColl = true;
+			}
+
+			return xColl && yColl;
+		}
 	}]);
 
 	return Block;
