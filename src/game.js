@@ -40,7 +40,7 @@ class Game {
     }
 
     _initEvent() {
-        //зберігає натиснеті кнопки та їх стан
+        //зберігає натиснуті кнопки та їх стан
         this.keys = {};
         document.addEventListener( "keydown", ( e ) => {
             this.keys[ e.which ] = true;

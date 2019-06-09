@@ -34,7 +34,7 @@ var Game = function () {
         value: function _initEvent() {
             var _this = this;
 
-            //зберігає натиснеті кнопки та їх стан
+            //зберігає натиснуті кнопки та їх стан
             this.keys = {};
             document.addEventListener("keydown", function (e) {
                 _this.keys[e.which] = true;
