@@ -320,7 +320,7 @@ class GameScene {
 
         //вертикальний та горизонтальний вектори нормалі у напрямку руху шара
         let normalH = ball.getNormal( new Vector( Math.sign( ball.direction.x ), 0 ) );
-        let normalV = ball.getNormal( new Vector( 0, Math.sign( ball.direction.y ) ) );
+        let normalV = ball.getNormal( new Vector( 0, Math.sign( +ball.direction.y ) ) );
         //якщо є дотик до сторони, то не перевіряти далі
         this._calcSideBlockRebound( normalH, normalV, ball );
         if ( ball.touchSide ) {
@@ -365,7 +365,7 @@ class GameScene {
 
             if ( this._touchedBlockArr[ i ].isContainCoord( normalV ) ) {
                 distV = ( ball.radius - Math.min( Math.abs( ball.position.y - this._touchedBlockArr[ i ].bottom() ),
-                    Math.abs( ball.position.y - this._touchedBlockArr[ i ].top() ) ) ) / Math.abs( ball.direction.y );
+                    Math.abs( ball.position.y - this._touchedBlockArr[ i ].top() ) ) ) / Math.abs( +ball.direction.y );
                 blockV = this._touchedBlockArr[ i ];
             }
         }
@@ -383,7 +383,7 @@ class GameScene {
             dist = distV;
             block = blockV;
             ball.newDirection = new Vector( ball.direction.x,
-                -Math.sign( normalV.y ) * ball.direction.y );
+                -Math.sign( +normalV.y ) * ball.direction.y );
         }
 
         ball.touchSide = true;
