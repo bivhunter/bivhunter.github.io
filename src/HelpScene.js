@@ -1,13 +1,13 @@
 class HelpScene {
-    constructor (game) {
+    constructor(game) {
         this._game = game;
         this._itemsObj = {
-            Up: "↑",
-            Down: "↓",
-            Left: "←",
-            Right: "→",
+            Up: "↑  or  W",
+            Down: "↓  or  S",
+            Left: "←  or  A",
+            Right: "→  or  D",
             "Select, Pause": "ENTER",
-            "Quit": "ESC",
+            "Quit, Back": "ESC",
             "Run ball": "SPACE"
         };
 
@@ -15,11 +15,10 @@ class HelpScene {
     }
 
     _init() {
-        let menu = new Menu({
+        this._menu = new Menu({
             header: "Game help",
             menuItems: ["Back"]
         });
-        this._menu = menu;
 
         this._help = document.createElement("div");
         this._help.classList.add("help");
@@ -30,18 +29,22 @@ class HelpScene {
         trHead.innerHTML = `<th>Action: </th> <th>Key</th>`;
         table.appendChild(trHead);
 
-        for(let key in this._itemsObj) {
+        for (let key in this._itemsObj) {
+            if (!this._itemsObj.hasOwnProperty(key)) {
+                continue;
+            }
+
             let tr = document.createElement("tr");
             tr.innerHTML = `<td>${key}: </td> <td>${this._itemsObj[key]}</td>`;
             table.appendChild(tr);
         }
 
         this._help.appendChild(table);
-
     }
 
     update() {
         if (this._game.checkKeyPress(27) || this._game.checkKeyPress(13)) {
+            this._game.gameField.removeChild(this._menu.getElem());
             this._game.returnScene();
         }
     }
@@ -54,6 +57,5 @@ class HelpScene {
         if (!this._menu.getElem().contains(this._help)) {
             this._menu.getElem().appendChild(this._help);
         }
-
     }
 }

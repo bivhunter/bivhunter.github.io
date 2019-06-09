@@ -4,13 +4,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+//Закінчення гри з показом набраних балів через Info
+//Єдине продовження це початок нової після натискання Enter або ESC
 var FinalScene = function () {
-    function FinalScene(game, round) {
+    function FinalScene(game, gameStatus) {
         _classCallCheck(this, FinalScene);
 
         this._game = game;
-        this._round = round;
-        this._time = 0;
+        this._round = game.round;
+        this._gameStatus = gameStatus;
+
+        this._infoTime = 0;
         this._init();
     }
 
@@ -18,30 +22,51 @@ var FinalScene = function () {
         key: "_init",
         value: function _init() {
             var text = void 0;
-            this._game.gameField.innerHTML = "";
-            if (this._round === null) {
-                text = "Victory";
-            } else if (this._round === undefined) {
-                text = "Game By Hunter";
-            } else {
-                text = "GameOver";
+
+            switch (this._gameStatus) {
+                case "victory":
+                    text = "You Won!!! Your Score: " + this._game.score;
+                    break;
+                case "noPlay":
+                    text = "Game By Hunter";
+                    break;
+                case "gameOver":
+                    text = "Game Over! Your Score: " + this._game.score;
+                    break;
             }
 
-            this._text = text;
+            this._infoText = text;
             this._info = new Info("");
         }
     }, {
         key: "update",
         value: function update(dt) {
-            var info = this._info;
-            var text = this._text;
+            if (!this._infoTime) {
+                this._info.enableAnimation();
+                this._infoTime += dt;
+                return;
+            }
 
-            if (this._time < 10) {
-                info.enableAnimation();
-                info.animate(dt, 10, text);
-                this._time += dt;
-            } else {
-                info.disableAnimation();
+            if (this._infoTime < 10) {
+                this._info.animate(dt, 10, this._infoText);
+                this._infoTime += dt;
+                return;
+            }
+
+            this._info.disableAnimation();
+            this._checkKey();
+        }
+    }, {
+        key: "_checkKey",
+        value: function _checkKey() {
+            if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {
+                this._game.round.getDemoRound();
+                this._game.life = 1;
+                this._game.score = 0;
+                this._game.setScene({
+                    scene: StartScene,
+                    isClear: true
+                });
             }
         }
     }, {
@@ -49,7 +74,7 @@ var FinalScene = function () {
         value: function render() {
             if (!this._game.gameField.contains(this._info.getElem())) {
                 this._game.gameField.appendChild(this._info.getElem());
-            };
+            }
         }
     }]);
 

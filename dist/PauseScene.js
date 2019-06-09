@@ -5,10 +5,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var PauseScene = function () {
-	function PauseScene(game, round) {
+	function PauseScene(game) {
 		_classCallCheck(this, PauseScene);
 
-		this._round = round;
 		this._game = game;
 		this._init();
 	}
@@ -20,64 +19,68 @@ var PauseScene = function () {
 				header: "Pause",
 				menuItems: ["Resume", "Restart", "Help", "Quit"]
 			});
-			//console.log(menu.getElem());
+
 			this._menu = menu;
 			this._menuElem = menu.getElem();
 		}
 	}, {
 		key: "update",
 		value: function update() {
-			if (this._game.checkKeyPress(38)) {
+			if (this._game.checkKeyPress(38) || this._game.checkKeyPress("W".charCodeAt(0))) {
 				this._menu.selectPrevious();
 			}
 
-			if (this._game.checkKeyPress(40)) {
+			if (this._game.checkKeyPress(40) || this._game.checkKeyPress("S".charCodeAt(0))) {
 				this._menu.selectNext();
 			}
 
 			if (this._game.checkKeyPress(27)) {
+				this._clearScene();
 				this._game.returnScene();
 			}
 
 			if (this._game.checkKeyPress(13)) {
-				console.log(this._game.round);
 				switch (this._menu.getSelectedItem().classList[0]) {
 					case "menu-resume":
 						{
+							this._clearScene();
 							this._game.returnScene();
 						}
 						break;
 					case "menu-restart":
-						this._game.setScene({
-							scene: GameOverScene,
-							round: this._game.round,
-							isClear: true,
-							isLoss: true
-						});
+						this._setScene(GameOverScene, "restart");
 						break;
 					case "menu-help":
-						this._game.setScene({
-							scene: HelpScene,
-							isClear: true
-						});
+						this._setScene(HelpScene);
 						break;
 					case "menu-quit":
-						this._game.setScene({
-							scene: FinalScene,
-							isClear: true,
-							round: this._round
-						});
+						this._setScene(GameOverScene, "quit");
 						break;
 				}
 			}
 		}
 	}, {
+		key: "_setScene",
+		value: function _setScene(scene, gameStatus) {
+			this._clearScene();
+			this._game.setScene({
+				scene: scene,
+				gameStatus: gameStatus,
+				isClear: false
+			});
+		}
+	}, {
 		key: "render",
 		value: function render() {
-
 			if (!this._game.gameField.contains(this._menuElem)) {
 				this._game.gameField.appendChild(this._menuElem);
-				console.log("append child");
+			}
+		}
+	}, {
+		key: "_clearScene",
+		value: function _clearScene() {
+			if (this._game.gameField.contains(this._menuElem)) {
+				this._game.gameField.removeChild(this._menuElem);
 			}
 		}
 	}]);

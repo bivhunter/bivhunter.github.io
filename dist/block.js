@@ -8,10 +8,12 @@ var Block = function () {
 	function Block(options) {
 		_classCallCheck(this, Block);
 
-		this.x = options.x || 0;
-		this.y = options.y || 0;
-		this._class = options.class || "block";
-		this.remove = false;
+		this._x = options.x || 0;
+		this._y = options.y || 0;
+		this._blockClass = options.blockClass || "block";
+		this._width = options.width || 50;
+		this._height = options.height || 20;
+		this._remove = false;
 		this._init();
 	}
 
@@ -20,35 +22,19 @@ var Block = function () {
 		value: function _init() {
 			var block = document.createElement("div");
 			block.classList.add("block");
-			block.classList.add(this._class);
-			block.innerHTML = this.x + "   " + this.y;
+			block.classList.add(this._blockClass);
 
-			this._width = 50;
-			this._height = 20;
-			block.style.left = this.x + "px";
-			block.style.top = this.y + "px";
-
-			this.A = {
-				x: this.left(),
-				y: this.top()
-			};
-
-			this.B = {
-				x: this.right(),
-				y: this.top()
-			};
-
-			this.C = {
-				x: this.right(),
-				y: this.bottom()
-			};
-
-			this.D = {
-				x: this.left(),
-				y: this.bottom()
-			};
-
+			block.style.left = this._x + "px";
+			block.style.top = this._y + "px";
 			this._block = block;
+		}
+	}, {
+		key: "_initVertexes",
+		value: function _initVertexes() {
+			this._A = new Vector(this.left(), this.top());
+			this._B = new Vector(this.right(), this.top());
+			this._C = new Vector(this.right(), this.bottom());
+			this._D = new Vector(this.left(), this.bottom());
 		}
 	}, {
 		key: "isContainCoord",
@@ -58,18 +44,24 @@ var Block = function () {
 	}, {
 		key: "touching",
 		value: function touching() {
-			var score = 0;
-			if (this._class === "bricks") {
-				this._changeClass("bricks", "bricks-2");
-				score = 20;
-			} else if (this._class === "penoblock") {
-				this.remove = true;
-				score = 20;
-			} else if (this._class === "bricks-2") {
-				this.remove = true;
-				score = 30;
+			this._score = 0;
+			if (this._blockClass === "block-strong") {
+				this._changeClass("block-strong", "block-weak");
+				this._score = 30;
+			} else if (this._blockClass === "block-weak") {
+				this._remove = true;
+				this._score = 20;
 			}
-			return score;
+		}
+	}, {
+		key: "isRemove",
+		value: function isRemove() {
+			return this._remove;
+		}
+	}, {
+		key: "getScore",
+		value: function getScore() {
+			return this._score || 0;
 		}
 	}, {
 		key: "getElem",
@@ -77,42 +69,67 @@ var Block = function () {
 			return this._block;
 		}
 	}, {
-		key: "getVertexs",
-		value: function getVertexs() {
-			return [this.A, this.B, this.C, this.D];
+		key: "getVertexes",
+		value: function getVertexes() {
+			this._initVertexes();
+			return [this._A, this._B, this._C, this._D];
 		}
 	}, {
 		key: "right",
 		value: function right() {
-			return this.x + this._width;
+			return this._x + this._width;
 		}
 	}, {
 		key: "bottom",
 		value: function bottom() {
-			return this.y + this._height;
+			return this._y + this._height;
 		}
 	}, {
 		key: "top",
 		value: function top() {
-			return this.y;
+			return this._y;
 		}
 	}, {
 		key: "left",
 		value: function left() {
-			return this.x;
+			return this._x;
 		}
 	}, {
 		key: "_changeClass",
 		value: function _changeClass(cls1, cls2) {
 			this._block.classList.remove(cls1);
 			this._block.classList.add(cls2);
-			this._class = cls2;
+			this._blockClass = cls2;
 		}
+	}], [{
+		key: "isTouchBlockVsBall",
+		value: function isTouchBlockVsBall(block, ball) {
+			var xColl = false;
+			var yColl = false;
 
-		/*remove() {
-  	this._block.remove();
-  }*/
+			if (block.right() > ball.position.x - ball.radius && block.left() < ball.position.x + ball.radius) {
+				xColl = true;
+			}
 
+			if (block.bottom() > ball.position.y - ball.radius && block.top() < ball.position.y + ball.radius) {
+				//console.log("collY");
+				yColl = true;
+			}
+
+			return xColl && yColl;
+		}
+	}, {
+		key: "findNearVertex",
+		value: function findNearVertex(block, ball) {
+			for (var i = 0; i < block.getVertexes().length; i++) {
+				var d = block.getVertexes()[i].diff(ball.position).module();
+
+				if (d < ball.radius) {
+					return block.getVertexes()[i];
+				}
+			}
+			return null;
+		}
 	}]);
 
 	return Block;

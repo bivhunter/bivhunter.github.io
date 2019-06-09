@@ -10,12 +10,12 @@ var HelpScene = function () {
 
         this._game = game;
         this._itemsObj = {
-            Up: "↑",
-            Down: "↓",
-            Left: "←",
-            Right: "→",
+            Up: "↑  or  W",
+            Down: "↓  or  S",
+            Left: "←  or  A",
+            Right: "→  or  D",
             "Select, Pause": "ENTER",
-            "Quit": "ESC",
+            "Quit, Back": "ESC",
             "Run ball": "SPACE"
         };
 
@@ -25,11 +25,10 @@ var HelpScene = function () {
     _createClass(HelpScene, [{
         key: "_init",
         value: function _init() {
-            var menu = new Menu({
+            this._menu = new Menu({
                 header: "Game help",
                 menuItems: ["Back"]
             });
-            this._menu = menu;
 
             this._help = document.createElement("div");
             this._help.classList.add("help");
@@ -41,6 +40,10 @@ var HelpScene = function () {
             table.appendChild(trHead);
 
             for (var key in this._itemsObj) {
+                if (!this._itemsObj.hasOwnProperty(key)) {
+                    continue;
+                }
+
                 var tr = document.createElement("tr");
                 tr.innerHTML = "<td>" + key + ": </td> <td>" + this._itemsObj[key] + "</td>";
                 table.appendChild(tr);
@@ -52,6 +55,7 @@ var HelpScene = function () {
         key: "update",
         value: function update() {
             if (this._game.checkKeyPress(27) || this._game.checkKeyPress(13)) {
+                this._game.gameField.removeChild(this._menu.getElem());
                 this._game.returnScene();
             }
         }

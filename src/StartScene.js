@@ -1,75 +1,133 @@
-class StartScene {
+//Початкова сцена Гри з показом демо на фоні
+//і початковим меню
+class StartScene extends GameScene {
 	constructor(game) {
-		this._game = game;
-		this._init();
+		super(game);
 	}
 
-	_init() {
+	_initRound(round) {
+		super._initRound(round);
+		this._initMenu();
+	}
+
+	_initInfo() {
+		super._initInfo();
+		this._infoText = "Demo";
+
+		//Щоб Info на задньому плані було нижче Menu
+		this._info.getElem().style.background = "inherit";
+		this._info.getElem().style.verticalAlign = "bottom";
+	}
+
+	_initMenu() {
 		let menu = new Menu({
-			header: "Game",
+			header: "Ricochet",
 			menuItems: [
-				"Start",
+				"Start Game",
 				"Help",
 				"Quit"
 			]
 		});
-		//console.log(menu.getElem());
+
 		this._menu = menu;
 		this._menuElem = menu.getElem();
 	}
 
-
+	_initBall() {
+		this._ball = new Ball({
+			game: this,
+			speed: 1000,
+			direction: {
+				x: 0.1,
+				y: -1
+			}
+		});
+		this._ballElem = this._ball.getElem();
+	}
 
 	update(dt) {
-		//console.log("update", dt);
-		if (this._game.checkKeyPress(38)) {
+		this._checkKeys();
+		super.update(dt);
+	}
+
+	render(dt) {
+        if (!this._game.gameField.contains(this._menuElem)) {
+            this._game.gameField.appendChild(this._menuElem);
+        }
+		super.render(dt);
+	}
+
+	_checkKeys() {
+		if (this._game.checkKeyPress(38) || this._game.checkKeyPress("W".charCodeAt(0))) {
 			this._menu.selectPrevious();
 		}
 
-		if (this._game.checkKeyPress(40)) {
+		if (this._game.checkKeyPress(40) || this._game.checkKeyPress("S".charCodeAt(0))) {
 			this._menu.selectNext();
 		}
 
 		if (this._game.checkKeyPress(13)) {
-
 			switch (this._menu.getSelectedItem().classList[0]) {
-				case "menu-start":
+				case "menu-start-game":
+					this._game.life = 5;
+					this._game.score = 0;
+                    this._game.round.getFirstRound();
 					this._game.setScene({
-                        scene: GameScene,
-                        round: this._game.round,
-                        isClear: true
+						scene: GameScene,
+						isClear: true
 					});
 					break;
 				case "menu-help":
+					this.isPause = true;
+                    this._clearScene();
 					this._game.setScene({
-                        scene: HelpScene,
-                        isClear: true
-                    });
+						scene: HelpScene,
+						isClear: false
+					});
 					break;
-                case "menu-quit":
-                    this._game.setScene({
-                        scene: FinalScene,
-                        isClear: true
-                    });
-                    break;
+				case "menu-quit":
+					this._clearScene();
+					this._game.setScene({
+						scene: FinalScene,
+						gameStatus: "noPlay",
+						isClear: false
+					});
+					break;
 			}
-
-
-
 		}
 	}
 
-	render(dt) {
-       // console.log("update", dt);
-		if (!this._game.gameField.contains(this._menuElem)) {
-			this._game.gameField.appendChild(this._menuElem);
-			console.log("append child");
-		}
+    //ініт ball проходить після ініт board,
+    // тому для першого апдейту добавлено" this._game.gameField.clientWidth / 2;"
+	_updateBoard(dt, board) {
+		if (!this._ball.renderPosition) {
+            board.position = this._game.gameField.clientWidth / 2;
+		} else {
+            board.position = this._ball.renderPosition.x;
+        }
+
+		this._calcBoardPos(board);
 	}
 
-	toString() {
-	    return "Start Scene";
+	_updateBall(dt, ball) {
+		super._updateBall(dt, ball);
+		//Дозволити політ шара після початкового встановлення на дошку
+		this.ballOnBoard = false;
+	}
+
+    _clearScene() {
+        if (this._game.gameField.contains(this._menuElem)) {
+            this._game.gameField.removeChild(this._menuElem);
+        }
+
+        if (this._game.gameField.contains(this._info.getElem()))
+        this._game.gameField.removeChild(this._info.getElem());
     }
 
-
+	gameOver() {
+		this._game.setScene({
+			scene: StartScene,
+			isClear: true
+		});
+	}
 }
