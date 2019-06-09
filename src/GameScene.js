@@ -11,7 +11,7 @@ class GameScene {
         //впливає на зростання швидкості при відбиванні
         this._acceleration = 0.2;
         this._infoTime = 0;
-        this._ballOnBoard = true;
+        this.ballOnBoard = true;
         this._initRound();
     }
 
@@ -140,7 +140,7 @@ class GameScene {
     }
 
     _updateBall( dt, ball ) {
-        if ( this._ballOnBoard ) {
+        if ( this.ballOnBoard ) {
             ball.sendToBoard( this._board );
             return;
         }
@@ -492,7 +492,7 @@ class GameScene {
     
     _checkKeys() {
         if (this._game.checkKeyPress(32)) {
-            this._ballOnBoard = false;
+            this.ballOnBoard = false;
         }
 
         if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {

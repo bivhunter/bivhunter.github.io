@@ -89,7 +89,7 @@ var StartScene = function (_GameScene) {
 			if (this._game.checkKeyPress(13)) {
 				switch (this._menu.getSelectedItem().classList[0]) {
 					case "menu-start-game":
-						this._game.life = 2;
+						this._game.life = 5;
 						this._game.score = 0;
 						this._game.round.getFirstRound();
 						this._game.setScene({
@@ -136,7 +136,7 @@ var StartScene = function (_GameScene) {
 		value: function _updateBall(dt, ball) {
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_updateBall", this).call(this, dt, ball);
 			//Дозволити політ шара після початкового встановлення на дошку
-			this._ballOnBoard = false;
+			this.ballOnBoard = false;
 		}
 	}, {
 		key: "_clearScene",

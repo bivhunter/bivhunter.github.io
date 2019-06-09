@@ -69,7 +69,7 @@ class StartScene extends GameScene {
 		if (this._game.checkKeyPress(13)) {
 			switch (this._menu.getSelectedItem().classList[0]) {
 				case "menu-start-game":
-					this._game.life = 2;
+					this._game.life = 5;
 					this._game.score = 0;
                     this._game.round.getFirstRound();
 					this._game.setScene({
@@ -112,7 +112,7 @@ class StartScene extends GameScene {
 	_updateBall(dt, ball) {
 		super._updateBall(dt, ball);
 		//Дозволити політ шара після початкового встановлення на дошку
-		this._ballOnBoard = false;
+		this.ballOnBoard = false;
 	}
 
     _clearScene() {

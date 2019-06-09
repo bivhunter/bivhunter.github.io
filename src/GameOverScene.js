@@ -95,6 +95,7 @@ class GameOverScene {
             case "loss" : {
                 this._game.life--;
                 if ( this._game.life > 0 ) {
+                    this._clearScene();
                     this._game.returnScene( true );
                 } else {
                     this._setFinalScene( "gameOver" );
