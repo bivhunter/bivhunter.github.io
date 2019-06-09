@@ -1,5 +1,5 @@
 
-//Параметри текст заголовку і пунктів меню
+//Параметри: текст заголовку і пунктів меню
 //Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
 //CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
 //об'єктами після підтвердження вибору конкретного пункту меню
@@ -13,17 +13,12 @@ class Menu {
     _init() {
         let menuWrapper = document.createElement( "div" );
         menuWrapper.classList.add( "menu" );
-
         this._initMenuList();
 
         menuWrapper.appendChild( this._initHeader() );
         menuWrapper.appendChild( this._menuList );
-
-
         this._elem = menuWrapper;
         this._initMarker();
-
-        //console.log(menuWrapper);
     }
 
     _initHeader() {
@@ -55,12 +50,9 @@ class Menu {
     _initMarker() {
         this._marker = document.createElement( "div" );
         this._marker.classList.add( "menu-marker" );
-
         let selectedItem = this._menuList.firstElementChild;
         this._selectedItem = selectedItem;
         this._select( selectedItem );
-
-
     }
 
     _select( elem ) {
@@ -98,7 +90,6 @@ class Menu {
 //Частина над ігровим полем з відображенням інформації про перебіг гри
 class Header {
     constructor( options ) {
-
         this._options = {
             Round: options.round || 0,
             Life: options.life || 0,
@@ -108,7 +99,6 @@ class Header {
     }
 
     _init() {
-
         let ul = document.createElement( "ul" );
         ul.classList.add( "header-list" );
         //		header.appendChild(ul);
@@ -134,7 +124,6 @@ class Header {
             li.appendChild( span );
         }
         this._elem = ul;
-
     }
 
     getElem() {
@@ -152,7 +141,6 @@ class Header {
     setScore( str ) {
         this._elem.querySelector( ".header-score" ).textContent = "Score: " + str;
     }
-
 }
 
 //Має колекцію раундів у вигляді об'єкту, де ключ назва, а значення масив рядків які відповідають
@@ -331,8 +319,8 @@ class Round {
     }
 
     getFirstRound() {
-        this._activeRound = this._rounds.round_test;
-        this._activeRoundNum = 10;
+        this._activeRound = this._rounds.round_1;
+        this._activeRoundNum = 1;
         return this;
     }
 

@@ -68,15 +68,15 @@ var GameOverScene = function () {
                 return;
             }
 
-            if (this._infoTime > 7) {
-                info.disableAnimation();
-                this._isShowInfo = false;
-                this._infoTime = 0;
-                // this._clearScene();
+            if (this._infoTime <= 7) {
+                this._infoTime += dt;
+                info.animate(dt, 5, text);
+                return;
             }
 
-            this._infoTime += dt;
-            info.animate(dt, 5, text);
+            info.disableAnimation();
+            this._isShowInfo = false;
+            this._infoTime = 0;
         }
     }, {
         key: "_chooseContinuation",

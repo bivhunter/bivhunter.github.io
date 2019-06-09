@@ -34,6 +34,7 @@ var Game = function () {
         value: function _initEvent() {
             var _this = this;
 
+            //зберігає натиснеті кнопки та їх стан
             this.keys = {};
             document.addEventListener("keydown", function (e) {
                 _this.keys[e.which] = true;
@@ -43,6 +44,8 @@ var Game = function () {
                 _this.keys[e.which] = false;
             });
 
+            //відманяють події за замовчуванням:
+            //виділення тексту, виклик контекстного меню
             document.addEventListener("dragstart", function (event) {
                 event.preventDefault();
             });
@@ -80,6 +83,9 @@ var Game = function () {
             }
             this._activeScene = scene;
         }
+
+        //повертає попередню сцену, яку збережено до масиву
+
     }, {
         key: "returnScene",
         value: function returnScene(isOnBoard) {
@@ -90,6 +96,9 @@ var Game = function () {
             }
             this._activeScene = lastScene;
         }
+
+        //основні методи для зміни кадрів у сцені
+
     }, {
         key: "update",
         value: function update(dt) {
@@ -108,16 +117,16 @@ var Game = function () {
                 this.headerField.appendChild(this.header.getElem());
             }
         }
-    }, {
-        key: "stop",
-        value: function stop() {
-            this._stop = true;
-        }
 
         //Використовується this._stop для зупинки анімаціЇ, бо при виклику cancelAnimationFrame()
         //ззовні Game зупиняє вже початий requestAnimationFrame, а наступний викликається
         //this._stop допомагає не створювати новий requestAnimationFrame
 
+    }, {
+        key: "stop",
+        value: function stop() {
+            this._stop = true;
+        }
     }, {
         key: "start",
         value: function start() {
@@ -127,7 +136,7 @@ var Game = function () {
             var last = performance.now(),
                 fps = 60,
                 slomo = 0.5,
-                // коефіціент прискорення
+                // коефіціент сповільнення рендерінгу
             step = 1 / fps,
                 slowStep = slomo * step,
                 dt = 0,
@@ -227,19 +236,16 @@ var Vector = function () {
     }, {
         key: "sum",
         value: function sum(vec) {
-
             return new Vector(this.x + vec.x, this.y + vec.y);
         }
     }, {
         key: "scalar",
         value: function scalar(num) {
-
             return new Vector(this.x * num, this.y * num);
         }
     }, {
         key: "diff",
         value: function diff(vec) {
-
             return new Vector(this.x - vec.x, this.y - vec.y);
         }
     }, {

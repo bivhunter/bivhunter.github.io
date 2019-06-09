@@ -136,7 +136,7 @@ var StartScene = function (_GameScene) {
 		value: function _updateBall(dt, ball) {
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "_updateBall", this).call(this, dt, ball);
 			//Дозволити політ шара після початкового встановлення на дошку
-			this.ballOnBoard = false;
+			this._ballOnBoard = false;
 		}
 	}, {
 		key: "_clearScene",

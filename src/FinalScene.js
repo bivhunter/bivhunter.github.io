@@ -43,7 +43,10 @@ class FinalScene {
         }
 
         this._info.disableAnimation();
+        this._checkKey();
+    }
 
+    _checkKey () {
         if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27))   {
             this._game.round.getDemoRound();
             this._game.life = 1;

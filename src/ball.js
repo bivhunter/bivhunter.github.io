@@ -24,7 +24,6 @@ class Ball {
     }
 
     render() {
-        // console.log("render", this.renderPosition);
         this._setPosition(this.renderPosition);
     }
 
@@ -59,7 +58,7 @@ class Ball {
             this.speed.setValue(this.direction.scalar(dt * this.speedCoef));
         }
     }
-    
+
     sendToBoard(board) {
         this.direction = this._startDirection.norm();
         this.renderPosition = board.vecForBallStart(this);

@@ -29,7 +29,6 @@ var Ball = function () {
     }, {
         key: "render",
         value: function render() {
-            // console.log("render", this.renderPosition);
             this._setPosition(this.renderPosition);
         }
     }, {

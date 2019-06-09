@@ -4,7 +4,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-//Параметри текст заголовку і пунктів меню
+//Параметри: текст заголовку і пунктів меню
 //Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
 //CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
 //об'єктами після підтвердження вибору конкретного пункту меню
@@ -22,16 +22,12 @@ var Menu = function () {
         value: function _init() {
             var menuWrapper = document.createElement("div");
             menuWrapper.classList.add("menu");
-
             this._initMenuList();
 
             menuWrapper.appendChild(this._initHeader());
             menuWrapper.appendChild(this._menuList);
-
             this._elem = menuWrapper;
             this._initMarker();
-
-            //console.log(menuWrapper);
         }
     }, {
         key: "_initHeader",
@@ -66,7 +62,6 @@ var Menu = function () {
         value: function _initMarker() {
             this._marker = document.createElement("div");
             this._marker.classList.add("menu-marker");
-
             var selectedItem = this._menuList.firstElementChild;
             this._selectedItem = selectedItem;
             this._select(selectedItem);
@@ -130,7 +125,6 @@ var Header = function () {
     _createClass(Header, [{
         key: "_init",
         value: function _init() {
-
             var ul = document.createElement("ul");
             ul.classList.add("header-list");
             //		header.appendChild(ul);
@@ -217,8 +211,8 @@ var Round = function () {
     }, {
         key: "getFirstRound",
         value: function getFirstRound() {
-            this._activeRound = this._rounds.round_test;
-            this._activeRoundNum = 10;
+            this._activeRound = this._rounds.round_1;
+            this._activeRoundNum = 1;
             return this;
         }
     }, {

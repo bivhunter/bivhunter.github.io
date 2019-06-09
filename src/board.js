@@ -28,7 +28,7 @@ class Board {
         this._boardPointInit();
     }
 
-    //Стартова позиція шара на дошці
+    //Стартова позиція для шара на дошці
     vecForBallStart(ball) {
         let x = this.renderPosition;
         let y = (this._topPosition - this._height / 2 - this._borderWidth - ball.radius);
@@ -67,6 +67,8 @@ class Board {
         this._x_0 = x_0;
     }
 
+    //повертає масив точок зміщених від початкової позиції
+    //на актуальну позицію дошки
     getPointArr() {
         let delta = this.position - this._x_0;
         let resArr = [];
@@ -106,7 +108,7 @@ class Board {
     }
 
     //Тестові методи для промальовки точок границі дошки
-    //Додавання до gameField
+    //Та їх додавання до gameField
     _testPoint() {
         this._pointerArr.forEach( point => {
             let elem = document.createElement( "div" );

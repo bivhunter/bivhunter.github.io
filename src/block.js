@@ -17,7 +17,6 @@ class Block {
 
         if ((block.right() > ball.position.x - ball.radius) &&
             (block.left() < ball.position.x + ball.radius)) {
-            //console.log("collX");
             xColl = true;
         }
 

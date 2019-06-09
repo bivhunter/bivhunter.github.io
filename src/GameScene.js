@@ -91,6 +91,7 @@ class GameScene {
     }
 
     update( dt ) {
+        console.log("update dt", dt);
         this._updateInfo( dt );
         if ( this._isShowInfo ) {
             return;
@@ -533,7 +534,7 @@ class GameScene {
     }
 
     render(dt) {
-
+        console.log("render dt", dt);
 		this._board.render(dt);
 
 		if (!this._game.gameField.contains(this._boardElem)) {

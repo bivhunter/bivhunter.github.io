@@ -112,7 +112,7 @@ class StartScene extends GameScene {
 	_updateBall(dt, ball) {
 		super._updateBall(dt, ball);
 		//Дозволити політ шара після початкового встановлення на дошку
-		this.ballOnBoard = false;
+		this._ballOnBoard = false;
 	}
 
     _clearScene() {

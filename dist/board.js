@@ -40,7 +40,7 @@ var Board = function () {
             this._boardPointInit();
         }
 
-        //Стартова позиція шара на дошці
+        //Стартова позиція для шара на дошці
 
     }, {
         key: "vecForBallStart",
@@ -84,6 +84,10 @@ var Board = function () {
             this._pointerArr = pointArr;
             this._x_0 = x_0;
         }
+
+        //повертає масив точок зміщених від початкової позиції
+        //на актуальну позицію дошки
+
     }, {
         key: "getPointArr",
         value: function getPointArr() {
@@ -132,7 +136,7 @@ var Board = function () {
         }
 
         //Тестові методи для промальовки точок границі дошки
-        //Додавання до gameField
+        //Та їх додавання до gameField
 
     }, {
         key: "_testPoint",

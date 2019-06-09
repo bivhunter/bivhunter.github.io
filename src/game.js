@@ -40,6 +40,7 @@ class Game {
     }
 
     _initEvent() {
+        //зберігає натиснеті кнопки та їх стан
         this.keys = {};
         document.addEventListener( "keydown", ( e ) => {
             this.keys[ e.which ] = true;
@@ -49,6 +50,8 @@ class Game {
             this.keys[ e.which ] = false;
         } );
 
+        //відманяють події за замовчуванням:
+        //виділення тексту, виклик контекстного меню
         document.addEventListener( "dragstart", ( event ) => {
             event.preventDefault();
         } );
@@ -86,6 +89,7 @@ class Game {
         this._activeScene = scene;
     }
 
+    //повертає попередню сцену, яку збережено до масиву
     returnScene( isOnBoard ) {
         let lastScene = this._gameSceneArr.pop();
         //Після втрати шара, якщо присутні життя шар повертається на дошку і повертається стара сцена
@@ -95,6 +99,7 @@ class Game {
         this._activeScene = lastScene;
     }
 
+    //основні методи для зміни кадрів у сцені
     update( dt ) {
         this._activeScene.update( dt );
     }
@@ -110,19 +115,18 @@ class Game {
         }
     }
 
+    //Використовується this._stop для зупинки анімаціЇ, бо при виклику cancelAnimationFrame()
+    //ззовні Game зупиняє вже початий requestAnimationFrame, а наступний викликається
+    //this._stop допомагає не створювати новий requestAnimationFrame
     stop() {
         this._stop = true;
     }
 
-
-    //Використовується this._stop для зупинки анімаціЇ, бо при виклику cancelAnimationFrame()
-    //ззовні Game зупиняє вже початий requestAnimationFrame, а наступний викликається
-    //this._stop допомагає не створювати новий requestAnimationFrame
     start() {
         this._stop = false;
         let last = performance.now(),
             fps = 60,
-            slomo = 0.5, // коефіціент прискорення
+            slomo = 0.5, // коефіціент сповільнення рендерінгу
             step = 1 / fps,
             slowStep = slomo * step,
             dt = 0,
@@ -209,20 +213,16 @@ class Vector {
     }
 
     sum ( vec ) {
-
         return new Vector(this.x + vec.x, this.y + vec.y);
     }
 
     scalar ( num ) {
-
         return new Vector(this.x * num, this.y * num);
     }
 
     diff ( vec ) {
-
         return new Vector( this.x - vec.x, this.y - vec.y );
     }
-
 
     module () {
         return Math.sqrt( this.x * this.x + this.y * this.y );

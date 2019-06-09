@@ -106,6 +106,7 @@ var GameScene = function () {
     }, {
         key: "update",
         value: function update(dt) {
+            console.log("update dt", dt);
             this._updateInfo(dt);
             if (this._isShowInfo) {
                 return;
@@ -350,7 +351,7 @@ var GameScene = function () {
 
             //вертикальний та горизонтальний вектори нормалі у напрямку руху шара
             var normalH = ball.getNormal(new Vector(Math.sign(ball.direction.x), 0));
-            var normalV = ball.getNormal(new Vector(0, Math.sign(ball.direction.y)));
+            var normalV = ball.getNormal(new Vector(0, Math.sign(+ball.direction.y)));
             //якщо є дотик до сторони, то не перевіряти далі
             this._calcSideBlockRebound(normalH, normalV, ball);
             if (ball.touchSide) {
@@ -397,7 +398,7 @@ var GameScene = function () {
                 }
 
                 if (this._touchedBlockArr[i].isContainCoord(normalV)) {
-                    distV = (ball.radius - Math.min(Math.abs(ball.position.y - this._touchedBlockArr[i].bottom()), Math.abs(ball.position.y - this._touchedBlockArr[i].top()))) / Math.abs(ball.direction.y);
+                    distV = (ball.radius - Math.min(Math.abs(ball.position.y - this._touchedBlockArr[i].bottom()), Math.abs(ball.position.y - this._touchedBlockArr[i].top()))) / Math.abs(+ball.direction.y);
                     blockV = this._touchedBlockArr[i];
                 }
             }
@@ -413,7 +414,7 @@ var GameScene = function () {
             } else {
                 dist = distV;
                 block = blockV;
-                ball.newDirection = new Vector(ball.direction.x, -Math.sign(normalV.y) * ball.direction.y);
+                ball.newDirection = new Vector(ball.direction.x, -Math.sign(+normalV.y) * ball.direction.y);
             }
 
             ball.touchSide = true;
@@ -574,7 +575,7 @@ var GameScene = function () {
     }, {
         key: "render",
         value: function render(dt) {
-
+            console.log("render dt", dt);
             this._board.render(dt);
 
             if (!this._game.gameField.contains(this._boardElem)) {
