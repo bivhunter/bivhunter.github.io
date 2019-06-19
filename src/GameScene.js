@@ -29,11 +29,12 @@ class GameScene {
         } );
         this._board.speedCoef = this._SPEED_COEF;
         this._boardElem = this._board.getElem();
-        this._game.gameField.appendChild( this._boardElem );
+        this._game.gameField.append( this._boardElem );
 
         this._board.init();
-        this._boardMinPosition = this._boardElem.offsetWidth / 2;
-        this._boardMaxPosition = this._game.gameField.clientWidth - this._boardElem.offsetWidth / 2;
+        this._boardMinPosition = this._boardElem.outerWidth() / 2;
+        this._boardMaxPosition = this._game.gameField.innerWidth() - this._boardElem.outerWidth() / 2;
+        console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
     }
 
     _initBall() {
@@ -45,6 +46,8 @@ class GameScene {
                 y: -10
             }
         } );
+        this._ball.sendToBoard( this._board );
+        this.ballOnBoard = false;
         this._ballElem = this._ball.getElem();
     }
 
@@ -91,9 +94,10 @@ class GameScene {
     }
 
     update( dt ) {
-        console.log("update dt", dt);
-        this._updateInfo( dt );
+        //console.log("update dt", dt);
+
         if ( this._isShowInfo ) {
+            this._updateInfo( dt );
             return;
         }
 
@@ -115,6 +119,7 @@ class GameScene {
             info.animate( dt, 4, this._infoText );
             return;
         }
+
 
         info.disableAnimation();
         this._isShowInfo = false;
@@ -235,8 +240,8 @@ class GameScene {
     }
 
     _isTouchedBorder( position, ball ) {
-        let rightBorder = this._game.gameField.clientWidth - ball.radius;
-        let bottomBorder = this._game.gameField.clientHeight - ball.radius;
+        let rightBorder = this._game.gameField.innerWidth() - ball.radius;
+        let bottomBorder = this._game.gameField.innerHeight() - ball.radius;
         let topBorder = ball.radius;
         let leftBorder = ball.radius;
 
@@ -245,8 +250,8 @@ class GameScene {
     }
 
     _calcTouchedBorderPos( position, ball ) {
-        let rightBorder = this._game.gameField.clientWidth - ball.radius;
-        let bottomBorder = this._game.gameField.clientHeight - ball.radius - 5;
+        let rightBorder = this._game.gameField.innerWidth() - ball.radius;
+        let bottomBorder = this._game.gameField.innerHeight() - ball.radius - 5;
         let topBorder = ball.radius;
         let leftBorder = ball.radius;
 
@@ -534,16 +539,33 @@ class GameScene {
     }
 
     render(dt) {
-        console.log("render dt", dt);
+       // console.log("render dt", dt);
 		this._board.render(dt);
 
-		if (!this._game.gameField.contains(this._boardElem)) {
+
+        if (this._game.gameField.find("*").is(this._boardElem)) {
+            this._game.gameField.append(this._boardElem);
+        }
+
+		/*if (!this._game.gameField.contains(this._boardElem)) {
 			this._game.gameField.appendChild(this._boardElem);
-		}
+		}*/
 
 		this._renderBlock();
 
-		if (this._isShowInfo) {
+        if (this._isShowInfo) {
+            if (!this._game.gameField.find("*").is( this._info.getElem() ) ) {
+                this._game.gameField.append( this._info.getElem() );
+            }
+            return;
+        } else {
+            if (this._game.gameField.find("*").is( this._info.getElem() )  ) {
+                this._info.getElem().remove();
+            }
+
+        }
+
+		/*if (this._isShowInfo) {
 			if (!this._game.gameField.contains(this._info.getElem())) {
 				this._game.gameField.appendChild(this._info.getElem());
 			}
@@ -553,13 +575,20 @@ class GameScene {
 				this._game.gameField.removeChild(this._info.getElem());
 			}
 
-		}
+		}*/
 
 		this._ball.render(dt);
 
-		if (!this._game.gameField.contains(this._ballElem)) {
+		if (!this._game.gameField.find("*").is(this._ballElem)) {
+            this._game.gameField.append(this._ballElem);
+        }
+
+
+
+
+	/*	if (!this._game.gameField.contains(this._ballElem)) {
 			this._game.gameField.appendChild(this._ballElem);
-		}
+		}*/
 
 		//запускається останнім, щоб після запуску нової сцени
 		//не вимальовувалися старі елементи
@@ -571,14 +600,14 @@ class GameScene {
 	_renderBlock() {
 		if (this.isPause) {
 			this._blockArr.forEach(block => {
-				this._game.gameField.appendChild(block.getElem());
+				this._game.gameField.append(block.getElem());
 			});
 			this.isPause = false;
 			this._blockNumber = this._blockArr.length;
 		}
 
 		if (this._blockNumber < this._blockArr.length) {
-			this._game.gameField.appendChild(this._blockArr[this._blockNumber].getElem());
+			this._game.gameField.append(this._blockArr[this._blockNumber].getElem());
 			this._blockNumber++;
 			return;
 		}
@@ -600,7 +629,7 @@ class GameScene {
 				let pos = this._blockArr.indexOf(block);
 				if (pos >= 0) {
 					this._blockArr.splice(pos, 1);
-					this._game.gameField.removeChild(block.getElem());
+					block.getElem().remove();
 				}
 			}
 		});

@@ -59,8 +59,8 @@ class FinalScene {
     }
 
     render() {
-        if (!this._game.gameField.contains(this._info.getElem())) {
-            this._game.gameField.appendChild(this._info.getElem());
+        if (!this._game.gameField.find("*").is(this._info.getElem())) {
+            this._game.gameField.append(this._info.getElem());
         }
     }
 }

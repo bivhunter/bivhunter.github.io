@@ -71,8 +71,8 @@ class Game {
 
     setScene( options ) {
         if ( options.isClear ) {
-            this.gameField.innerHTML = "";
-            this.headerField.innerHTML = "";
+            this.gameField.empty();
+            this.headerField.empty();
         }
 
         let scene = new options.scene( this, options.gameStatus );
@@ -110,9 +110,14 @@ class Game {
     }
 
     _renderHeader() {
-        if ( !this.headerField.contains( this.header.getElem() ) ) {
-            this.headerField.appendChild( this.header.getElem() );
+
+        if (!this.headerField.find("*").is( $( this.header.getElem() ) ) ) {
+            this.headerField.append( $(this.header.getElem()) );
         }
+
+        /*if ( !this.headerField.contains( this.header.getElem() ) ) {
+            this.headerField.appendChild( this.header.getElem() );
+        }*/
     }
 
     //Використовується this._stop для зупинки анімаціЇ, бо при виклику cancelAnimationFrame()
@@ -173,83 +178,8 @@ class Game {
     }
 }
 
-class Vector {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
 
-    static FromObj(obj) {
-        return new Vector(obj.x, obj.y);
-    }
-
-    static turn ( vec1, vec2 ) {
-        return {
-            x: vec1.x * vec2.x,
-            y: vec1.y * vec2.y
-        };
-    }
-
-    static scalarMult ( vec1, vec2 ) {
-        return vec1.x * vec2.x + vec1.y * vec2.y;
-    }
-
-
-    setValue() {
-        if (arguments.length === 2) {
-            this.x = arguments[0];
-            this.y = arguments[1];
-        } else {
-            this.x = arguments[0].x;
-            this.y = arguments[0].y;
-        }
-    }
-
-    norm() {
-        let x = this.x,
-            y = this.y,
-            d = Math.sqrt( x * x + y * y );
-        return new Vector (x / d, y / d);
-    }
-
-    sum ( vec ) {
-        return new Vector(this.x + vec.x, this.y + vec.y);
-    }
-
-    scalar ( num ) {
-        return new Vector(this.x * num, this.y * num);
-    }
-
-    diff ( vec ) {
-        return new Vector( this.x - vec.x, this.y - vec.y );
-    }
-
-    module () {
-        return Math.sqrt( this.x * this.x + this.y * this.y );
-    }
-
-    turnAngle ( angle ) {
-        this.setValue(this.x * Math.cos( angle ) - this.y * Math.sin( angle ),
-            this.x * Math.sin( angle ) + this.y * Math.cos( angle ));
-        return this;
-    }
-}
-
-//Пошук коренів квадратного рівняння
-function calcQuad( a, b, c ) {
-    let d = b * b - 4 * a * c;
-    if ( d < 0 ) {
-        return null;
-    }
-
-    let x_1 = ( -b + Math.sqrt( d ) ) / ( 2 * a );
-    let x_2 = ( -b - Math.sqrt( d ) ) / ( 2 * a );
-    return {
-        x_1: x_1,
-        x_2: x_2
-    };
-}
 
 //Запуск гри
-let gameLounch = new Game( document.getElementById( "game-field" ), document.getElementById( "header-field" ) );
+let gameLounch = new Game( $("#game-field" ), $( "#header-field" ) );
 

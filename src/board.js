@@ -8,22 +8,27 @@ class Board {
     }
 
     _init() {
-        let board = document.createElement( "div" );
+
+        this._elem = $("<div></div>").addClass("board");
+
+        /*let board = document.createElement( "div" );
         board.classList.add( "board" );
-        this._elem = board;
+        this._elem = board;*/
     }
 
     //ініціалізація основних розмірів проходить ззовні, після рендерінгу дошки
     //щоб в CSS можна було задати різні розміри
     init() {
-        this._width = this._elem.clientWidth;
-        this._height = this._elem.clientHeight;
-        this._borderWidth = ( this._elem.offsetWidth - this._width ) / 2;
+        this._width = this._elem.innerWidth();
+        this._height = this._elem.innerHeight();
+        this._borderWidth = ( this._elem.outerWidth() - this._width ) / 2;
 
-        this._topPosition = this._gameField.clientHeight - this._elem.offsetHeight / 2 - 2;
-        this.position = this._gameField.clientWidth / 2;
+        this._topPosition = this._gameField.innerHeight() - this._elem.outerHeight() / 2 - 2;
+        this.position = this._gameField.innerWidth() / 2;
         this.renderPosition = this.position;
 
+
+        console.log(this.renderPosition);
         this._setPosition( this.position );
         this._boardPointInit();
     }
@@ -32,6 +37,7 @@ class Board {
     vecForBallStart(ball) {
         let x = this.renderPosition;
         let y = (this._topPosition - this._height / 2 - this._borderWidth - ball.radius);
+        console.log(x, y);
         return new Vector(x, y);
     }
     
@@ -45,7 +51,7 @@ class Board {
         let a = this._width / 2 + 3;
         let y_0 = this._topPosition;
         let x_0 = this.position;
-        let bottom = this._gameField.clientHeight;
+        let bottom = this._gameField.innerWidth();
 
         //точки лівої границі
         for ( let i = bottom; i > y_0; i-- ) {
@@ -103,19 +109,31 @@ class Board {
     }
 
     _setPosition( num ) {
-        this._elem.style.left = num - this._width / 2 - this._borderWidth + "px";
-        this._elem.style.top = this._topPosition - this._height / 2 - this._borderWidth + "px";
+
+        //console.log(this._topPosition - this._height / 2 - this._borderWidth);
+        this._elem.css({
+            left: num - this._width / 2 - this._borderWidth,
+            top: this._topPosition - this._height / 2 - this._borderWidth
+        });
+
+        /*this._elem.style.left = num - this._width / 2 - this._borderWidth + "px";
+        this._elem.style.top = this._topPosition - this._height / 2 - this._borderWidth + "px";*/
     }
 
     //Тестові методи для промальовки точок границі дошки
     //Та їх додавання до gameField
     _testPoint() {
         this._pointerArr.forEach( point => {
-            let elem = document.createElement( "div" );
-            elem.classList.add( "point" );
+            let elem = $("<div></div>").addClass("point").css({
+                left: point.x,
+                top: point.x + 1
+            });
+
+            $("#game-field").append(elem);
+            /*elem.classList.add( "point" );
             elem.style.left = point.x + "px";
-            elem.style.top = point.y + 1 + "px";
-            document.getElementById( "game-field" ).appendChild( elem );
+            elem.style.top =point.x + 1 + "px";
+            document.getElementById( "game-field" ).appendChild( elem );*/
         } );
     }
 
@@ -123,10 +141,16 @@ class Board {
     renderPoint() {
         let pointArr = this.getPointArr();
         //console.log(pointArr);
-        let field = document.getElementById( "game-field" );
+        $(".point").each((index, elem) => {
+           $(elem).css({
+               left: pointArr[index]
+           });
+        });
+
+        /*let field = document.getElementById( "game-field" );
         let pointList = field.querySelectorAll( ".point" );
         for ( let i = 0; i < pointList.length; i++ ) {
             pointList[ i ].style.left = pointArr[ i ].x + "px";
-        }
+        }*/
     }
 }

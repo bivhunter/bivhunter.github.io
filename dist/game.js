@@ -66,8 +66,8 @@ var Game = function () {
         key: "setScene",
         value: function setScene(options) {
             if (options.isClear) {
-                this.gameField.innerHTML = "";
-                this.headerField.innerHTML = "";
+                this.gameField.empty();
+                this.headerField.empty();
             }
 
             var scene = new options.scene(this, options.gameStatus);
@@ -113,9 +113,14 @@ var Game = function () {
     }, {
         key: "_renderHeader",
         value: function _renderHeader() {
-            if (!this.headerField.contains(this.header.getElem())) {
-                this.headerField.appendChild(this.header.getElem());
+
+            if (!this.headerField.find("*").is($(this.header.getElem()))) {
+                this.headerField.append($(this.header.getElem()));
             }
+
+            /*if ( !this.headerField.contains( this.header.getElem() ) ) {
+                this.headerField.appendChild( this.header.getElem() );
+            }*/
         }
 
         //Використовується this._stop для зупинки анімаціЇ, бо при виклику cancelAnimationFrame()
@@ -206,98 +211,7 @@ var Game = function () {
     return Game;
 }();
 
-var Vector = function () {
-    function Vector(x, y) {
-        _classCallCheck(this, Vector);
-
-        this.x = x;
-        this.y = y;
-    }
-
-    _createClass(Vector, [{
-        key: "setValue",
-        value: function setValue() {
-            if (arguments.length === 2) {
-                this.x = arguments[0];
-                this.y = arguments[1];
-            } else {
-                this.x = arguments[0].x;
-                this.y = arguments[0].y;
-            }
-        }
-    }, {
-        key: "norm",
-        value: function norm() {
-            var x = this.x,
-                y = this.y,
-                d = Math.sqrt(x * x + y * y);
-            return new Vector(x / d, y / d);
-        }
-    }, {
-        key: "sum",
-        value: function sum(vec) {
-            return new Vector(this.x + vec.x, this.y + vec.y);
-        }
-    }, {
-        key: "scalar",
-        value: function scalar(num) {
-            return new Vector(this.x * num, this.y * num);
-        }
-    }, {
-        key: "diff",
-        value: function diff(vec) {
-            return new Vector(this.x - vec.x, this.y - vec.y);
-        }
-    }, {
-        key: "module",
-        value: function module() {
-            return Math.sqrt(this.x * this.x + this.y * this.y);
-        }
-    }, {
-        key: "turnAngle",
-        value: function turnAngle(angle) {
-            this.setValue(this.x * Math.cos(angle) - this.y * Math.sin(angle), this.x * Math.sin(angle) + this.y * Math.cos(angle));
-            return this;
-        }
-    }], [{
-        key: "FromObj",
-        value: function FromObj(obj) {
-            return new Vector(obj.x, obj.y);
-        }
-    }, {
-        key: "turn",
-        value: function turn(vec1, vec2) {
-            return {
-                x: vec1.x * vec2.x,
-                y: vec1.y * vec2.y
-            };
-        }
-    }, {
-        key: "scalarMult",
-        value: function scalarMult(vec1, vec2) {
-            return vec1.x * vec2.x + vec1.y * vec2.y;
-        }
-    }]);
-
-    return Vector;
-}();
-
-//Пошук коренів квадратного рівняння
-
-
-function calcQuad(a, b, c) {
-    var d = b * b - 4 * a * c;
-    if (d < 0) {
-        return null;
-    }
-
-    var x_1 = (-b + Math.sqrt(d)) / (2 * a);
-    var x_2 = (-b - Math.sqrt(d)) / (2 * a);
-    return {
-        x_1: x_1,
-        x_2: x_2
-    };
-}
-
 //Запуск гри
-var gameLounch = new Game(document.getElementById("game-field"), document.getElementById("header-field"));
+
+
+var gameLounch = new Game($("#game-field"), $("#header-field"));

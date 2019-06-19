@@ -40,11 +40,12 @@ var GameScene = function () {
             });
             this._board.speedCoef = this._SPEED_COEF;
             this._boardElem = this._board.getElem();
-            this._game.gameField.appendChild(this._boardElem);
+            this._game.gameField.append(this._boardElem);
 
             this._board.init();
-            this._boardMinPosition = this._boardElem.offsetWidth / 2;
-            this._boardMaxPosition = this._game.gameField.clientWidth - this._boardElem.offsetWidth / 2;
+            this._boardMinPosition = this._boardElem.outerWidth() / 2;
+            this._boardMaxPosition = this._game.gameField.innerWidth() - this._boardElem.outerWidth() / 2;
+            console.log("board min max", this._boardMinPosition, this._boardMaxPosition);
         }
     }, {
         key: "_initBall",
@@ -57,6 +58,8 @@ var GameScene = function () {
                     y: -10
                 }
             });
+            this._ball.sendToBoard(this._board);
+            this.ballOnBoard = false;
             this._ballElem = this._ball.getElem();
         }
     }, {
@@ -106,9 +109,10 @@ var GameScene = function () {
     }, {
         key: "update",
         value: function update(dt) {
-            console.log("update dt", dt);
-            this._updateInfo(dt);
+            //console.log("update dt", dt);
+
             if (this._isShowInfo) {
+                this._updateInfo(dt);
                 return;
             }
 
@@ -257,8 +261,8 @@ var GameScene = function () {
     }, {
         key: "_isTouchedBorder",
         value: function _isTouchedBorder(position, ball) {
-            var rightBorder = this._game.gameField.clientWidth - ball.radius;
-            var bottomBorder = this._game.gameField.clientHeight - ball.radius;
+            var rightBorder = this._game.gameField.innerWidth() - ball.radius;
+            var bottomBorder = this._game.gameField.innerHeight() - ball.radius;
             var topBorder = ball.radius;
             var leftBorder = ball.radius;
 
@@ -267,8 +271,8 @@ var GameScene = function () {
     }, {
         key: "_calcTouchedBorderPos",
         value: function _calcTouchedBorderPos(position, ball) {
-            var rightBorder = this._game.gameField.clientWidth - ball.radius;
-            var bottomBorder = this._game.gameField.clientHeight - ball.radius - 5;
+            var rightBorder = this._game.gameField.innerWidth() - ball.radius;
+            var bottomBorder = this._game.gameField.innerHeight() - ball.radius - 5;
             var topBorder = ball.radius;
             var leftBorder = ball.radius;
 
@@ -575,31 +579,50 @@ var GameScene = function () {
     }, {
         key: "render",
         value: function render(dt) {
-            console.log("render dt", dt);
+            // console.log("render dt", dt);
             this._board.render(dt);
 
-            if (!this._game.gameField.contains(this._boardElem)) {
-                this._game.gameField.appendChild(this._boardElem);
+            if (this._game.gameField.find("*").is(this._boardElem)) {
+                this._game.gameField.append(this._boardElem);
             }
+
+            /*if (!this._game.gameField.contains(this._boardElem)) {
+            	this._game.gameField.appendChild(this._boardElem);
+            }*/
 
             this._renderBlock();
 
             if (this._isShowInfo) {
-                if (!this._game.gameField.contains(this._info.getElem())) {
-                    this._game.gameField.appendChild(this._info.getElem());
+                if (!this._game.gameField.find("*").is(this._info.getElem())) {
+                    this._game.gameField.append(this._info.getElem());
                 }
                 return;
             } else {
-                if (this._game.gameField.contains(this._info.getElem())) {
-                    this._game.gameField.removeChild(this._info.getElem());
+                if (this._game.gameField.find("*").is(this._info.getElem())) {
+                    this._info.getElem().remove();
                 }
             }
 
+            /*if (this._isShowInfo) {
+            	if (!this._game.gameField.contains(this._info.getElem())) {
+            		this._game.gameField.appendChild(this._info.getElem());
+            	}
+            	return;
+            } else {
+            	if (this._game.gameField.contains(this._info.getElem())) {
+            		this._game.gameField.removeChild(this._info.getElem());
+            	}
+            		}*/
+
             this._ball.render(dt);
 
-            if (!this._game.gameField.contains(this._ballElem)) {
-                this._game.gameField.appendChild(this._ballElem);
+            if (!this._game.gameField.find("*").is(this._ballElem)) {
+                this._game.gameField.append(this._ballElem);
             }
+
+            /*	if (!this._game.gameField.contains(this._ballElem)) {
+            		this._game.gameField.appendChild(this._ballElem);
+            	}*/
 
             //запускається останнім, щоб після запуску нової сцени
             //не вимальовувалися старі елементи
@@ -616,14 +639,14 @@ var GameScene = function () {
 
             if (this.isPause) {
                 this._blockArr.forEach(function (block) {
-                    _this3._game.gameField.appendChild(block.getElem());
+                    _this3._game.gameField.append(block.getElem());
                 });
                 this.isPause = false;
                 this._blockNumber = this._blockArr.length;
             }
 
             if (this._blockNumber < this._blockArr.length) {
-                this._game.gameField.appendChild(this._blockArr[this._blockNumber].getElem());
+                this._game.gameField.append(this._blockArr[this._blockNumber].getElem());
                 this._blockNumber++;
                 return;
             }
@@ -653,7 +676,7 @@ var GameScene = function () {
                     var pos = _this4._blockArr.indexOf(block);
                     if (pos >= 0) {
                         _this4._blockArr.splice(pos, 1);
-                        _this4._game.gameField.removeChild(block.getElem());
+                        block.getElem().remove();
                     }
                 }
             });

@@ -13,7 +13,6 @@ class GameOverScene {
 
     _init() {
         this._isShowInfo = true;
-        this._isMenu = false;
         this._info = new Info( "" );
     }
 
@@ -32,14 +31,16 @@ class GameOverScene {
     }
 
     render() {
-        if ( this._isShowInfo ) {
-            if ( !this._game.gameField.contains( this._info.getElem() ) ) {
-                this._game.gameField.appendChild( this._info.getElem() );
+        if (this._isShowInfo) {
+            if (!this._game.gameField.find("*").is( this._info.getElem() ) ) {
+                this._game.gameField.append( this._info.getElem() );
             }
+            return;
         } else {
-            if ( this._game.gameField.contains( this._info.getElem() ) ) {
-                this._game.gameField.removeChild( this._info.getElem() );
+            if (this._game.gameField.find("*").is( this._info.getElem() )  ) {
+                this._info.getElem().remove();
             }
+
         }
     }
 
@@ -119,7 +120,8 @@ class GameOverScene {
     }
 
     _clearScene() {
-        if ( this._game.gameField.contains( this._info.getElem() ) )
-            this._game.gameField.removeChild( this._info.getElem() );
+        if ( this._game.gameField.find("*").is( this._info.getElem() ) ) {
+            this._info.getElem().remove();
+        }
     }
 }

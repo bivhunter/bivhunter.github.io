@@ -22,9 +22,12 @@ var Ball = function () {
     _createClass(Ball, [{
         key: "_init",
         value: function _init() {
-            this._ball = document.createElement("div");
-            this._ball.classList.add("ball");
+            this._ball = $("<div></div>").addClass("ball");
             this.direction = this._startDirection.norm();
+
+            /*        this._ball = document.createElement("div");
+                    this._ball.classList.add("ball");
+                    this.direction = this._startDirection.norm();*/
         }
     }, {
         key: "render",
@@ -73,6 +76,7 @@ var Ball = function () {
     }, {
         key: "sendToBoard",
         value: function sendToBoard(board) {
+            // console.log("sendToBoard");
             this.direction = this._startDirection.norm();
             this.renderPosition = board.vecForBallStart(this);
             this.position = board.vecForBallStart(this);
@@ -80,9 +84,14 @@ var Ball = function () {
     }, {
         key: "_setPosition",
         value: function _setPosition(coord) {
-            //console.log(coord);
-            this._ball.style.left = coord.x - this._radius + "px";
-            this._ball.style.top = coord.y - this._radius + "px";
+            // console.log(coord);
+            this._ball.css({
+                left: coord.x - this._radius,
+                top: coord.y - this._radius
+            });
+
+            /*this._ball.style.left = coord.x - this._radius + "px";
+            this._ball.style.top = coord.y - this._radius + "px";*/
         }
     }, {
         key: "getElem",

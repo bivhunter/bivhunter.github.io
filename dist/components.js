@@ -20,76 +20,108 @@ var Menu = function () {
     _createClass(Menu, [{
         key: "_init",
         value: function _init() {
-            var menuWrapper = document.createElement("div");
-            menuWrapper.classList.add("menu");
-            this._initMenuList();
 
-            menuWrapper.appendChild(this._initHeader());
-            menuWrapper.appendChild(this._menuList);
+            var menuWrapper = $("<div></div>").addClass("menu").append(this._initHeader());
+            this._initMenuList();
+            menuWrapper.append(this._menuList);
             this._elem = menuWrapper;
             this._initMarker();
+
+            /*
+                    let menuWrapper = document.createElement( "div" );
+                    menuWrapper.classList.add( "menu" );
+                    this._initMenuList();
+            
+            
+                    menuWrapper.appendChild( this._initHeader() );
+                    menuWrapper.appendChild( this._menuList );
+                    this._elem = menuWrapper;
+                    this._initMarker();
+                    */
         }
     }, {
         key: "_initHeader",
         value: function _initHeader() {
-            var header = document.createElement("h1");
+
+            return $("<h1></h1>").addClass("menu-header").text(this._headerText);
+
+            /*
+            let header = document.createElement( "h1" );
             header.textContent = this._headerText;
-            header.classList.add("menu-header");
+            header.classList.add( "menu-header" );
             return header;
+            */
         }
     }, {
         key: "_initMenuList",
         value: function _initMenuList() {
-            var menuList = document.createElement("ul");
-            this._menuItemsList.forEach(function (item) {
-                var listItem = document.createElement("li");
-                menuList.appendChild(listItem);
 
-                var span = document.createElement("span");
-                listItem.appendChild(span);
-                span.textContent = item;
+            var menuList = $("<ul></ul>").addClass("menu-list");
+            this._menuItemsList.forEach(function (item) {
+                var listItem = $("<li></li>").appendTo(menuList);
+                var span = $("<span></span>").appendTo(listItem);
+                span.text(item);
 
                 var temp = item.split(" ");
-                item = temp.join("-");
-                listItem.classList.add("menu-" + item.toLowerCase());
+                listItem.attr("data-name", temp.join("-").toLowerCase());
             });
-            menuList.classList.add("menu-list");
 
             this._menuList = menuList;
+
+            /*let menuList = document.createElement( "ul" );
+            this._menuItemsList.forEach( item => {
+                let listItem = document.createElement( "li" );
+                menuList.appendChild( listItem );
+                  let span = document.createElement( "span" );
+                listItem.appendChild( span );
+                span.textContent = item;
+                  let temp = item.split( " " );
+                item = temp.join( "-" );
+                listItem.classList.add( "menu-" + item.toLowerCase() );
+            } );
+            menuList.classList.add( "menu-list" );
+              this._menuList = menuList;
+            */
         }
     }, {
         key: "_initMarker",
         value: function _initMarker() {
-            this._marker = document.createElement("div");
-            this._marker.classList.add("menu-marker");
-            var selectedItem = this._menuList.firstElementChild;
-            this._selectedItem = selectedItem;
-            this._select(selectedItem);
+            this._marker = $("<div></div>").addClass("menu-marker");
+            this._selectedItem = this._menuList.children().first();
+            this._select(this._selectedItem);
+
+            /*
+                    this._marker = document.createElement( "div" );
+                    this._marker.classList.add( "menu-marker" );
+                    let selectedItem = this._menuList.firstElementChild;
+                    this._selectedItem = selectedItem;
+                    this._select( selectedItem );
+                    */
         }
     }, {
         key: "_select",
         value: function _select(elem) {
-            this._selectedItem.classList.remove("menu-selected");
-            elem.classList.add("menu-selected");
-            elem.querySelector("span").appendChild(this._marker);
+            this._selectedItem.removeClass("menu-selected");
+            elem.addClass("menu-selected").find("span").append(this._marker);
             this._selectedItem = elem;
         }
     }, {
         key: "selectNext",
         value: function selectNext() {
-            if (this._selectedItem.nextElementSibling) {
-                this._select(this._selectedItem.nextElementSibling);
+            //console.log(this._selectedItem.next());
+            if (this._selectedItem.next().length > 0) {
+                this._select(this._selectedItem.next());
             } else {
-                this._select(this._menuList.firstElementChild);
+                this._select(this._menuList.children().first());
             }
         }
     }, {
         key: "selectPrevious",
         value: function selectPrevious() {
-            if (this._selectedItem.previousElementSibling) {
-                this._select(this._selectedItem.previousElementSibling);
+            if (this._selectedItem.prev().length > 0) {
+                this._select(this._selectedItem.prev());
             } else {
-                this._select(this._menuList.lastElementChild);
+                this._select(this._menuList.children().last());
             }
         }
     }, {
@@ -125,31 +157,49 @@ var Header = function () {
     _createClass(Header, [{
         key: "_init",
         value: function _init() {
-            var ul = document.createElement("ul");
-            ul.classList.add("header-list");
-            //		header.appendChild(ul);
 
+            var ul = $("<ul></ul>").addClass("header-list");
             for (var key in this._options) {
                 if (!this._options.hasOwnProperty(key)) {
                     continue;
                 }
-                var li = document.createElement("li");
-                var span = document.createElement("span");
-                var classStr = "header-" + key.toLowerCase();
 
-                span.classList.add(classStr);
-                span.textContent = key + ": " + this._options[key];
+                var classStr = "header-" + key.toLowerCase();
+                var li = $("<li></li>").appendTo(ul);
+                var span = $("<span></span>").addClass(classStr).text(key + ": " + this._options[key]);
 
                 //Додає обгортку для показу блоку біля поля Score
                 if (key === "Score") {
-                    var block = document.createElement("div");
-                    block.classList.add("header-block");
-                    li.appendChild(block);
+                    $("<div></div>").addClass("header-block").appendTo(li);
                 }
-                ul.appendChild(li);
-                li.appendChild(span);
+
+                span.appendTo(li);
             }
             this._elem = ul;
+
+            /* let ul = document.createElement( "ul" );
+             ul.classList.add( "header-list" );
+             //		header.appendChild(ul);
+               for ( let key in this._options ) {
+                 if ( !this._options.hasOwnProperty( key ) ) {
+                     continue;
+                 }
+                 let li = document.createElement( "li" );
+                 let span = document.createElement( "span" );
+                 let classStr = "header-" + key.toLowerCase();
+                   span.classList.add( classStr );
+                 span.textContent = `${key}: ${this._options[ key ]}`;
+                   //Додає обгортку для показу блоку біля поля Score
+                 if ( key === "Score" ) {
+                     let block = document.createElement( "div" );
+                     block.classList.add( "header-block" );
+                     li.appendChild( block );
+                 }
+                 ul.appendChild( li );
+                 li.appendChild( span );
+             }
+             this._elem = ul;
+             */
         }
     }, {
         key: "getElem",
@@ -159,17 +209,17 @@ var Header = function () {
     }, {
         key: "setRound",
         value: function setRound(str) {
-            this._elem.querySelector(".header-round").textContent = "Round: " + str;
+            this._elem.find(".header-round").text("Round: " + str);
         }
     }, {
         key: "setLife",
         value: function setLife(str) {
-            this._elem.querySelector(".header-life").textContent = "Life: " + str;
+            this._elem.find(".header-life").text("Life: " + str);
         }
     }, {
         key: "setScore",
         value: function setScore(str) {
-            this._elem.querySelector(".header-score").textContent = "Score: " + str;
+            this._elem.find(".header-score").text("Score: " + str);
         }
     }]);
 
@@ -260,19 +310,25 @@ var Info = function () {
     _createClass(Info, [{
         key: "_init",
         value: function _init() {
-            var div = document.createElement("div");
-            div.classList.add("info");
-            this._elem = div;
 
-            var message = document.createElement("p");
-            message.classList.add("info-message");
+            this._message = $("<p></p>").addClass("info-message").text(this._text);
+            this._elem = $("<div></div>").addClass("info").append(this._message);
+
+            /*
+            let div = document.createElement( "div" );
+            div.classList.add( "info" );
+            this._elem = div;
+              let message = document.createElement( "p" );
+            message.classList.add( "info-message" );
             message.textContent = this._text;
             this._message = message;
-            div.appendChild(message);
+            div.appendChild( message );
+            */
         }
     }, {
         key: "enableAnimation",
         value: function enableAnimation() {
+            console.log("enable animation");
             this._isAnimation = true;
             this._animationLetterTime = 0;
             this._animationTime = 0;
@@ -281,6 +337,7 @@ var Info = function () {
     }, {
         key: "disableAnimation",
         value: function disableAnimation() {
+            console.log("disable animation");
             this._isAnimation = false;
         }
     }, {
@@ -308,6 +365,7 @@ var Info = function () {
             this.addText(text[this._letterCount]);
             this._animationLetterTime -= period;
             this._letterCount++;
+            console.log("animate");
         }
     }, {
         key: "getElem",
@@ -317,14 +375,109 @@ var Info = function () {
     }, {
         key: "addText",
         value: function addText(text) {
-            this._message.textContent += text;
+            this._message.text(function (index, value) {
+                return value += text;
+            });
         }
     }, {
         key: "setText",
         value: function setText(text) {
-            this._message.textContent = text;
+            this._message.text(text);
         }
     }]);
 
     return Info;
 }();
+
+var Vector = function () {
+    function Vector(x, y) {
+        _classCallCheck(this, Vector);
+
+        this.x = x;
+        this.y = y;
+    }
+
+    _createClass(Vector, [{
+        key: "setValue",
+        value: function setValue() {
+            if (arguments.length === 2) {
+                this.x = arguments[0];
+                this.y = arguments[1];
+            } else {
+                this.x = arguments[0].x;
+                this.y = arguments[0].y;
+            }
+        }
+    }, {
+        key: "norm",
+        value: function norm() {
+            var x = this.x,
+                y = this.y,
+                d = Math.sqrt(x * x + y * y);
+            return new Vector(x / d, y / d);
+        }
+    }, {
+        key: "sum",
+        value: function sum(vec) {
+            return new Vector(this.x + vec.x, this.y + vec.y);
+        }
+    }, {
+        key: "scalar",
+        value: function scalar(num) {
+            return new Vector(this.x * num, this.y * num);
+        }
+    }, {
+        key: "diff",
+        value: function diff(vec) {
+            return new Vector(this.x - vec.x, this.y - vec.y);
+        }
+    }, {
+        key: "module",
+        value: function module() {
+            return Math.sqrt(this.x * this.x + this.y * this.y);
+        }
+    }, {
+        key: "turnAngle",
+        value: function turnAngle(angle) {
+            this.setValue(this.x * Math.cos(angle) - this.y * Math.sin(angle), this.x * Math.sin(angle) + this.y * Math.cos(angle));
+            return this;
+        }
+    }], [{
+        key: "FromObj",
+        value: function FromObj(obj) {
+            return new Vector(obj.x, obj.y);
+        }
+    }, {
+        key: "turn",
+        value: function turn(vec1, vec2) {
+            return {
+                x: vec1.x * vec2.x,
+                y: vec1.y * vec2.y
+            };
+        }
+    }, {
+        key: "scalarMult",
+        value: function scalarMult(vec1, vec2) {
+            return vec1.x * vec2.x + vec1.y * vec2.y;
+        }
+    }]);
+
+    return Vector;
+}();
+
+//Пошук коренів квадратного рівняння
+
+
+function calcQuad(a, b, c) {
+    var d = b * b - 4 * a * c;
+    if (d < 0) {
+        return null;
+    }
+
+    var x_1 = (-b + Math.sqrt(d)) / (2 * a);
+    var x_2 = (-b - Math.sqrt(d)) / (2 * a);
+    return {
+        x_1: x_1,
+        x_2: x_2
+    };
+}

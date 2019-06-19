@@ -18,9 +18,12 @@ class Ball {
     }
 
     _init() {
-        this._ball = document.createElement("div");
-        this._ball.classList.add("ball");
+        this._ball = $("<div></div>").addClass("ball");
         this.direction = this._startDirection.norm();
+
+/*        this._ball = document.createElement("div");
+        this._ball.classList.add("ball");
+        this.direction = this._startDirection.norm();*/
     }
 
     render() {
@@ -60,15 +63,21 @@ class Ball {
     }
 
     sendToBoard(board) {
+       // console.log("sendToBoard");
         this.direction = this._startDirection.norm();
         this.renderPosition = board.vecForBallStart(this);
         this.position = board.vecForBallStart(this);
     }
 
     _setPosition(coord) {
-        //console.log(coord);
-        this._ball.style.left = coord.x - this._radius + "px";
-        this._ball.style.top = coord.y - this._radius + "px";
+       // console.log(coord);
+        this._ball.css({
+            left: coord.x - this._radius,
+            top: coord.y - this._radius
+        });
+
+        /*this._ball.style.left = coord.x - this._radius + "px";
+        this._ball.style.top = coord.y - this._radius + "px";*/
     }
 
     getElem() {
