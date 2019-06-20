@@ -15,7 +15,7 @@ var Ball = function () {
             y: -1
         });
 
-        this._radius = 15;
+        // this._radius = 30;
         this._init();
     }
 
@@ -33,6 +33,11 @@ var Ball = function () {
         key: "render",
         value: function render() {
             this._setPosition(this.renderPosition);
+        }
+    }, {
+        key: "setRadius",
+        value: function setRadius(num) {
+            this._radius = num;
         }
     }, {
         key: "getNormal",

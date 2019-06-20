@@ -9,7 +9,7 @@ class Ball {
             y: -1
         });
 
-        this._radius = 15;
+       // this._radius = 30;
         this._init();
     }
 
@@ -28,6 +28,10 @@ class Ball {
 
     render() {
         this._setPosition(this.renderPosition);
+    }
+
+    setRadius(num) {
+        this._radius = num;
     }
 
     getNormal(direction) {

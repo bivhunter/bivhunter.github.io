@@ -48,8 +48,16 @@ class StartScene extends GameScene {
 				y: -1
 			}
 		});
-		this._ball.sendToBoard(this._board);
-		this._ballElem = this._ball.getElem();
+        this._ballElem = this._ball.getElem();
+
+        this._ball.getElem().on("ballLoad", () => {
+        	console.log("load ball");
+            this._ball.setRadius(this._ballElem.outerWidth() / 2);
+            this._isLoadBall = true;
+            this._ball.sendToBoard( this._board );
+
+
+        });
 	}
 
 	update(dt) {
@@ -107,7 +115,7 @@ class StartScene extends GameScene {
     //ініт ball проходить після ініт board,
     // тому для першого апдейту добавлено" this._game.gameField.clientWidth / 2;"
 	_updateBoard(dt, board) {
-		if (!this._ball.renderPosition) {
+		if (!this._ball.renderPosition || !this._isLoadBall) {
             board.position = this._game.gameField.innerWidth / 2;
 		} else {
             board.position = this._ball.renderPosition.x;

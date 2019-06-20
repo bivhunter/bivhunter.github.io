@@ -20,6 +20,7 @@ var GameScene = function () {
         this._acceleration = 0.2;
         this._infoTime = 0;
         this.ballOnBoard = true;
+        this._isLoadBall = false;
         this._initRound();
     }
 
@@ -50,6 +51,8 @@ var GameScene = function () {
     }, {
         key: "_initBall",
         value: function _initBall() {
+            var _this = this;
+
             this._ball = new Ball({
                 game: this,
                 speed: this._SPEED_COEF,
@@ -58,9 +61,16 @@ var GameScene = function () {
                     y: -10
                 }
             });
-            this._ball.sendToBoard(this._board);
-            //this.ballOnBoard = false;
+
             this._ballElem = this._ball.getElem();
+
+            this._ball.getElem().on("ballLoad", function () {
+                _this._ball.setRadius(_this._ballElem.outerWidth() / 2);
+                _this._isLoadBall = true;
+                _this._ball.sendToBoard(_this._board);
+            });
+
+            //this.ballOnBoard = false;
         }
     }, {
         key: "_initBlocks",
@@ -117,7 +127,11 @@ var GameScene = function () {
             }
 
             this._updateBoard(dt, this._board);
-            this._updateBall(dt, this._ball);
+
+            if (this._isLoadBall) {
+                this._updateBall(dt, this._ball);
+            }
+
             this._checkKeys();
         }
     }, {
@@ -326,12 +340,12 @@ var GameScene = function () {
     }, {
         key: "_isTouchBlocksVsBall",
         value: function _isTouchBlocksVsBall(ball) {
-            var _this = this;
+            var _this2 = this;
 
             this._touchedBlockArr = [];
             this._blockArr.forEach(function (block) {
                 if (Block.isTouchBlockVsBall(block, ball)) {
-                    _this._touchedBlockArr.push(block);
+                    _this2._touchedBlockArr.push(block);
                 }
             });
 
@@ -493,7 +507,7 @@ var GameScene = function () {
     }, {
         key: "_findTouchedBoardPoints",
         value: function _findTouchedBoardPoints(ball, board) {
-            var _this2 = this;
+            var _this3 = this;
 
             this._boardPointTouchedArr = [];
             var pointArr = board.getPointArr();
@@ -501,7 +515,7 @@ var GameScene = function () {
                 //округлення для нейтралізації помилки при розрахунках
                 var distance = Math.round(ball.board.position.diff(point).module() * 100) / 100;
                 if (distance <= ball.radius) {
-                    _this2._boardPointTouchedArr.push(point);
+                    _this3._boardPointTouchedArr.push(point);
                 }
             });
             return this._boardPointTouchedArr;
@@ -614,10 +628,13 @@ var GameScene = function () {
             	}
             		}*/
 
-            this._ball.render(dt);
-
             if (!this._game.gameField.find("*").is(this._ballElem)) {
                 this._game.gameField.append(this._ballElem);
+                this._ballElem.trigger("ballLoad");
+            }
+
+            if (this._isLoadBall) {
+                this._ball.render(dt);
             }
 
             /*	if (!this._game.gameField.contains(this._ballElem)) {
@@ -635,11 +652,11 @@ var GameScene = function () {
     }, {
         key: "_renderBlock",
         value: function _renderBlock() {
-            var _this3 = this;
+            var _this4 = this;
 
             if (this.isPause) {
                 this._blockArr.forEach(function (block) {
-                    _this3._game.gameField.append(block.getElem());
+                    _this4._game.gameField.append(block.getElem());
                 });
                 this.isPause = false;
                 this._blockNumber = this._blockArr.length;
@@ -669,13 +686,13 @@ var GameScene = function () {
     }, {
         key: "_removeBlock",
         value: function _removeBlock() {
-            var _this4 = this;
+            var _this5 = this;
 
             this._blockForRemove.forEach(function (block) {
                 if (block.isRemove()) {
-                    var pos = _this4._blockArr.indexOf(block);
+                    var pos = _this5._blockArr.indexOf(block);
                     if (pos >= 0) {
-                        _this4._blockArr.splice(pos, 1);
+                        _this5._blockArr.splice(pos, 1);
                         block.getElem().remove();
                     }
                 }

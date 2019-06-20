@@ -12,6 +12,7 @@ class GameScene {
         this._acceleration = 0.2;
         this._infoTime = 0;
         this.ballOnBoard = true;
+        this._isLoadBall = false;
         this._initRound();
     }
 
@@ -46,9 +47,19 @@ class GameScene {
                 y: -10
             }
         } );
-        this._ball.sendToBoard( this._board );
-        //this.ballOnBoard = false;
+
         this._ballElem = this._ball.getElem();
+
+        this._ball.getElem().on("ballLoad", () => {
+            this._ball.setRadius(this._ballElem.outerWidth() / 2);
+            this._isLoadBall = true;
+            this._ball.sendToBoard( this._board );
+
+
+        });
+
+        //this.ballOnBoard = false;
+
     }
 
     _initBlocks( round ) {
@@ -102,7 +113,11 @@ class GameScene {
         }
 
         this._updateBoard( dt, this._board );
-        this._updateBall( dt, this._ball );
+
+        if (this._isLoadBall) {
+            this._updateBall( dt, this._ball );
+        }
+
         this._checkKeys();
     }
 
@@ -577,10 +592,15 @@ class GameScene {
 
 		}*/
 
-		this._ball.render(dt);
+
 
 		if (!this._game.gameField.find("*").is(this._ballElem)) {
             this._game.gameField.append(this._ballElem);
+            this._ballElem.trigger("ballLoad");
+        }
+
+        if (this._isLoadBall) {
+            this._ball.render(dt);
         }
 
 

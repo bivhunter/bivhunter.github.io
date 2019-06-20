@@ -57,6 +57,8 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "_initBall",
 		value: function _initBall() {
+			var _this2 = this;
+
 			this._ball = new Ball({
 				game: this,
 				speed: 500,
@@ -65,8 +67,14 @@ var StartScene = function (_GameScene) {
 					y: -1
 				}
 			});
-			this._ball.sendToBoard(this._board);
 			this._ballElem = this._ball.getElem();
+
+			this._ball.getElem().on("ballLoad", function () {
+				console.log("load ball");
+				_this2._ball.setRadius(_this2._ballElem.outerWidth() / 2);
+				_this2._isLoadBall = true;
+				_this2._ball.sendToBoard(_this2._board);
+			});
 		}
 	}, {
 		key: "update",
@@ -130,7 +138,7 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "_updateBoard",
 		value: function _updateBoard(dt, board) {
-			if (!this._ball.renderPosition) {
+			if (!this._ball.renderPosition || !this._isLoadBall) {
 				board.position = this._game.gameField.innerWidth / 2;
 			} else {
 				board.position = this._ball.renderPosition.x;
