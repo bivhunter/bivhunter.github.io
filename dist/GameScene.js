@@ -59,7 +59,7 @@ var GameScene = function () {
                 }
             });
             this._ball.sendToBoard(this._board);
-            this.ballOnBoard = false;
+            //this.ballOnBoard = false;
             this._ballElem = this._ball.getElem();
         }
     }, {

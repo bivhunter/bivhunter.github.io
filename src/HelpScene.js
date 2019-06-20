@@ -20,6 +20,24 @@ class HelpScene {
             menuItems: ["Back"]
         });
 
+
+        this._help = $("<div></div>").addClass("help");
+
+        let table = $("<table></table>").addClass("help-table").appendTo(this._help);
+
+        $("<tr></tr>").html(`<th>Action: </th> <th>Key</th>`)
+            .appendTo(table);
+
+        for (let key in this._itemsObj) {
+            if (!this._itemsObj.hasOwnProperty(key)) {
+                continue;
+            }
+
+            $("<tr></tr>").html( `<td>${key}: </td> <td>${this._itemsObj[key]}</td>` )
+                .appendTo(table);
+        }
+
+        /*
         this._help = document.createElement("div");
         this._help.classList.add("help");
 
@@ -40,22 +58,23 @@ class HelpScene {
         }
 
         this._help.appendChild(table);
+        */
     }
 
     update() {
         if (this._game.checkKeyPress(27) || this._game.checkKeyPress(13)) {
-            this._game.gameField.removeChild(this._menu.getElem());
+            this._menu.getElem().remove();
             this._game.returnScene();
         }
     }
 
     render() {
-        if (!this._game.gameField.contains(this._menu.getElem())) {
-            this._game.gameField.appendChild(this._menu.getElem());
+        if (!this._game.gameField.find("*").is( this._menu.getElem() ) ) {
+            this._game.gameField.append( this._menu.getElem() );
         }
 
-        if (!this._menu.getElem().contains(this._help)) {
-            this._menu.getElem().appendChild(this._help);
+        if (!this._menu.getElem().find("*").is(this._help)) {
+            this._menu.getElem().append(this._help);
         }
     }
 }

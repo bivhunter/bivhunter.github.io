@@ -51,7 +51,7 @@ var Board = function () {
         value: function vecForBallStart(ball) {
             var x = this.renderPosition;
             var y = this._topPosition - this._height / 2 - this._borderWidth - ball.radius;
-            console.log(x, y);
+            //console.log(x, y);
             return new Vector(x, y);
         }
 

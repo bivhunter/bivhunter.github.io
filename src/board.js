@@ -37,7 +37,7 @@ class Board {
     vecForBallStart(ball) {
         let x = this.renderPosition;
         let y = (this._topPosition - this._height / 2 - this._borderWidth - ball.radius);
-        console.log(x, y);
+        //console.log(x, y);
         return new Vector(x, y);
     }
     
