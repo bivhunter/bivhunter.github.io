@@ -21,6 +21,7 @@ var GameScene = function () {
         this._infoTime = 0;
         this.ballOnBoard = true;
         this._isLoadBall = false;
+        this._isLoadBoard = false;
         this._initRound();
     }
 
@@ -36,22 +37,26 @@ var GameScene = function () {
     }, {
         key: "_initBoard",
         value: function _initBoard() {
+            var _this = this;
+
             this._board = new Board({
                 gameField: this._game.gameField
             });
             this._board.speedCoef = this._SPEED_COEF;
-            this._boardElem = this._board.getElem();
-            this._game.gameField.append(this._boardElem);
+            this._boardElem = this._board.getElem().on("boardLoad", function () {
+                _this._board.init();
+                _this._isLoadBoard = true;
+                _this._boardMinPosition = _this._boardElem.outerWidth() / 2;
+                _this._boardMaxPosition = _this._game.gameField.innerWidth() - _this._boardElem.outerWidth() / 2;
+            });
+            //this._game.gameField.append( this._boardElem );
 
-            this._board.init();
-            this._boardMinPosition = this._boardElem.outerWidth() / 2;
-            this._boardMaxPosition = this._game.gameField.innerWidth() - this._boardElem.outerWidth() / 2;
-            console.log("board min max", this._boardMinPosition, this._boardMaxPosition);
+            // console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
         }
     }, {
         key: "_initBall",
         value: function _initBall() {
-            var _this = this;
+            var _this2 = this;
 
             this._ball = new Ball({
                 game: this,
@@ -62,12 +67,10 @@ var GameScene = function () {
                 }
             });
 
-            this._ballElem = this._ball.getElem();
-
-            this._ball.getElem().on("ballLoad", function () {
-                _this._ball.setRadius(_this._ballElem.outerWidth() / 2);
-                _this._isLoadBall = true;
-                _this._ball.sendToBoard(_this._board);
+            this._ballElem = this._ball.getElem().on("ballLoad", function () {
+                _this2._ball.setRadius(_this2._ballElem.outerWidth() / 2);
+                _this2._isLoadBall = true;
+                _this2._ball.sendToBoard(_this2._board);
             });
 
             //this.ballOnBoard = false;
@@ -126,7 +129,9 @@ var GameScene = function () {
                 return;
             }
 
-            this._updateBoard(dt, this._board);
+            if (this._isLoadBoard) {
+                this._updateBoard(dt, this._board);
+            }
 
             if (this._isLoadBall) {
                 this._updateBall(dt, this._ball);
@@ -340,12 +345,12 @@ var GameScene = function () {
     }, {
         key: "_isTouchBlocksVsBall",
         value: function _isTouchBlocksVsBall(ball) {
-            var _this2 = this;
+            var _this3 = this;
 
             this._touchedBlockArr = [];
             this._blockArr.forEach(function (block) {
                 if (Block.isTouchBlockVsBall(block, ball)) {
-                    _this2._touchedBlockArr.push(block);
+                    _this3._touchedBlockArr.push(block);
                 }
             });
 
@@ -507,7 +512,7 @@ var GameScene = function () {
     }, {
         key: "_findTouchedBoardPoints",
         value: function _findTouchedBoardPoints(ball, board) {
-            var _this3 = this;
+            var _this4 = this;
 
             this._boardPointTouchedArr = [];
             var pointArr = board.getPointArr();
@@ -515,7 +520,7 @@ var GameScene = function () {
                 //округлення для нейтралізації помилки при розрахунках
                 var distance = Math.round(ball.board.position.diff(point).module() * 100) / 100;
                 if (distance <= ball.radius) {
-                    _this3._boardPointTouchedArr.push(point);
+                    _this4._boardPointTouchedArr.push(point);
                 }
             });
             return this._boardPointTouchedArr;
@@ -594,10 +599,13 @@ var GameScene = function () {
         key: "render",
         value: function render(dt) {
             // console.log("render dt", dt);
-            this._board.render(dt);
+            if (this._isLoadBoard) {
+                this._board.render(dt);
+            }
 
-            if (this._game.gameField.find("*").is(this._boardElem)) {
+            if (!this._game.gameField.find("*").is(this._boardElem)) {
                 this._game.gameField.append(this._boardElem);
+                this._boardElem.trigger("boardLoad");
             }
 
             /*if (!this._game.gameField.contains(this._boardElem)) {
@@ -652,11 +660,11 @@ var GameScene = function () {
     }, {
         key: "_renderBlock",
         value: function _renderBlock() {
-            var _this4 = this;
+            var _this5 = this;
 
             if (this.isPause) {
                 this._blockArr.forEach(function (block) {
-                    _this4._game.gameField.append(block.getElem());
+                    _this5._game.gameField.append(block.getElem());
                 });
                 this.isPause = false;
                 this._blockNumber = this._blockArr.length;
@@ -686,13 +694,13 @@ var GameScene = function () {
     }, {
         key: "_removeBlock",
         value: function _removeBlock() {
-            var _this5 = this;
+            var _this6 = this;
 
             this._blockForRemove.forEach(function (block) {
                 if (block.isRemove()) {
-                    var pos = _this5._blockArr.indexOf(block);
+                    var pos = _this6._blockArr.indexOf(block);
                     if (pos >= 0) {
-                        _this5._blockArr.splice(pos, 1);
+                        _this6._blockArr.splice(pos, 1);
                         block.getElem().remove();
                     }
                 }

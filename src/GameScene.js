@@ -13,6 +13,7 @@ class GameScene {
         this._infoTime = 0;
         this.ballOnBoard = true;
         this._isLoadBall = false;
+        this._isLoadBoard = false;
         this._initRound();
     }
 
@@ -29,13 +30,18 @@ class GameScene {
             gameField: this._game.gameField
         } );
         this._board.speedCoef = this._SPEED_COEF;
-        this._boardElem = this._board.getElem();
-        this._game.gameField.append( this._boardElem );
+        this._boardElem = this._board.getElem()
+            .on("boardLoad", () => {
+                this._board.init();
+                this._isLoadBoard = true;
+                this._boardMinPosition = this._boardElem.outerWidth() / 2;
+                this._boardMaxPosition = this._game.gameField.innerWidth() - this._boardElem.outerWidth() / 2;
 
-        this._board.init();
-        this._boardMinPosition = this._boardElem.outerWidth() / 2;
-        this._boardMaxPosition = this._game.gameField.innerWidth() - this._boardElem.outerWidth() / 2;
-        console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
+
+            });
+        //this._game.gameField.append( this._boardElem );
+
+       // console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
     }
 
     _initBall() {
@@ -48,9 +54,8 @@ class GameScene {
             }
         } );
 
-        this._ballElem = this._ball.getElem();
-
-        this._ball.getElem().on("ballLoad", () => {
+        this._ballElem = this._ball.getElem()
+            .on("ballLoad", () => {
             this._ball.setRadius(this._ballElem.outerWidth() / 2);
             this._isLoadBall = true;
             this._ball.sendToBoard( this._board );
@@ -112,7 +117,9 @@ class GameScene {
             return;
         }
 
-        this._updateBoard( dt, this._board );
+        if (this._isLoadBoard) {
+            this._updateBoard(dt, this._board);
+        }
 
         if (this._isLoadBall) {
             this._updateBall( dt, this._ball );
@@ -555,11 +562,14 @@ class GameScene {
 
     render(dt) {
        // console.log("render dt", dt);
-		this._board.render(dt);
+        if (this._isLoadBoard) {
+            this._board.render(dt);
+        }
 
 
-        if (this._game.gameField.find("*").is(this._boardElem)) {
+        if (!this._game.gameField.find("*").is(this._boardElem)) {
             this._game.gameField.append(this._boardElem);
+            this._boardElem.trigger("boardLoad");
         }
 
 		/*if (!this._game.gameField.contains(this._boardElem)) {

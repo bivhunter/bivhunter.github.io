@@ -138,8 +138,8 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "_updateBoard",
 		value: function _updateBoard(dt, board) {
-			if (!this._ball.renderPosition || !this._isLoadBall) {
-				board.position = this._game.gameField.innerWidth / 2;
+			if (!this._ball.renderPosition || !this._isLoadBall || !this._isLoadBoard) {
+				board.position = this._game.gameField.innerWidth() / 2;
 			} else {
 				board.position = this._ball.renderPosition.x;
 			}

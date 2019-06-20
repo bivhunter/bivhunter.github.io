@@ -115,8 +115,8 @@ class StartScene extends GameScene {
     //ініт ball проходить після ініт board,
     // тому для першого апдейту добавлено" this._game.gameField.clientWidth / 2;"
 	_updateBoard(dt, board) {
-		if (!this._ball.renderPosition || !this._isLoadBall) {
-            board.position = this._game.gameField.innerWidth / 2;
+		if (!this._ball.renderPosition || !this._isLoadBall || !this._isLoadBoard) {
+            board.position = this._game.gameField.innerWidth() / 2;
 		} else {
             board.position = this._ball.renderPosition.x;
         }
