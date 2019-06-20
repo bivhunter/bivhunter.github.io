@@ -36,31 +36,56 @@ var Game = function () {
 
             //зберігає натиснуті кнопки та їх стан
             this.keys = {};
-            document.addEventListener("keydown", function (e) {
+
+            $(document).on("keydown", function (e) {
                 _this.keys[e.which] = true;
             });
 
-            document.addEventListener("keyup", function (e) {
+            $(document).on("keyup", function (e) {
                 _this.keys[e.which] = false;
             });
 
+            /*
+            document.addEventListener( "keydown", ( e ) => {
+                this.keys[ e.which ] = true;
+            } );
+              document.addEventListener( "keyup", ( e ) => {
+                this.keys[ e.which ] = false;
+            } );
+            */
+
             //відманяють події за замовчуванням:
             //виділення тексту, виклик контекстного меню
-            document.addEventListener("dragstart", function (event) {
+
+
+            $(document).on("dragstart", function (event) {
                 event.preventDefault();
             });
 
-            document.addEventListener("mousedown", function (event) {
+            $(document).on("mousedown", function (event) {
                 event.preventDefault();
             });
 
-            document.addEventListener("contextmenu", function (event) {
-                var wrapper = document.querySelector(".wrapper");
-                if (!wrapper.contains(event.target)) {
-                    return;
+            /*document.addEventListener( "dragstart", ( event ) => {
+                event.preventDefault();
+            } );
+              document.addEventListener( "mousedown", ( event ) => {
+                event.preventDefault();
+            } );*/
+
+            $(document).on("contextmenu", function (event) {
+                if ($(".wrapper *").is($(event.target))) {
+                    event.preventDefault();
                 }
-                event.preventDefault();
             });
+
+            /* document.addEventListener( "contextmenu", ( event ) => {
+                 let wrapper = document.querySelector( ".wrapper" );
+                 if ( !wrapper.contains( event.target ) ) {
+                     return;
+                 }
+                 event.preventDefault();
+             } );*/
         }
     }, {
         key: "setScene",

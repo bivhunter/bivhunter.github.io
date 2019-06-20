@@ -42,6 +42,17 @@ class Game {
     _initEvent() {
         //зберігає натиснуті кнопки та їх стан
         this.keys = {};
+
+        $(document).on("keydown", ( e ) => {
+            this.keys[ e.which ] = true;
+        } );
+
+
+        $(document).on("keyup", ( e ) => {
+            this.keys[ e.which ] = false;
+        } );
+
+        /*
         document.addEventListener( "keydown", ( e ) => {
             this.keys[ e.which ] = true;
         } );
@@ -49,24 +60,41 @@ class Game {
         document.addEventListener( "keyup", ( e ) => {
             this.keys[ e.which ] = false;
         } );
+*/
 
         //відманяють події за замовчуванням:
         //виділення тексту, виклик контекстного меню
-        document.addEventListener( "dragstart", ( event ) => {
+
+
+        $(document).on("dragstart", ( event ) => {
+            event.preventDefault();
+        } );
+
+        $(document).on("mousedown", ( event ) => {
+            event.preventDefault();
+        } );
+
+        /*document.addEventListener( "dragstart", ( event ) => {
             event.preventDefault();
         } );
 
         document.addEventListener( "mousedown", ( event ) => {
             event.preventDefault();
+        } );*/
+
+        $(document).on("contextmenu", ( event ) => {
+             if ($(".wrapper *").is($(event.target)) ) {
+                 event.preventDefault();
+             }
         } );
 
-        document.addEventListener( "contextmenu", ( event ) => {
+       /* document.addEventListener( "contextmenu", ( event ) => {
             let wrapper = document.querySelector( ".wrapper" );
             if ( !wrapper.contains( event.target ) ) {
                 return;
             }
             event.preventDefault();
-        } );
+        } );*/
     }
 
     setScene( options ) {
