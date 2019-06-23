@@ -20,8 +20,10 @@ var GameScene = function () {
         this._acceleration = 0.2;
         this._infoTime = 0;
         this.ballOnBoard = true;
-        this._isLoadBall = false;
-        this._isLoadBoard = false;
+        this._deffBall = $.Deferred();
+        this._deffBoard = $.Deferred();
+        //this._isLoadBall = false;
+        //this._isLoadBoard = false;
         this._initRound();
     }
 
@@ -43,9 +45,10 @@ var GameScene = function () {
                 gameField: this._game.gameField
             });
             this._board.speedCoef = this._SPEED_COEF;
-            this._boardElem = this._board.getElem().on("boardLoad", function () {
+            this._boardElem = this._board.getElem();
+
+            this._deffBoard.done(function () {
                 _this._board.init();
-                _this._isLoadBoard = true;
                 _this._boardMinPosition = _this._boardElem.outerWidth() / 2;
                 _this._boardMaxPosition = _this._game.gameField.innerWidth() - _this._boardElem.outerWidth() / 2;
             });
@@ -67,9 +70,11 @@ var GameScene = function () {
                 }
             });
 
-            this._ballElem = this._ball.getElem().on("ballLoad", function () {
+            this._ballElem = this._ball.getElem();
+
+            this._deffBall.done(function () {
                 _this2._ball.setRadius(_this2._ballElem.outerWidth() / 2);
-                _this2._isLoadBall = true;
+                //this._isLoadBall = true;
                 _this2._ball.sendToBoard(_this2._board);
             });
 
@@ -129,11 +134,11 @@ var GameScene = function () {
                 return;
             }
 
-            if (this._isLoadBoard) {
+            if (this._deffBoard.state() === "resolved") {
                 this._updateBoard(dt, this._board);
             }
 
-            if (this._isLoadBall) {
+            if (this._deffBall.state() === "resolved") {
                 this._updateBall(dt, this._ball);
             }
 
@@ -599,13 +604,13 @@ var GameScene = function () {
         key: "render",
         value: function render(dt) {
             // console.log("render dt", dt);
-            if (this._isLoadBoard) {
+            if (this._deffBoard.state() === "resolved") {
                 this._board.render(dt);
             }
 
             if (!this._game.gameField.find("*").is(this._boardElem)) {
                 this._game.gameField.append(this._boardElem);
-                this._boardElem.trigger("boardLoad");
+                this._deffBoard.resolve();
             }
 
             /*if (!this._game.gameField.contains(this._boardElem)) {
@@ -638,10 +643,10 @@ var GameScene = function () {
 
             if (!this._game.gameField.find("*").is(this._ballElem)) {
                 this._game.gameField.append(this._ballElem);
-                this._ballElem.trigger("ballLoad");
+                this._deffBall.resolve();
             }
 
-            if (this._isLoadBall) {
+            if (this._deffBall.state() === "resolved") {
                 this._ball.render(dt);
             }
 

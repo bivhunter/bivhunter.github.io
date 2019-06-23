@@ -12,8 +12,10 @@ class GameScene {
         this._acceleration = 0.2;
         this._infoTime = 0;
         this.ballOnBoard = true;
-        this._isLoadBall = false;
-        this._isLoadBoard = false;
+        this._deffBall = $.Deferred();
+        this._deffBoard = $.Deferred();
+        //this._isLoadBall = false;
+        //this._isLoadBoard = false;
         this._initRound();
     }
 
@@ -30,10 +32,10 @@ class GameScene {
             gameField: this._game.gameField
         } );
         this._board.speedCoef = this._SPEED_COEF;
-        this._boardElem = this._board.getElem()
-            .on("boardLoad", () => {
+        this._boardElem = this._board.getElem();
+
+        this._deffBoard.done( () => {
                 this._board.init();
-                this._isLoadBoard = true;
                 this._boardMinPosition = this._boardElem.outerWidth() / 2;
                 this._boardMaxPosition = this._game.gameField.innerWidth() - this._boardElem.outerWidth() / 2;
 
@@ -54,13 +56,13 @@ class GameScene {
             }
         } );
 
-        this._ballElem = this._ball.getElem()
-            .on("ballLoad", () => {
+
+        this._ballElem = this._ball.getElem();
+
+        this._deffBall.done( () => {
             this._ball.setRadius(this._ballElem.outerWidth() / 2);
-            this._isLoadBall = true;
+            //this._isLoadBall = true;
             this._ball.sendToBoard( this._board );
-
-
         });
 
         //this.ballOnBoard = false;
@@ -117,11 +119,11 @@ class GameScene {
             return;
         }
 
-        if (this._isLoadBoard) {
+        if (this._deffBoard.state() === "resolved") {
             this._updateBoard(dt, this._board);
         }
 
-        if (this._isLoadBall) {
+        if ( this._deffBall.state() === "resolved" ) {
             this._updateBall( dt, this._ball );
         }
 
@@ -562,14 +564,14 @@ class GameScene {
 
     render(dt) {
        // console.log("render dt", dt);
-        if (this._isLoadBoard) {
+        if (this._deffBoard.state() === "resolved") {
             this._board.render(dt);
         }
 
 
         if (!this._game.gameField.find("*").is(this._boardElem)) {
             this._game.gameField.append(this._boardElem);
-            this._boardElem.trigger("boardLoad");
+            this._deffBoard.resolve();
         }
 
 		/*if (!this._game.gameField.contains(this._boardElem)) {
@@ -606,10 +608,10 @@ class GameScene {
 
 		if (!this._game.gameField.find("*").is(this._ballElem)) {
             this._game.gameField.append(this._ballElem);
-            this._ballElem.trigger("ballLoad");
+            this._deffBall.resolve();
         }
 
-        if (this._isLoadBall) {
+        if (this._deffBall.state() === "resolved") {
             this._ball.render(dt);
         }
 

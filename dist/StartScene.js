@@ -67,12 +67,12 @@ var StartScene = function (_GameScene) {
 					y: -1
 				}
 			});
+
 			this._ballElem = this._ball.getElem();
 
-			this._ball.getElem().on("ballLoad", function () {
-				console.log("load ball");
+			this._deffBall.done(function () {
 				_this2._ball.setRadius(_this2._ballElem.outerWidth() / 2);
-				_this2._isLoadBall = true;
+				//this._isLoadBall = true;
 				_this2._ball.sendToBoard(_this2._board);
 			});
 		}
@@ -138,7 +138,7 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "_updateBoard",
 		value: function _updateBoard(dt, board) {
-			if (!this._ball.renderPosition || !this._isLoadBall || !this._isLoadBoard) {
+			if (!this._ball.renderPosition || this._deffBall.state() !== "resolved" || this._deffBall.state() !== "resolved") {
 				board.position = this._game.gameField.innerWidth() / 2;
 			} else {
 				board.position = this._ball.renderPosition.x;
