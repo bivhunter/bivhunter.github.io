@@ -1,6 +1,11 @@
+import { GameScene } from "./GameScene";
+import { Menu } from "./components";
+import { Ball } from "./ball";
+import { HelpScene } from "./HelpScene";
+import { FinalScene } from "./FinalScene";
 //Початкова сцена Гри з показом демо на фоні
 //і початковим меню
-class StartScene extends GameScene {
+export class StartScene extends GameScene {
 	constructor(game) {
 		super(game);
 	}

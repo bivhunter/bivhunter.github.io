@@ -1,5 +1,7 @@
+import $ from '/lib/jquery-3.4.1';
+import { Vector, calcQuad} from "./components";
 
-class Ball {
+export class Ball {
     constructor(options) {
         this._game = options.game;
         this.speedCoef = options.speed || 100;

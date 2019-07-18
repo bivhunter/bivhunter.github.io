@@ -1,3 +1,9 @@
+import { Header, Round } from "./components";
+import { StartScene } from "./StartScene";
+import { GameScene } from "./GameScene";
+import $ from '/lib/jquery-3.4.1';
+
+
 //Класс для організаціЇ Game Loop
 //Для організаціЇ гри використовується requestAnimationFrame
 class Game {

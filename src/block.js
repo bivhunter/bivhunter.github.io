@@ -1,5 +1,5 @@
 
-class Block {
+export class Block {
 
 	constructor(options) {
 		this._x = options.x || 0;

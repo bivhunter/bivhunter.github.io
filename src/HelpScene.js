@@ -1,4 +1,4 @@
-class HelpScene {
+export class HelpScene {
     constructor(game) {
         this._game = game;
         this._itemsObj = {

@@ -1,5 +1,6 @@
+
 //Основна сцена гри, в якій відбуваються всі події
-class GameScene {
+export class GameScene {
     constructor( game ) {
         this._game = game;
         this._round = game.round;

@@ -1,9 +1,12 @@
+//import { $ } from '/lib/jquery-3.4.1';
 
 //Параметри: текст заголовку і пунктів меню
 //Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
 //CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
 //об'єктами після підтвердження вибору конкретного пункту меню
-class Menu {
+'use strict'
+
+export class Menu {
     constructor( options ) {
         this._headerText = options.header || "";
         this._menuItemsList = options.menuItems || [];
@@ -128,7 +131,7 @@ class Menu {
 }
 
 //Частина над ігровим полем з відображенням інформації про перебіг гри
-class Header {
+export class Header {
     constructor( options ) {
         this._options = {
             Round: options.round || 0,
@@ -209,7 +212,7 @@ class Header {
 
 //Має колекцію раундів у вигляді об'єкту, де ключ назва, а значення масив рядків які відповідають
 //розміщенню блоків на ігровому полі
-class Round {
+export class Round {
     constructor() {
         this._rounds = {
             round_test: [
@@ -413,7 +416,7 @@ class Round {
 //Старт анімації (enableAnimation()),
 //Сама анімація animate(dt, duration, text)
 //Зупинити анімацію disableAnimation();
-class Info {
+export class Info {
     constructor( text ) {
         this._text = text || "";
         this._init();
@@ -495,7 +498,7 @@ class Info {
 
 }
 
-class Vector {
+export class Vector {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -558,7 +561,7 @@ class Vector {
 }
 
 //Пошук коренів квадратного рівняння
-function calcQuad( a, b, c ) {
+export function calcQuad( a, b, c ) {
     let d = b * b - 4 * a * c;
     if ( d < 0 ) {
         return null;

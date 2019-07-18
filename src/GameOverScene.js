@@ -1,7 +1,7 @@
 //Обирає продовження гри при після закінчення раунда будь яким способом
 //перемога, втрата шара, вихід, рестарт. І повідомляє про це
 //через Info
-class GameOverScene {
+export class GameOverScene {
     constructor( game, gameStatus ) {
         this._game = game;
         this._gameStatus = gameStatus;

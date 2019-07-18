@@ -1,6 +1,6 @@
 //Закінчення гри з показом набраних балів через Info
 //Єдине продовження це початок нової після натискання Enter або ESC
-class FinalScene {
+export class FinalScene {
     constructor(game, gameStatus) {
         this._game = game;
         this._round = game.round;

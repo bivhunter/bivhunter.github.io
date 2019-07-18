@@ -1,5 +1,5 @@
 
-class Board {
+export class Board {
     constructor( options ) {
         this._gameField = options.gameField;
         this.moveMult = 0;

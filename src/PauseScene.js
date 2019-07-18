@@ -1,4 +1,4 @@
-class PauseScene {
+export class PauseScene {
 	constructor(game) {
 		this._game = game;
 		this._init();
