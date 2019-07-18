@@ -6,7 +6,7 @@ import $ from '/lib/jquery-3.4.1';
 
 //Класс для організаціЇ Game Loop
 //Для організаціЇ гри використовується requestAnimationFrame
-class Game {
+export class Game {
     constructor( gameField, headerField ) {
         this.gameField = gameField;
         this.headerField = headerField;
@@ -215,5 +215,5 @@ class Game {
 
 
 //Запуск гри
-let gameLounch = new Game( $("#game-field" ), $( "#header-field" ) );
+
 

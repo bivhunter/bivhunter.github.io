@@ -49,8 +49,8 @@ export class Ball {
         let c = coord.x * coord.x + d * d - 2 * d * coord.y + coord.y * coord.y - this._radius * this._radius;
         let resX = calcQuad(a, b, c);
         if (!resX) {
-            let error = new ErrorEvent("Not found coord centr of ball");
-            console.log(error);
+            throw new Error("Not found coord centr of ball");
+
         }
         if (resX.x_1 * this.direction.x < resX.x_2 * this.direction.x) {
             return new Vector(resX.x_1, k * resX.x_1 + d);

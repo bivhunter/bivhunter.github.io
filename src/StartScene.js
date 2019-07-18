@@ -1,3 +1,4 @@
+import $ from '/lib/jquery-3.4.1';
 import { GameScene } from "./GameScene";
 import { Menu } from "./components";
 import { Ball } from "./ball";

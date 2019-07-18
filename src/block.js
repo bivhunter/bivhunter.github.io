@@ -1,3 +1,5 @@
+import $ from '/lib/jquery-3.4.1';
+import { Vector } from "./components";
 
 export class Block {
 

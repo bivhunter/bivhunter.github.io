@@ -1,6 +1,19 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Vector = exports.Info = exports.Round = exports.Header = exports.Menu = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.calcQuad = calcQuad;
+
+var _jquery = require("/lib/jquery-3.4.1");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8,7 +21,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
 //CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
 //об'єктами після підтвердження вибору конкретного пункту меню
-var Menu = function () {
+
+var Menu = exports.Menu = function () {
     function Menu(options) {
         _classCallCheck(this, Menu);
 
@@ -21,7 +35,7 @@ var Menu = function () {
         key: "_init",
         value: function _init() {
 
-            var menuWrapper = $("<div></div>").addClass("menu").append(this._initHeader());
+            var menuWrapper = (0, _jquery2.default)("<div></div>").addClass("menu").append(this._initHeader());
             this._initMenuList();
             menuWrapper.append(this._menuList);
             this._elem = menuWrapper;
@@ -43,7 +57,7 @@ var Menu = function () {
         key: "_initHeader",
         value: function _initHeader() {
 
-            return $("<h1></h1>").addClass("menu-header").text(this._headerText);
+            return (0, _jquery2.default)("<h1></h1>").addClass("menu-header").text(this._headerText);
 
             /*
             let header = document.createElement( "h1" );
@@ -56,10 +70,10 @@ var Menu = function () {
         key: "_initMenuList",
         value: function _initMenuList() {
 
-            var menuList = $("<ul></ul>").addClass("menu-list");
+            var menuList = (0, _jquery2.default)("<ul></ul>").addClass("menu-list");
             this._menuItemsList.forEach(function (item) {
-                var listItem = $("<li></li>").appendTo(menuList);
-                var span = $("<span></span>").appendTo(listItem);
+                var listItem = (0, _jquery2.default)("<li></li>").appendTo(menuList);
+                var span = (0, _jquery2.default)("<span></span>").appendTo(listItem);
                 span.text(item);
 
                 var temp = item.split(" ");
@@ -86,7 +100,7 @@ var Menu = function () {
     }, {
         key: "_initMarker",
         value: function _initMarker() {
-            this._marker = $("<div></div>").addClass("menu-marker");
+            this._marker = (0, _jquery2.default)("<div></div>").addClass("menu-marker");
             this._selectedItem = this._menuList.children().first();
             this._select(this._selectedItem);
 
@@ -108,7 +122,7 @@ var Menu = function () {
     }, {
         key: "selectNext",
         value: function selectNext() {
-            //console.log(this._selectedItem.next());
+            //window.console.log(this._selectedItem.next());
             if (this._selectedItem.next().length > 0) {
                 this._select(this._selectedItem.next());
             } else {
@@ -142,7 +156,7 @@ var Menu = function () {
 //Частина над ігровим полем з відображенням інформації про перебіг гри
 
 
-var Header = function () {
+var Header = exports.Header = function () {
     function Header(options) {
         _classCallCheck(this, Header);
 
@@ -158,19 +172,19 @@ var Header = function () {
         key: "_init",
         value: function _init() {
 
-            var ul = $("<ul></ul>").addClass("header-list");
+            var ul = (0, _jquery2.default)("<ul></ul>").addClass("header-list");
             for (var key in this._options) {
                 if (!this._options.hasOwnProperty(key)) {
                     continue;
                 }
 
                 var classStr = "header-" + key.toLowerCase();
-                var li = $("<li></li>").appendTo(ul);
-                var span = $("<span></span>").addClass(classStr).text(key + ": " + this._options[key]);
+                var li = (0, _jquery2.default)("<li></li>").appendTo(ul);
+                var span = (0, _jquery2.default)("<span></span>").addClass(classStr).text(key + ": " + this._options[key]);
 
                 //Додає обгортку для показу блоку біля поля Score
                 if (key === "Score") {
-                    $("<div></div>").addClass("header-block").appendTo(li);
+                    (0, _jquery2.default)("<div></div>").addClass("header-block").appendTo(li);
                 }
 
                 span.appendTo(li);
@@ -230,7 +244,7 @@ var Header = function () {
 //розміщенню блоків на ігровому полі
 
 
-var Round = function () {
+var Round = exports.Round = function () {
     function Round() {
         _classCallCheck(this, Round);
 
@@ -299,7 +313,7 @@ var Round = function () {
 //Зупинити анімацію disableAnimation();
 
 
-var Info = function () {
+var Info = exports.Info = function () {
     function Info(text) {
         _classCallCheck(this, Info);
 
@@ -311,8 +325,8 @@ var Info = function () {
         key: "_init",
         value: function _init() {
 
-            this._message = $("<p></p>").addClass("info-message").text(this._text);
-            this._elem = $("<div></div>").addClass("info").append(this._message);
+            this._message = (0, _jquery2.default)("<p></p>").addClass("info-message").text(this._text);
+            this._elem = (0, _jquery2.default)("<div></div>").addClass("info").append(this._message);
 
             /*
             let div = document.createElement( "div" );
@@ -328,7 +342,7 @@ var Info = function () {
     }, {
         key: "enableAnimation",
         value: function enableAnimation() {
-            console.log("enable animation");
+            window.console.log("enable animation");
             this._isAnimation = true;
             this._animationLetterTime = 0;
             this._animationTime = 0;
@@ -337,7 +351,7 @@ var Info = function () {
     }, {
         key: "disableAnimation",
         value: function disableAnimation() {
-            console.log("disable animation");
+            window.console.log("disable animation");
             this._isAnimation = false;
         }
     }, {
@@ -365,7 +379,7 @@ var Info = function () {
             this.addText(text[this._letterCount]);
             this._animationLetterTime -= period;
             this._letterCount++;
-            console.log("animate");
+            window.console.log("animate");
         }
     }, {
         key: "getElem",
@@ -389,7 +403,7 @@ var Info = function () {
     return Info;
 }();
 
-var Vector = function () {
+var Vector = exports.Vector = function () {
     function Vector(x, y) {
         _classCallCheck(this, Vector);
 
@@ -469,6 +483,8 @@ var Vector = function () {
 
 
 function calcQuad(a, b, c) {
+    "use strict";
+
     var d = b * b - 4 * a * c;
     if (d < 0) {
         return null;

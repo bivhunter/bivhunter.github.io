@@ -1,10 +1,23 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Board = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require("/lib/jquery-3.4.1");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _components = require("./components");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Board = function () {
+var Board = exports.Board = function () {
     function Board(options) {
         _classCallCheck(this, Board);
 
@@ -18,7 +31,7 @@ var Board = function () {
         key: "_init",
         value: function _init() {
 
-            this._elem = $("<div></div>").addClass("board");
+            this._elem = (0, _jquery2.default)("<div></div>").addClass("board");
 
             /*let board = document.createElement( "div" );
             board.classList.add( "board" );
@@ -39,7 +52,7 @@ var Board = function () {
             this.position = this._gameField.innerWidth() / 2;
             this.renderPosition = this.position;
 
-            console.log(this.renderPosition);
+            window.console.log(this.renderPosition);
             this._setPosition(this.position);
             this._boardPointInit();
         }
@@ -52,7 +65,7 @@ var Board = function () {
             var x = this.renderPosition;
             var y = this._topPosition - this._height / 2 - this._borderWidth - ball.radius;
             //console.log(x, y);
-            return new Vector(x, y);
+            return new _components.Vector(x, y);
         }
 
         //Для знаходження точок границі використовується рівняння еліпса
@@ -72,18 +85,18 @@ var Board = function () {
 
             //точки лівої границі
             for (var i = bottom; i > y_0; i--) {
-                pointArr.push(new Vector(x_0 - a, i));
+                pointArr.push(new _components.Vector(x_0 - a, i));
             }
 
             //точки верхньої границі
             for (var _i = -a; _i <= a; _i++) {
                 var y = y_0 - b / a * Math.sqrt(a * a - _i * _i);
-                pointArr.push(new Vector(x_0 + _i, y));
+                pointArr.push(new _components.Vector(x_0 + _i, y));
             }
 
             //точки правої границі
             for (var _i2 = y_0 + 1; _i2 < bottom; _i2++) {
-                pointArr.push(new Vector(x_0 + a, _i2));
+                pointArr.push(new _components.Vector(x_0 + a, _i2));
             }
 
             this._pointerArr = pointArr;
@@ -99,13 +112,14 @@ var Board = function () {
             var delta = this.position - this._x_0;
             var resArr = [];
             this._pointerArr.forEach(function (point) {
-                resArr.push(new Vector(point.x + delta, point.y));
+                resArr.push(new _components.Vector(point.x + delta, point.y));
             });
             return resArr;
         }
     }, {
         key: "render",
         value: function render() {
+
             this._setPosition(this.renderPosition);
         }
     }, {
@@ -154,12 +168,12 @@ var Board = function () {
         key: "_testPoint",
         value: function _testPoint() {
             this._pointerArr.forEach(function (point) {
-                var elem = $("<div></div>").addClass("point").css({
+                var elem = (0, _jquery2.default)("<div></div>").addClass("point").css({
                     left: point.x,
                     top: point.x + 1
                 });
 
-                $("#game-field").append(elem);
+                (0, _jquery2.default)("#game-field").append(elem);
                 /*elem.classList.add( "point" );
                 elem.style.left = point.x + "px";
                 elem.style.top =point.x + 1 + "px";
@@ -174,8 +188,8 @@ var Board = function () {
         value: function renderPoint() {
             var pointArr = this.getPointArr();
             //console.log(pointArr);
-            $(".point").each(function (index, elem) {
-                $(elem).css({
+            (0, _jquery2.default)(".point").each(function (index, elem) {
+                (0, _jquery2.default)(elem).css({
                     left: pointArr[index]
                 });
             });

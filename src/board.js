@@ -1,3 +1,5 @@
+import $ from '/lib/jquery-3.4.1';
+import { Vector } from "./components";
 
 export class Board {
     constructor( options ) {
@@ -28,7 +30,7 @@ export class Board {
         this.renderPosition = this.position;
 
 
-        console.log(this.renderPosition);
+        window.console.log(this.renderPosition);
         this._setPosition( this.position );
         this._boardPointInit();
     }
@@ -85,6 +87,7 @@ export class Board {
     }
 
     render() {
+
         this._setPosition( this.renderPosition );
     }
 

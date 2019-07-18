@@ -1,10 +1,9 @@
-//import { $ } from '/lib/jquery-3.4.1';
+import $ from '/lib/jquery-3.4.1';
 
 //Параметри: текст заголовку і пунктів меню
 //Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
 //CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
 //об'єктами після підтвердження вибору конкретного пункту меню
-'use strict'
 
 export class Menu {
     constructor( options ) {
@@ -103,7 +102,7 @@ export class Menu {
     }
 
     selectNext() {
-        //console.log(this._selectedItem.next());
+        //window.console.log(this._selectedItem.next());
         if ( this._selectedItem.next().length > 0) {
             this._select( this._selectedItem.next() );
         } else {
@@ -444,7 +443,7 @@ export class Info {
     }
 
     enableAnimation() {
-        console.log("enable animation");
+        window.console.log("enable animation");
         this._isAnimation = true;
         this._animationLetterTime = 0;
         this._animationTime = 0;
@@ -452,7 +451,7 @@ export class Info {
     }
 
     disableAnimation() {
-        console.log("disable animation");
+        window.console.log("disable animation");
         this._isAnimation = false;
     }
 
@@ -479,7 +478,7 @@ export class Info {
         this.addText( text[ this._letterCount ] );
         this._animationLetterTime -= period ;
         this._letterCount++;
-        console.log("animate");
+        window.console.log("animate");
     }
 
     getElem() {
@@ -562,6 +561,7 @@ export class Vector {
 
 //Пошук коренів квадратного рівняння
 export function calcQuad( a, b, c ) {
+    "use strict";
     let d = b * b - 4 * a * c;
     if ( d < 0 ) {
         return null;
