@@ -4,6 +4,7 @@ import { GameScene } from "./GameScene";
 import $ from '/lib/jquery-3.4.1';
 
 
+
 //Класс для організаціЇ Game Loop
 //Для організаціЇ гри використовується requestAnimationFrame
 export class Game {
