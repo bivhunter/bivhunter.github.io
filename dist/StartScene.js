@@ -1,8 +1,29 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.StartScene = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _jquery = require("/lib/jquery-3.4.1");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _GameScene2 = require("./GameScene");
+
+var _components = require("./components");
+
+var _ball = require("./ball");
+
+var _HelpScene = require("./HelpScene");
+
+var _FinalScene = require("./FinalScene");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12,7 +33,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Початкова сцена Гри з показом демо на фоні
 //і початковим меню
-var StartScene = function (_GameScene) {
+var StartScene = exports.StartScene = function (_GameScene) {
 	_inherits(StartScene, _GameScene);
 
 	function StartScene(game) {
@@ -34,13 +55,19 @@ var StartScene = function (_GameScene) {
 			this._infoText = "Demo";
 
 			//Щоб Info на задньому плані було нижче Menu
-			this._info.getElem().style.background = "inherit";
-			this._info.getElem().style.verticalAlign = "bottom";
+			this._info.getElem().css({
+				background: "inherit",
+				verticalAlign: "bottom"
+			});
+			/*
+   this._info.getElem().style.background = "inherit";
+   this._info.getElem().style.verticalAlign = "bottom";
+   */
 		}
 	}, {
 		key: "_initMenu",
 		value: function _initMenu() {
-			var menu = new Menu({
+			var menu = new _components.Menu({
 				header: "Ricochet",
 				menuItems: ["Start Game", "Help", "Quit"]
 			});
@@ -51,15 +78,24 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "_initBall",
 		value: function _initBall() {
-			this._ball = new Ball({
+			var _this2 = this;
+
+			this._ball = new _ball.Ball({
 				game: this,
-				speed: 1000,
+				speed: 500,
 				direction: {
 					x: 0.1,
 					y: -1
 				}
 			});
+
 			this._ballElem = this._ball.getElem();
+
+			this._deffBall.done(function () {
+				_this2._ball.setRadius(_this2._ballElem.outerWidth() / 2);
+				//this._isLoadBall = true;
+				_this2._ball.sendToBoard(_this2._board);
+			});
 		}
 	}, {
 		key: "update",
@@ -70,8 +106,8 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "render",
 		value: function render(dt) {
-			if (!this._game.gameField.contains(this._menuElem)) {
-				this._game.gameField.appendChild(this._menuElem);
+			if (!this._game.gameField.find("*").is((0, _jquery2.default)(this._menuElem))) {
+				this._game.gameField.append((0, _jquery2.default)(this._menuElem));
 			}
 			_get(StartScene.prototype.__proto__ || Object.getPrototypeOf(StartScene.prototype), "render", this).call(this, dt);
 		}
@@ -87,28 +123,28 @@ var StartScene = function (_GameScene) {
 			}
 
 			if (this._game.checkKeyPress(13)) {
-				switch (this._menu.getSelectedItem().classList[0]) {
-					case "menu-start-game":
+				switch (this._menu.getSelectedItem().attr("data-name")) {
+					case "start-game":
 						this._game.life = 5;
 						this._game.score = 0;
 						this._game.round.getFirstRound();
 						this._game.setScene({
-							scene: GameScene,
+							scene: _GameScene2.GameScene,
 							isClear: true
 						});
 						break;
-					case "menu-help":
+					case "help":
 						this.isPause = true;
 						this._clearScene();
 						this._game.setScene({
-							scene: HelpScene,
+							scene: _HelpScene.HelpScene,
 							isClear: false
 						});
 						break;
-					case "menu-quit":
+					case "quit":
 						this._clearScene();
 						this._game.setScene({
-							scene: FinalScene,
+							scene: _FinalScene.FinalScene,
 							gameStatus: "noPlay",
 							isClear: false
 						});
@@ -123,8 +159,8 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "_updateBoard",
 		value: function _updateBoard(dt, board) {
-			if (!this._ball.renderPosition) {
-				board.position = this._game.gameField.clientWidth / 2;
+			if (!this._ball.renderPosition || this._deffBall.state() !== "resolved" || this._deffBall.state() !== "resolved") {
+				board.position = this._game.gameField.innerWidth() / 2;
 			} else {
 				board.position = this._ball.renderPosition.x;
 			}
@@ -141,11 +177,13 @@ var StartScene = function (_GameScene) {
 	}, {
 		key: "_clearScene",
 		value: function _clearScene() {
-			if (this._game.gameField.contains(this._menuElem)) {
-				this._game.gameField.removeChild(this._menuElem);
+			if (this._game.gameField.find("*").is(this._menuElem)) {
+				this._menuElem.remove();
 			}
 
-			if (this._game.gameField.contains(this._info.getElem())) this._game.gameField.removeChild(this._info.getElem());
+			if (this._game.gameField.find("*").is(this._info.getElem())) {
+				this._info.getElem().remove();
+			}
 		}
 	}, {
 		key: "gameOver",
@@ -158,4 +196,4 @@ var StartScene = function (_GameScene) {
 	}]);
 
 	return StartScene;
-}(GameScene);
+}(_GameScene2.GameScene);

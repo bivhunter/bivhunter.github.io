@@ -1,5 +1,7 @@
+import $ from '/lib/jquery-3.4.1';
+import { Vector } from "./components";
 
-class Block {
+export class Block {
 
 	constructor(options) {
 		this._x = options.x || 0;
@@ -41,13 +43,21 @@ class Block {
     }
 
 	_init() {
-		let block = document.createElement("div");
+
+		let block = $("<div></div>").addClass("block").addClass(this._blockClass);
+		block.css({
+			left: this._x,
+			top: this._y
+		});
+        this._block = block;
+
+		/*let block = document.createElement("div");
 		block.classList.add("block");
 		block.classList.add(this._blockClass);
 
 		block.style.left = this._x + "px";
 		block.style.top = this._y + "px";
-		this._block = block;
+		this._block = block;*/
 	}
 
 	_initVertexes() {
@@ -112,8 +122,8 @@ class Block {
 	}
 
 	_changeClass(cls1, cls2) {
-		this._block.classList.remove(cls1);
-		this._block.classList.add(cls2);
+		this._block.removeClass(cls1);
+		this._block.addClass(cls2);
 		this._blockClass = cls2;
 	}
 }

@@ -1,5 +1,7 @@
+import $ from '/lib/jquery-3.4.1';
+import { Vector, calcQuad} from "./components";
 
-class Ball {
+export class Ball {
     constructor(options) {
         this._game = options.game;
         this.speedCoef = options.speed || 100;
@@ -9,7 +11,7 @@ class Ball {
             y: -1
         });
 
-        this._radius = 15;
+       // this._radius = 30;
         this._init();
     }
 
@@ -18,13 +20,20 @@ class Ball {
     }
 
     _init() {
-        this._ball = document.createElement("div");
-        this._ball.classList.add("ball");
+        this._ball = $("<div></div>").addClass("ball");
         this.direction = this._startDirection.norm();
+
+/*        this._ball = document.createElement("div");
+        this._ball.classList.add("ball");
+        this.direction = this._startDirection.norm();*/
     }
 
     render() {
         this._setPosition(this.renderPosition);
+    }
+
+    setRadius(num) {
+        this._radius = num;
     }
 
     getNormal(direction) {
@@ -40,8 +49,8 @@ class Ball {
         let c = coord.x * coord.x + d * d - 2 * d * coord.y + coord.y * coord.y - this._radius * this._radius;
         let resX = calcQuad(a, b, c);
         if (!resX) {
-            let error = new ErrorEvent("Not found coord centr of ball");
-            console.log(error);
+            throw new Error("Not found coord centr of ball");
+
         }
         if (resX.x_1 * this.direction.x < resX.x_2 * this.direction.x) {
             return new Vector(resX.x_1, k * resX.x_1 + d);
@@ -60,15 +69,21 @@ class Ball {
     }
 
     sendToBoard(board) {
+       // console.log("sendToBoard");
         this.direction = this._startDirection.norm();
         this.renderPosition = board.vecForBallStart(this);
         this.position = board.vecForBallStart(this);
     }
 
     _setPosition(coord) {
-        //console.log(coord);
-        this._ball.style.left = coord.x - this._radius + "px";
-        this._ball.style.top = coord.y - this._radius + "px";
+       // console.log(coord);
+        this._ball.css({
+            left: coord.x - this._radius,
+            top: coord.y - this._radius
+        });
+
+        /*this._ball.style.left = coord.x - this._radius + "px";
+        this._ball.style.top = coord.y - this._radius + "px";*/
     }
 
     getElem() {

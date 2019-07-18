@@ -1,6 +1,8 @@
+import { Info } from "./components";
+import { StartScene } from "./StartScene";
 //Закінчення гри з показом набраних балів через Info
 //Єдине продовження це початок нової після натискання Enter або ESC
-class FinalScene {
+export class FinalScene {
     constructor(game, gameStatus) {
         this._game = game;
         this._round = game.round;
@@ -59,8 +61,8 @@ class FinalScene {
     }
 
     render() {
-        if (!this._game.gameField.contains(this._info.getElem())) {
-            this._game.gameField.appendChild(this._info.getElem());
+        if (!this._game.gameField.find("*").is(this._info.getElem())) {
+            this._game.gameField.append(this._info.getElem());
         }
     }
 }

@@ -1,6 +1,12 @@
+import $ from '/lib/jquery-3.4.1';
+import { GameScene } from "./GameScene";
+import { Menu } from "./components";
+import { Ball } from "./ball";
+import { HelpScene } from "./HelpScene";
+import { FinalScene } from "./FinalScene";
 //Початкова сцена Гри з показом демо на фоні
 //і початковим меню
-class StartScene extends GameScene {
+export class StartScene extends GameScene {
 	constructor(game) {
 		super(game);
 	}
@@ -15,8 +21,14 @@ class StartScene extends GameScene {
 		this._infoText = "Demo";
 
 		//Щоб Info на задньому плані було нижче Menu
+		this._info.getElem().css({
+			background: "inherit",
+			verticalAlign: "bottom"
+		});
+		/*
 		this._info.getElem().style.background = "inherit";
 		this._info.getElem().style.verticalAlign = "bottom";
+		*/
 	}
 
 	_initMenu() {
@@ -36,13 +48,20 @@ class StartScene extends GameScene {
 	_initBall() {
 		this._ball = new Ball({
 			game: this,
-			speed: 1000,
+			speed: 500,
 			direction: {
 				x: 0.1,
 				y: -1
 			}
 		});
-		this._ballElem = this._ball.getElem();
+      
+        this._ballElem = this._ball.getElem();
+
+        this._deffBall.done( () => {
+            this._ball.setRadius(this._ballElem.outerWidth() / 2);
+            //this._isLoadBall = true;
+            this._ball.sendToBoard( this._board );
+        });
 	}
 
 	update(dt) {
@@ -51,8 +70,8 @@ class StartScene extends GameScene {
 	}
 
 	render(dt) {
-        if (!this._game.gameField.contains(this._menuElem)) {
-            this._game.gameField.appendChild(this._menuElem);
+        if (!this._game.gameField.find("*").is( $(this._menuElem) ) ) {
+            this._game.gameField.append( $(this._menuElem) );
         }
 		super.render(dt);
 	}
@@ -67,8 +86,8 @@ class StartScene extends GameScene {
 		}
 
 		if (this._game.checkKeyPress(13)) {
-			switch (this._menu.getSelectedItem().classList[0]) {
-				case "menu-start-game":
+			switch (this._menu.getSelectedItem().attr("data-name")) {
+				case "start-game":
 					this._game.life = 5;
 					this._game.score = 0;
                     this._game.round.getFirstRound();
@@ -77,7 +96,7 @@ class StartScene extends GameScene {
 						isClear: true
 					});
 					break;
-				case "menu-help":
+				case "help":
 					this.isPause = true;
                     this._clearScene();
 					this._game.setScene({
@@ -85,7 +104,7 @@ class StartScene extends GameScene {
 						isClear: false
 					});
 					break;
-				case "menu-quit":
+				case "quit":
 					this._clearScene();
 					this._game.setScene({
 						scene: FinalScene,
@@ -100,8 +119,9 @@ class StartScene extends GameScene {
     //ініт ball проходить після ініт board,
     // тому для першого апдейту добавлено" this._game.gameField.clientWidth / 2;"
 	_updateBoard(dt, board) {
-		if (!this._ball.renderPosition) {
-            board.position = this._game.gameField.clientWidth / 2;
+		if (!this._ball.renderPosition || this._deffBall.state() !== "resolved" ||
+            this._deffBall.state() !== "resolved") {
+            board.position = this._game.gameField.innerWidth() / 2;
 		} else {
             board.position = this._ball.renderPosition.x;
         }
@@ -116,12 +136,13 @@ class StartScene extends GameScene {
 	}
 
     _clearScene() {
-        if (this._game.gameField.contains(this._menuElem)) {
-            this._game.gameField.removeChild(this._menuElem);
+        if (this._game.gameField.find("*").is(this._menuElem)) {
+            this._menuElem.remove();
         }
 
-        if (this._game.gameField.contains(this._info.getElem()))
-        this._game.gameField.removeChild(this._info.getElem());
+        if (this._game.gameField.find("*").is( this._info.getElem() ) ) {
+            this._info.getElem().remove();
+        }
     }
 
 	gameOver() {

@@ -1,6 +1,13 @@
+import { Header, Round } from "./components";
+import { StartScene } from "./StartScene";
+import { GameScene } from "./GameScene";
+import $ from '/lib/jquery-3.4.1';
+
+
+
 //Класс для організаціЇ Game Loop
 //Для організаціЇ гри використовується requestAnimationFrame
-class Game {
+export class Game {
     constructor( gameField, headerField ) {
         this.gameField = gameField;
         this.headerField = headerField;
@@ -42,6 +49,17 @@ class Game {
     _initEvent() {
         //зберігає натиснуті кнопки та їх стан
         this.keys = {};
+
+        $(document).on("keydown", ( e ) => {
+            this.keys[ e.which ] = true;
+        } );
+
+
+        $(document).on("keyup", ( e ) => {
+            this.keys[ e.which ] = false;
+        } );
+
+        /*
         document.addEventListener( "keydown", ( e ) => {
             this.keys[ e.which ] = true;
         } );
@@ -49,30 +67,47 @@ class Game {
         document.addEventListener( "keyup", ( e ) => {
             this.keys[ e.which ] = false;
         } );
+*/
 
         //відманяють події за замовчуванням:
         //виділення тексту, виклик контекстного меню
-        document.addEventListener( "dragstart", ( event ) => {
+
+
+        $(document).on("dragstart", ( event ) => {
+            event.preventDefault();
+        } );
+
+        $(document).on("mousedown", ( event ) => {
+            event.preventDefault();
+        } );
+
+        /*document.addEventListener( "dragstart", ( event ) => {
             event.preventDefault();
         } );
 
         document.addEventListener( "mousedown", ( event ) => {
             event.preventDefault();
+        } );*/
+
+        $(document).on("contextmenu", ( event ) => {
+             if ($(".wrapper *").is($(event.target)) ) {
+                 event.preventDefault();
+             }
         } );
 
-        document.addEventListener( "contextmenu", ( event ) => {
+       /* document.addEventListener( "contextmenu", ( event ) => {
             let wrapper = document.querySelector( ".wrapper" );
             if ( !wrapper.contains( event.target ) ) {
                 return;
             }
             event.preventDefault();
-        } );
+        } );*/
     }
 
     setScene( options ) {
         if ( options.isClear ) {
-            this.gameField.innerHTML = "";
-            this.headerField.innerHTML = "";
+            this.gameField.empty();
+            this.headerField.empty();
         }
 
         let scene = new options.scene( this, options.gameStatus );
@@ -110,9 +145,14 @@ class Game {
     }
 
     _renderHeader() {
-        if ( !this.headerField.contains( this.header.getElem() ) ) {
-            this.headerField.appendChild( this.header.getElem() );
+
+        if (!this.headerField.find("*").is( $( this.header.getElem() ) ) ) {
+            this.headerField.append( $(this.header.getElem()) );
         }
+
+        /*if ( !this.headerField.contains( this.header.getElem() ) ) {
+            this.headerField.appendChild( this.header.getElem() );
+        }*/
     }
 
     //Використовується this._stop для зупинки анімаціЇ, бо при виклику cancelAnimationFrame()
@@ -173,83 +213,8 @@ class Game {
     }
 }
 
-class Vector {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
 
-    static FromObj(obj) {
-        return new Vector(obj.x, obj.y);
-    }
-
-    static turn ( vec1, vec2 ) {
-        return {
-            x: vec1.x * vec2.x,
-            y: vec1.y * vec2.y
-        };
-    }
-
-    static scalarMult ( vec1, vec2 ) {
-        return vec1.x * vec2.x + vec1.y * vec2.y;
-    }
-
-
-    setValue() {
-        if (arguments.length === 2) {
-            this.x = arguments[0];
-            this.y = arguments[1];
-        } else {
-            this.x = arguments[0].x;
-            this.y = arguments[0].y;
-        }
-    }
-
-    norm() {
-        let x = this.x,
-            y = this.y,
-            d = Math.sqrt( x * x + y * y );
-        return new Vector (x / d, y / d);
-    }
-
-    sum ( vec ) {
-        return new Vector(this.x + vec.x, this.y + vec.y);
-    }
-
-    scalar ( num ) {
-        return new Vector(this.x * num, this.y * num);
-    }
-
-    diff ( vec ) {
-        return new Vector( this.x - vec.x, this.y - vec.y );
-    }
-
-    module () {
-        return Math.sqrt( this.x * this.x + this.y * this.y );
-    }
-
-    turnAngle ( angle ) {
-        this.setValue(this.x * Math.cos( angle ) - this.y * Math.sin( angle ),
-            this.x * Math.sin( angle ) + this.y * Math.cos( angle ));
-        return this;
-    }
-}
-
-//Пошук коренів квадратного рівняння
-function calcQuad( a, b, c ) {
-    let d = b * b - 4 * a * c;
-    if ( d < 0 ) {
-        return null;
-    }
-
-    let x_1 = ( -b + Math.sqrt( d ) ) / ( 2 * a );
-    let x_2 = ( -b - Math.sqrt( d ) ) / ( 2 * a );
-    return {
-        x_1: x_1,
-        x_2: x_2
-    };
-}
 
 //Запуск гри
-let gameLounch = new Game( document.getElementById( "game-field" ), document.getElementById( "header-field" ) );
+
 

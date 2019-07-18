@@ -1,10 +1,23 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.Block = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require("/lib/jquery-3.4.1");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _components = require("./components");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Block = function () {
+var Block = exports.Block = function () {
 	function Block(options) {
 		_classCallCheck(this, Block);
 
@@ -20,21 +33,28 @@ var Block = function () {
 	_createClass(Block, [{
 		key: "_init",
 		value: function _init() {
-			var block = document.createElement("div");
-			block.classList.add("block");
-			block.classList.add(this._blockClass);
 
-			block.style.left = this._x + "px";
-			block.style.top = this._y + "px";
+			var block = (0, _jquery2.default)("<div></div>").addClass("block").addClass(this._blockClass);
+			block.css({
+				left: this._x,
+				top: this._y
+			});
 			this._block = block;
+
+			/*let block = document.createElement("div");
+   block.classList.add("block");
+   block.classList.add(this._blockClass);
+   		block.style.left = this._x + "px";
+   block.style.top = this._y + "px";
+   this._block = block;*/
 		}
 	}, {
 		key: "_initVertexes",
 		value: function _initVertexes() {
-			this._A = new Vector(this.left(), this.top());
-			this._B = new Vector(this.right(), this.top());
-			this._C = new Vector(this.right(), this.bottom());
-			this._D = new Vector(this.left(), this.bottom());
+			this._A = new _components.Vector(this.left(), this.top());
+			this._B = new _components.Vector(this.right(), this.top());
+			this._C = new _components.Vector(this.right(), this.bottom());
+			this._D = new _components.Vector(this.left(), this.bottom());
 		}
 	}, {
 		key: "isContainCoord",
@@ -97,8 +117,8 @@ var Block = function () {
 	}, {
 		key: "_changeClass",
 		value: function _changeClass(cls1, cls2) {
-			this._block.classList.remove(cls1);
-			this._block.classList.add(cls2);
+			this._block.removeClass(cls1);
+			this._block.addClass(cls2);
 			this._blockClass = cls2;
 		}
 	}], [{

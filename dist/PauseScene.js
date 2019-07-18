@@ -1,10 +1,21 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.PauseScene = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _components = require("./components");
+
+var _GameOverScene = require("./GameOverScene");
+
+var _HelpScene = require("./HelpScene");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var PauseScene = function () {
+var PauseScene = exports.PauseScene = function () {
 	function PauseScene(game) {
 		_classCallCheck(this, PauseScene);
 
@@ -15,7 +26,7 @@ var PauseScene = function () {
 	_createClass(PauseScene, [{
 		key: "_init",
 		value: function _init() {
-			var menu = new Menu({
+			var menu = new _components.Menu({
 				header: "Pause",
 				menuItems: ["Resume", "Restart", "Help", "Quit"]
 			});
@@ -40,21 +51,21 @@ var PauseScene = function () {
 			}
 
 			if (this._game.checkKeyPress(13)) {
-				switch (this._menu.getSelectedItem().classList[0]) {
-					case "menu-resume":
+				switch (this._menu.getSelectedItem().attr("data-name")) {
+					case "resume":
 						{
 							this._clearScene();
 							this._game.returnScene();
 						}
 						break;
-					case "menu-restart":
-						this._setScene(GameOverScene, "restart");
+					case "restart":
+						this._setScene(_GameOverScene.GameOverScene, "restart");
 						break;
-					case "menu-help":
-						this._setScene(HelpScene);
+					case "help":
+						this._setScene(_HelpScene.HelpScene);
 						break;
-					case "menu-quit":
-						this._setScene(GameOverScene, "quit");
+					case "quit":
+						this._setScene(_GameOverScene.GameOverScene, "quit");
 						break;
 				}
 			}
@@ -72,15 +83,15 @@ var PauseScene = function () {
 	}, {
 		key: "render",
 		value: function render() {
-			if (!this._game.gameField.contains(this._menuElem)) {
-				this._game.gameField.appendChild(this._menuElem);
+			if (!this._game.gameField.find("*").is(this._menuElem)) {
+				this._game.gameField.append(this._menuElem);
 			}
 		}
 	}, {
 		key: "_clearScene",
 		value: function _clearScene() {
-			if (this._game.gameField.contains(this._menuElem)) {
-				this._game.gameField.removeChild(this._menuElem);
+			if (this._game.gameField.find("*").is(this._menuElem)) {
+				this._menuElem.remove();
 			}
 		}
 	}]);

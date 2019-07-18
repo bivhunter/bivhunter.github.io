@@ -1,5 +1,13 @@
+import $ from '/lib/jquery-3.4.1';
+import { Board } from "./board";
+import { Ball } from "./ball";
+import { Block } from "./block";
+import { Info, Vector } from "./components";
+import { PauseScene } from "./PauseScene";
+import { GameOverScene } from "./GameOverScene";
+
 //Основна сцена гри, в якій відбуваються всі події
-class GameScene {
+export class GameScene {
     constructor( game ) {
         this._game = game;
         this._round = game.round;
@@ -12,6 +20,10 @@ class GameScene {
         this._acceleration = 0.2;
         this._infoTime = 0;
         this.ballOnBoard = true;
+        this._deffBall = $.Deferred();
+        this._deffBoard = $.Deferred();
+        //this._isLoadBall = false;
+        //this._isLoadBoard = false;
         this._initRound();
     }
 
@@ -29,11 +41,17 @@ class GameScene {
         } );
         this._board.speedCoef = this._SPEED_COEF;
         this._boardElem = this._board.getElem();
-        this._game.gameField.appendChild( this._boardElem );
 
-        this._board.init();
-        this._boardMinPosition = this._boardElem.offsetWidth / 2;
-        this._boardMaxPosition = this._game.gameField.clientWidth - this._boardElem.offsetWidth / 2;
+        this._deffBoard.done( () => {
+                this._board.init();
+                this._boardMinPosition = this._boardElem.outerWidth() / 2;
+                this._boardMaxPosition = this._game.gameField.innerWidth() - this._boardElem.outerWidth() / 2;
+
+
+            });
+        //this._game.gameField.append( this._boardElem );
+
+       // window.console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
     }
 
     _initBall() {
@@ -45,7 +63,18 @@ class GameScene {
                 y: -10
             }
         } );
+
+
         this._ballElem = this._ball.getElem();
+
+        this._deffBall.done( () => {
+            this._ball.setRadius(this._ballElem.outerWidth() / 2);
+            //this._isLoadBall = true;
+            this._ball.sendToBoard( this._board );
+        });
+
+        //this.ballOnBoard = false;
+
     }
 
     _initBlocks( round ) {
@@ -91,14 +120,21 @@ class GameScene {
     }
 
     update( dt ) {
-        console.log("update dt", dt);
-        this._updateInfo( dt );
+        //window.console.log("update dt", dt);
+
         if ( this._isShowInfo ) {
+            this._updateInfo( dt );
             return;
         }
 
-        this._updateBoard( dt, this._board );
-        this._updateBall( dt, this._ball );
+        if (this._deffBoard.state() === "resolved") {
+            this._updateBoard(dt, this._board);
+        }
+
+        if ( this._deffBall.state() === "resolved" ) {
+            this._updateBall( dt, this._ball );
+        }
+
         this._checkKeys();
     }
 
@@ -115,6 +151,7 @@ class GameScene {
             info.animate( dt, 4, this._infoText );
             return;
         }
+
 
         info.disableAnimation();
         this._isShowInfo = false;
@@ -165,8 +202,8 @@ class GameScene {
         if ( speed.x >= 30 || speed.y >= 30 ) {
             let error = new Error( "big speed: " );
             this.stop();
-            console.log( error );
-            console.log( speed, this._ball.direction );
+            window.console.log( error );
+            window.console.log( speed, this._ball.direction );
         }
     }
 
@@ -203,7 +240,7 @@ class GameScene {
 
         if ( ball.direction.y > 0 ) {
             if ( Block.isTouchBlockVsBall( this._board, ball ) ) {
-                //  console.log("touch board border", ball.touchedElem.board, ball.board);
+                //  window.console.log("touch board border", ball.touchedElem.board, ball.board);
                 this._calcTouchedBoardPos( ball, this._board );
 
             }
@@ -235,8 +272,8 @@ class GameScene {
     }
 
     _isTouchedBorder( position, ball ) {
-        let rightBorder = this._game.gameField.clientWidth - ball.radius;
-        let bottomBorder = this._game.gameField.clientHeight - ball.radius;
+        let rightBorder = this._game.gameField.innerWidth() - ball.radius;
+        let bottomBorder = this._game.gameField.innerHeight() - ball.radius;
         let topBorder = ball.radius;
         let leftBorder = ball.radius;
 
@@ -245,8 +282,8 @@ class GameScene {
     }
 
     _calcTouchedBorderPos( position, ball ) {
-        let rightBorder = this._game.gameField.clientWidth - ball.radius;
-        let bottomBorder = this._game.gameField.clientHeight - ball.radius - 5;
+        let rightBorder = this._game.gameField.innerWidth() - ball.radius;
+        let bottomBorder = this._game.gameField.innerHeight() - ball.radius - 5;
         let topBorder = ball.radius;
         let leftBorder = ball.radius;
 
@@ -330,7 +367,7 @@ class GameScene {
 
         let vertex = Block.findNearVertex( this._touchedBlockArr[ 0 ], ball );
         if ( vertex === null ) {
-            //console.log("vertex null");
+            //window.console.log("vertex null");
             return;
         }
         this._calcVertexRebound( this._touchedBlockArr[ 0 ], ball, vertex );
@@ -534,16 +571,36 @@ class GameScene {
     }
 
     render(dt) {
-        console.log("render dt", dt);
-		this._board.render(dt);
+       // window.console.log("render dt", dt);
+        if (this._deffBoard.state() === "resolved") {
+            this._board.render(dt);
+        }
 
-		if (!this._game.gameField.contains(this._boardElem)) {
+
+        if (!this._game.gameField.find("*").is(this._boardElem)) {
+            this._game.gameField.append(this._boardElem);
+            this._deffBoard.resolve();
+        }
+
+		/*if (!this._game.gameField.contains(this._boardElem)) {
 			this._game.gameField.appendChild(this._boardElem);
-		}
+		}*/
 
 		this._renderBlock();
 
-		if (this._isShowInfo) {
+        if (this._isShowInfo) {
+            if (!this._game.gameField.find("*").is( this._info.getElem() ) ) {
+                this._game.gameField.append( this._info.getElem() );
+            }
+            return;
+        } else {
+            if (this._game.gameField.find("*").is( this._info.getElem() )  ) {
+                this._info.getElem().remove();
+            }
+
+        }
+
+		/*if (this._isShowInfo) {
 			if (!this._game.gameField.contains(this._info.getElem())) {
 				this._game.gameField.appendChild(this._info.getElem());
 			}
@@ -553,13 +610,25 @@ class GameScene {
 				this._game.gameField.removeChild(this._info.getElem());
 			}
 
-		}
+		}*/
 
-		this._ball.render(dt);
 
-		if (!this._game.gameField.contains(this._ballElem)) {
+
+		if (!this._game.gameField.find("*").is(this._ballElem)) {
+            this._game.gameField.append(this._ballElem);
+            this._deffBall.resolve();
+        }
+
+        if (this._deffBall.state() === "resolved") {
+            this._ball.render(dt);
+        }
+
+
+
+
+	/*	if (!this._game.gameField.contains(this._ballElem)) {
 			this._game.gameField.appendChild(this._ballElem);
-		}
+		}*/
 
 		//запускається останнім, щоб після запуску нової сцени
 		//не вимальовувалися старі елементи
@@ -571,14 +640,14 @@ class GameScene {
 	_renderBlock() {
 		if (this.isPause) {
 			this._blockArr.forEach(block => {
-				this._game.gameField.appendChild(block.getElem());
+				this._game.gameField.append(block.getElem());
 			});
 			this.isPause = false;
 			this._blockNumber = this._blockArr.length;
 		}
 
 		if (this._blockNumber < this._blockArr.length) {
-			this._game.gameField.appendChild(this._blockArr[this._blockNumber].getElem());
+			this._game.gameField.append(this._blockArr[this._blockNumber].getElem());
 			this._blockNumber++;
 			return;
 		}
@@ -600,7 +669,7 @@ class GameScene {
 				let pos = this._blockArr.indexOf(block);
 				if (pos >= 0) {
 					this._blockArr.splice(pos, 1);
-					this._game.gameField.removeChild(block.getElem());
+					block.getElem().remove();
 				}
 			}
 		});

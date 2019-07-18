@@ -1,4 +1,8 @@
-class PauseScene {
+import { Menu } from "./components";
+import { GameOverScene } from "./GameOverScene";
+import { HelpScene } from "./HelpScene";
+
+export class PauseScene {
 	constructor(game) {
 		this._game = game;
 		this._init();
@@ -34,20 +38,20 @@ class PauseScene {
 		}
 
 		if (this._game.checkKeyPress(13)) {
-			switch (this._menu.getSelectedItem().classList[0]) {
-				case "menu-resume":
+			switch (this._menu.getSelectedItem().attr("data-name")) {
+				case "resume":
 					{
 						this._clearScene();
 						this._game.returnScene();
 					}
 					break;
-				case "menu-restart":
+				case "restart":
 					this._setScene(GameOverScene, "restart");
 					break;
-				case "menu-help":
+				case "help":
                     this._setScene(HelpScene);
 					break;
-				case "menu-quit":
+				case "quit":
                     this._setScene(GameOverScene, "quit");
 					break;
 			}
@@ -64,14 +68,14 @@ class PauseScene {
 	}
 
 	render() {
-		if (!this._game.gameField.contains(this._menuElem)) {
-			this._game.gameField.appendChild(this._menuElem);
-		}
+        if (!this._game.gameField.find("*").is(this._menuElem)) {
+            this._game.gameField.append(this._menuElem);
+        }
 	}
 
 	_clearScene() {
-        if (this._game.gameField.contains(this._menuElem)) {
-            this._game.gameField.removeChild(this._menuElem);
+        if (this._game.gameField.find("*").is(this._menuElem)) {
+            this._menuElem.remove();
         }
 	}
 }

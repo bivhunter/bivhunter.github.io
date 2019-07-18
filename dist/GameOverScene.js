@@ -1,13 +1,24 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.GameOverScene = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _components = require("./components");
+
+var _GameScene = require("./GameScene");
+
+var _FinalScene = require("./FinalScene");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 //Обирає продовження гри при після закінчення раунда будь яким способом
 //перемога, втрата шара, вихід, рестарт. І повідомляє про це
 //через Info
-var GameOverScene = function () {
+var GameOverScene = exports.GameOverScene = function () {
     function GameOverScene(game, gameStatus) {
         _classCallCheck(this, GameOverScene);
 
@@ -23,8 +34,7 @@ var GameOverScene = function () {
         key: "_init",
         value: function _init() {
             this._isShowInfo = true;
-            this._isMenu = false;
-            this._info = new Info("");
+            this._info = new _components.Info("");
         }
     }, {
         key: "update",
@@ -46,12 +56,12 @@ var GameOverScene = function () {
         key: "render",
         value: function render() {
             if (this._isShowInfo) {
-                if (!this._game.gameField.contains(this._info.getElem())) {
-                    this._game.gameField.appendChild(this._info.getElem());
+                if (!this._game.gameField.find("*").is(this._info.getElem())) {
+                    this._game.gameField.append(this._info.getElem());
                 }
             } else {
-                if (this._game.gameField.contains(this._info.getElem())) {
-                    this._game.gameField.removeChild(this._info.getElem());
+                if (this._game.gameField.find("*").is(this._info.getElem())) {
+                    this._info.getElem().remove();
                 }
             }
         }
@@ -87,7 +97,7 @@ var GameOverScene = function () {
                         var round = this._round.getNextRound();
                         if (round) {
                             this._game.setScene({
-                                scene: GameScene,
+                                scene: _GameScene.GameScene,
                                 isClear: true
                             });
                         } else {
@@ -100,7 +110,7 @@ var GameOverScene = function () {
                         this._game.life--;
                         if (this._game.life > 0) {
                             this._game.setScene({
-                                scene: GameScene,
+                                scene: _GameScene.GameScene,
                                 isClear: true
                             });
                         } else {
@@ -131,7 +141,7 @@ var GameOverScene = function () {
         value: function _setFinalScene(gameStatus) {
             this._clearScene();
             this._game.setScene({
-                scene: FinalScene,
+                scene: _FinalScene.FinalScene,
                 gameStatus: gameStatus,
                 isClear: false
             });
@@ -139,7 +149,9 @@ var GameOverScene = function () {
     }, {
         key: "_clearScene",
         value: function _clearScene() {
-            if (this._game.gameField.contains(this._info.getElem())) this._game.gameField.removeChild(this._info.getElem());
+            if (this._game.gameField.find("*").is(this._info.getElem())) {
+                this._info.getElem().remove();
+            }
         }
     }]);
 

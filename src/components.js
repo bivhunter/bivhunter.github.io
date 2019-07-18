@@ -1,9 +1,11 @@
+import $ from '/lib/jquery-3.4.1';
 
 //Параметри: текст заголовку і пунктів меню
 //Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
 //CSS класси побудовані на основі назви пункту меню, використовуються для подальших дій зовнішніми
 //об'єктами після підтвердження вибору конкретного пункту меню
-class Menu {
+
+export class Menu {
     constructor( options ) {
         this._headerText = options.header || "";
         this._menuItemsList = options.menuItems || [];
@@ -11,25 +13,53 @@ class Menu {
     }
 
     _init() {
+
+        let menuWrapper = $("<div></div>").addClass("menu").append(this._initHeader());
+        this._initMenuList();
+        menuWrapper.append(this._menuList);
+        this._elem = menuWrapper;
+        this._initMarker();
+
+/*
         let menuWrapper = document.createElement( "div" );
         menuWrapper.classList.add( "menu" );
         this._initMenuList();
+
 
         menuWrapper.appendChild( this._initHeader() );
         menuWrapper.appendChild( this._menuList );
         this._elem = menuWrapper;
         this._initMarker();
+        */
     }
 
     _initHeader() {
+
+        return $("<h1></h1>").addClass("menu-header").text(this._headerText);
+
+        /*
         let header = document.createElement( "h1" );
         header.textContent = this._headerText;
         header.classList.add( "menu-header" );
         return header;
+        */
     }
 
     _initMenuList() {
-        let menuList = document.createElement( "ul" );
+
+        let menuList = $("<ul></ul>").addClass("menu-list");
+        this._menuItemsList.forEach( item => {
+            let listItem = $("<li></li>").appendTo(menuList);
+            let span = $("<span></span>").appendTo(listItem);
+            span.text(item);
+
+            let temp = item.split( " " );
+            listItem.attr("data-name", temp.join( "-" ).toLowerCase());
+        });
+
+        this._menuList = menuList;
+
+        /*let menuList = document.createElement( "ul" );
         this._menuItemsList.forEach( item => {
             let listItem = document.createElement( "li" );
             menuList.appendChild( listItem );
@@ -45,36 +75,48 @@ class Menu {
         menuList.classList.add( "menu-list" );
 
         this._menuList = menuList;
+        */
     }
 
+
     _initMarker() {
+        this._marker = $("<div></div>").addClass( "menu-marker" );
+        this._selectedItem = this._menuList.children()
+            .first();
+        this._select(this._selectedItem);
+
+/*
         this._marker = document.createElement( "div" );
         this._marker.classList.add( "menu-marker" );
         let selectedItem = this._menuList.firstElementChild;
         this._selectedItem = selectedItem;
         this._select( selectedItem );
+        */
     }
 
     _select( elem ) {
-        this._selectedItem.classList.remove( "menu-selected" );
-        elem.classList.add( "menu-selected" );
-        elem.querySelector( "span" ).appendChild( this._marker );
+        this._selectedItem.removeClass( "menu-selected" );
+        elem.addClass( "menu-selected" )
+            .find( "span" ).append( this._marker );
         this._selectedItem = elem;
     }
 
     selectNext() {
-        if ( this._selectedItem.nextElementSibling ) {
-            this._select( this._selectedItem.nextElementSibling );
+        //window.console.log(this._selectedItem.next());
+        if ( this._selectedItem.next().length > 0) {
+            this._select( this._selectedItem.next() );
         } else {
-            this._select( this._menuList.firstElementChild );
+            this._select( this._menuList.children()
+                .first() );
         }
     }
 
     selectPrevious() {
-        if ( this._selectedItem.previousElementSibling ) {
-            this._select( this._selectedItem.previousElementSibling );
+        if ( this._selectedItem.prev().length > 0 ) {
+            this._select( this._selectedItem.prev() );
         } else {
-            this._select( this._menuList.lastElementChild );
+            this._select( this._menuList.children()
+                .last() );
         }
     }
 
@@ -88,7 +130,7 @@ class Menu {
 }
 
 //Частина над ігровим полем з відображенням інформації про перебіг гри
-class Header {
+export class Header {
     constructor( options ) {
         this._options = {
             Round: options.round || 0,
@@ -99,7 +141,30 @@ class Header {
     }
 
     _init() {
-        let ul = document.createElement( "ul" );
+
+        let ul = $("<ul></ul>").addClass("header-list");
+        for ( let key in this._options ) {
+            if ( !this._options.hasOwnProperty( key ) ) {
+                continue;
+            }
+
+            let classStr = "header-" + key.toLowerCase();
+            let li = $( "<li></li>" ).appendTo(ul);
+            let span = $("<span></span>").addClass(classStr)
+                .text(`${key}: ${this._options[ key ]}`);
+
+            //Додає обгортку для показу блоку біля поля Score
+            if ( key === "Score" ) {
+                $("<div></div>").addClass("header-block")
+                    .appendTo(li);
+            }
+
+            span.appendTo(li);
+        }
+        this._elem = ul;
+
+
+       /* let ul = document.createElement( "ul" );
         ul.classList.add( "header-list" );
         //		header.appendChild(ul);
 
@@ -124,6 +189,7 @@ class Header {
             li.appendChild( span );
         }
         this._elem = ul;
+        */
     }
 
     getElem() {
@@ -131,21 +197,21 @@ class Header {
     }
 
     setRound( str ) {
-        this._elem.querySelector( ".header-round" ).textContent = "Round: " + str;
+        this._elem.find( ".header-round" ).text(`Round: ${str}`);
     }
 
     setLife( str ) {
-        this._elem.querySelector( ".header-life" ).textContent = "Life: " + str;
+        this._elem.find( ".header-life" ).text(`Life: ${str}`);
     }
 
     setScore( str ) {
-        this._elem.querySelector( ".header-score" ).textContent = "Score: " + str;
+        this._elem.find( ".header-score" ).text(`Score: ${str}`);
     }
 }
 
 //Має колекцію раундів у вигляді об'єкту, де ключ назва, а значення масив рядків які відповідають
 //розміщенню блоків на ігровому полі
-class Round {
+export class Round {
     constructor() {
         this._rounds = {
             round_test: [
@@ -349,13 +415,21 @@ class Round {
 //Старт анімації (enableAnimation()),
 //Сама анімація animate(dt, duration, text)
 //Зупинити анімацію disableAnimation();
-class Info {
+export class Info {
     constructor( text ) {
         this._text = text || "";
         this._init();
     }
 
     _init() {
+
+        this._message = $("<p></p>").addClass("info-message")
+            .text(this._text);
+        this._elem = $("<div></div>").addClass("info")
+            .append(this._message);
+
+
+        /*
         let div = document.createElement( "div" );
         div.classList.add( "info" );
         this._elem = div;
@@ -365,10 +439,11 @@ class Info {
         message.textContent = this._text;
         this._message = message;
         div.appendChild( message );
-
+*/
     }
 
     enableAnimation() {
+        window.console.log("enable animation");
         this._isAnimation = true;
         this._animationLetterTime = 0;
         this._animationTime = 0;
@@ -376,6 +451,7 @@ class Info {
     }
 
     disableAnimation() {
+        window.console.log("disable animation");
         this._isAnimation = false;
     }
 
@@ -402,7 +478,7 @@ class Info {
         this.addText( text[ this._letterCount ] );
         this._animationLetterTime -= period ;
         this._letterCount++;
-
+        window.console.log("animate");
     }
 
     getElem() {
@@ -410,11 +486,91 @@ class Info {
     }
 
     addText( text ) {
-        this._message.textContent += text;
+        this._message.text((index, value) => {
+           return value += text;
+        });
     }
 
     setText( text ) {
-        this._message.textContent = text;
+        this._message.text(text);
     }
 
+}
+
+export class Vector {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    static FromObj(obj) {
+        return new Vector(obj.x, obj.y);
+    }
+
+    static turn ( vec1, vec2 ) {
+        return {
+            x: vec1.x * vec2.x,
+            y: vec1.y * vec2.y
+        };
+    }
+
+    static scalarMult ( vec1, vec2 ) {
+        return vec1.x * vec2.x + vec1.y * vec2.y;
+    }
+
+
+    setValue() {
+        if (arguments.length === 2) {
+            this.x = arguments[0];
+            this.y = arguments[1];
+        } else {
+            this.x = arguments[0].x;
+            this.y = arguments[0].y;
+        }
+    }
+
+    norm() {
+        let x = this.x,
+            y = this.y,
+            d = Math.sqrt( x * x + y * y );
+        return new Vector (x / d, y / d);
+    }
+
+    sum ( vec ) {
+        return new Vector(this.x + vec.x, this.y + vec.y);
+    }
+
+    scalar ( num ) {
+        return new Vector(this.x * num, this.y * num);
+    }
+
+    diff ( vec ) {
+        return new Vector( this.x - vec.x, this.y - vec.y );
+    }
+
+    module () {
+        return Math.sqrt( this.x * this.x + this.y * this.y );
+    }
+
+    turnAngle ( angle ) {
+        this.setValue(this.x * Math.cos( angle ) - this.y * Math.sin( angle ),
+            this.x * Math.sin( angle ) + this.y * Math.cos( angle ));
+        return this;
+    }
+}
+
+//Пошук коренів квадратного рівняння
+export function calcQuad( a, b, c ) {
+    "use strict";
+    let d = b * b - 4 * a * c;
+    if ( d < 0 ) {
+        return null;
+    }
+
+    let x_1 = ( -b + Math.sqrt( d ) ) / ( 2 * a );
+    let x_2 = ( -b - Math.sqrt( d ) ) / ( 2 * a );
+    return {
+        x_1: x_1,
+        x_2: x_2
+    };
 }

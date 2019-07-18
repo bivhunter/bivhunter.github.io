@@ -1,12 +1,21 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.FinalScene = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _components = require("./components");
+
+var _StartScene = require("./StartScene");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 //Закінчення гри з показом набраних балів через Info
 //Єдине продовження це початок нової після натискання Enter або ESC
-var FinalScene = function () {
+var FinalScene = exports.FinalScene = function () {
     function FinalScene(game, gameStatus) {
         _classCallCheck(this, FinalScene);
 
@@ -36,7 +45,7 @@ var FinalScene = function () {
             }
 
             this._infoText = text;
-            this._info = new Info("");
+            this._info = new _components.Info("");
         }
     }, {
         key: "update",
@@ -64,7 +73,7 @@ var FinalScene = function () {
                 this._game.life = 1;
                 this._game.score = 0;
                 this._game.setScene({
-                    scene: StartScene,
+                    scene: _StartScene.StartScene,
                     isClear: true
                 });
             }
@@ -72,8 +81,8 @@ var FinalScene = function () {
     }, {
         key: "render",
         value: function render() {
-            if (!this._game.gameField.contains(this._info.getElem())) {
-                this._game.gameField.appendChild(this._info.getElem());
+            if (!this._game.gameField.find("*").is(this._info.getElem())) {
+                this._game.gameField.append(this._info.getElem());
             }
         }
     }]);
