@@ -1,5 +1,5 @@
 import { Game } from "./game";
-import $ from '/lib/jquery-3.4.1';
+import $ from '../lib/jquery-3.4.1';
 
 //Запуск гри
 

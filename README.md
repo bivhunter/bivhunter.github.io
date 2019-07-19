@@ -1,5 +1,4 @@
-ricochet_game 
+ricochet game 
 
-by Hunter
+by Hunter 
 
-add new user

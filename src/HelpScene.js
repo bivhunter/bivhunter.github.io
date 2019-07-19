@@ -1,5 +1,6 @@
-import $ from '/lib/jquery-3.4.1';
+import $ from '../lib/jquery-3.4.1';
 import { Menu } from "./components";
+
 
 export class HelpScene {
     constructor(game) {

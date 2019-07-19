@@ -1,11 +1,11 @@
-import $ from '/lib/jquery-3.4.1';
+import $ from '../lib/jquery-3.4.1';
 import { Vector, calcQuad} from "./components";
 
 export class Ball {
     constructor(options) {
         this._game = options.game;
         this.speedCoef = options.speed || 100;
-        this._startDirection = new Vector.FromObj(
+        this._startDirection = Vector.FromObj(
             options.direction || {
             x: 0.1,
             y: -1
