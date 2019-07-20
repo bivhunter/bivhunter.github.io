@@ -19,30 +19,12 @@ export class Menu {
         menuWrapper.append(this._menuList);
         this._elem = menuWrapper;
         this._initMarker();
-
-/*
-        let menuWrapper = document.createElement( "div" );
-        menuWrapper.classList.add( "menu" );
-        this._initMenuList();
-
-
-        menuWrapper.appendChild( this._initHeader() );
-        menuWrapper.appendChild( this._menuList );
-        this._elem = menuWrapper;
-        this._initMarker();
-        */
     }
 
     _initHeader() {
 
         return $("<h1></h1>").addClass("menu-header").text(this._headerText);
 
-        /*
-        let header = document.createElement( "h1" );
-        header.textContent = this._headerText;
-        header.classList.add( "menu-header" );
-        return header;
-        */
     }
 
     _initMenuList() {
@@ -58,24 +40,6 @@ export class Menu {
         });
 
         this._menuList = menuList;
-
-        /*let menuList = document.createElement( "ul" );
-        this._menuItemsList.forEach( item => {
-            let listItem = document.createElement( "li" );
-            menuList.appendChild( listItem );
-
-            let span = document.createElement( "span" );
-            listItem.appendChild( span );
-            span.textContent = item;
-
-            let temp = item.split( " " );
-            item = temp.join( "-" );
-            listItem.classList.add( "menu-" + item.toLowerCase() );
-        } );
-        menuList.classList.add( "menu-list" );
-
-        this._menuList = menuList;
-        */
     }
 
 
@@ -84,14 +48,6 @@ export class Menu {
         this._selectedItem = this._menuList.children()
             .first();
         this._select(this._selectedItem);
-
-/*
-        this._marker = document.createElement( "div" );
-        this._marker.classList.add( "menu-marker" );
-        let selectedItem = this._menuList.firstElementChild;
-        this._selectedItem = selectedItem;
-        this._select( selectedItem );
-        */
     }
 
     _select( elem ) {
@@ -102,7 +58,6 @@ export class Menu {
     }
 
     selectNext() {
-        //window.console.log(this._selectedItem.next());
         if ( this._selectedItem.next().length > 0) {
             this._select( this._selectedItem.next() );
         } else {
@@ -162,34 +117,6 @@ export class Header {
             span.appendTo(li);
         }
         this._elem = ul;
-
-
-       /* let ul = document.createElement( "ul" );
-        ul.classList.add( "header-list" );
-        //		header.appendChild(ul);
-
-        for ( let key in this._options ) {
-            if ( !this._options.hasOwnProperty( key ) ) {
-                continue;
-            }
-            let li = document.createElement( "li" );
-            let span = document.createElement( "span" );
-            let classStr = "header-" + key.toLowerCase();
-
-            span.classList.add( classStr );
-            span.textContent = `${key}: ${this._options[ key ]}`;
-
-            //Додає обгортку для показу блоку біля поля Score
-            if ( key === "Score" ) {
-                let block = document.createElement( "div" );
-                block.classList.add( "header-block" );
-                li.appendChild( block );
-            }
-            ul.appendChild( li );
-            li.appendChild( span );
-        }
-        this._elem = ul;
-        */
     }
 
     getElem() {
@@ -427,19 +354,6 @@ export class Info {
             .text(this._text);
         this._elem = $("<div></div>").addClass("info")
             .append(this._message);
-
-
-        /*
-        let div = document.createElement( "div" );
-        div.classList.add( "info" );
-        this._elem = div;
-
-        let message = document.createElement( "p" );
-        message.classList.add( "info-message" );
-        message.textContent = this._text;
-        this._message = message;
-        div.appendChild( message );
-*/
     }
 
     enableAnimation() {

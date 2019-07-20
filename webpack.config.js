@@ -1,4 +1,4 @@
-
+const webpack = require("webpack");
 module.exports = {
 
     mode: "development",
@@ -10,5 +10,25 @@ module.exports = {
 
     watch: true,
 
-    devtool: "source-map"
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            'window.jQuery': "jquery"
+        })
+    ],
+
+    resolve: {
+        modules: ['node_modules']
+    },
+
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/
+            }
+        ]
+    }
 };

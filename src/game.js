@@ -9,6 +9,7 @@ import $ from '../lib/jquery-3.4.1';
 //Для організаціЇ гри використовується requestAnimationFrame
 export class Game {
     constructor( gameField, headerField ) {
+        console.log("Game");
         this.gameField = gameField;
         this.headerField = headerField;
         this._life = 0;

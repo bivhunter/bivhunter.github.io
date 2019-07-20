@@ -1,6 +1,8 @@
 import { Game } from "./game";
-import $ from '../lib/jquery-3.4.1';
+import $ from "jquery";
 
-//Запуск гри
 
+//Запуск гри\
+console.log("main");
 let gameLounch = new Game( $("#game-field" ), $( "#header-field" ) );
+

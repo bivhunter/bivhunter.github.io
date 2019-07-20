@@ -12,6 +12,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
@@ -20,6 +23,7 @@
     "gulp": "^4.0.2",
     "gulp-cli": "^2.2.0",
     "jquery": "^3.4.1",
+    "popper.js": "^1.15.0",
     "webpack": "^4.36.1",
     "webpack-cli": "^3.3.6"
   },

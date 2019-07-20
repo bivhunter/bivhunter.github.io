@@ -9,6 +9,7 @@ import { FinalScene } from "./FinalScene";
 export class StartScene extends GameScene {
 	constructor(game) {
 		super(game);
+		console.log("start scene");
 	}
 
 	_initRound(round) {
