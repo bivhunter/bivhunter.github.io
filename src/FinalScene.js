@@ -1,3 +1,5 @@
+import { Info } from "./components";
+import { StartScene } from "./StartScene";
 //Закінчення гри з показом набраних балів через Info
 //Єдине продовження це початок нової після натискання Enter або ESC
 export class FinalScene {

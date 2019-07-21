@@ -1,3 +1,10 @@
+import $ from '../lib/jquery-3.4.1';
+import { Board } from "./board";
+import { Ball } from "./ball";
+import { Block } from "./block";
+import { Info, Vector } from "./components";
+import { PauseScene } from "./PauseScene";
+import { GameOverScene } from "./GameOverScene";
 
 //Основна сцена гри, в якій відбуваються всі події
 export class GameScene {
@@ -44,7 +51,7 @@ export class GameScene {
             });
         //this._game.gameField.append( this._boardElem );
 
-       // console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
+       // window.console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
     }
 
     _initBall() {
@@ -113,7 +120,7 @@ export class GameScene {
     }
 
     update( dt ) {
-        //console.log("update dt", dt);
+        //window.console.log("update dt", dt);
 
         if ( this._isShowInfo ) {
             this._updateInfo( dt );
@@ -195,8 +202,8 @@ export class GameScene {
         if ( speed.x >= 30 || speed.y >= 30 ) {
             let error = new Error( "big speed: " );
             this.stop();
-            console.log( error );
-            console.log( speed, this._ball.direction );
+            window.console.log( error );
+            window.console.log( speed, this._ball.direction );
         }
     }
 
@@ -233,7 +240,7 @@ export class GameScene {
 
         if ( ball.direction.y > 0 ) {
             if ( Block.isTouchBlockVsBall( this._board, ball ) ) {
-                //  console.log("touch board border", ball.touchedElem.board, ball.board);
+                //  window.console.log("touch board border", ball.touchedElem.board, ball.board);
                 this._calcTouchedBoardPos( ball, this._board );
 
             }
@@ -360,7 +367,7 @@ export class GameScene {
 
         let vertex = Block.findNearVertex( this._touchedBlockArr[ 0 ], ball );
         if ( vertex === null ) {
-            //console.log("vertex null");
+            //window.console.log("vertex null");
             return;
         }
         this._calcVertexRebound( this._touchedBlockArr[ 0 ], ball, vertex );
@@ -564,7 +571,7 @@ export class GameScene {
     }
 
     render(dt) {
-       // console.log("render dt", dt);
+       // window.console.log("render dt", dt);
         if (this._deffBoard.state() === "resolved") {
             this._board.render(dt);
         }

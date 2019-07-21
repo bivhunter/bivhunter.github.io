@@ -1,10 +1,23 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.HelpScene = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require("/lib/jquery-3.4.1");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _components = require("./components");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var HelpScene = function () {
+var HelpScene = exports.HelpScene = function () {
     function HelpScene(game) {
         _classCallCheck(this, HelpScene);
 
@@ -25,23 +38,23 @@ var HelpScene = function () {
     _createClass(HelpScene, [{
         key: "_init",
         value: function _init() {
-            this._menu = new Menu({
+            this._menu = new _components.Menu({
                 header: "Game help",
                 menuItems: ["Back"]
             });
 
-            this._help = $("<div></div>").addClass("help");
+            this._help = (0, _jquery2.default)("<div></div>").addClass("help");
 
-            var table = $("<table></table>").addClass("help-table").appendTo(this._help);
+            var table = (0, _jquery2.default)("<table></table>").addClass("help-table").appendTo(this._help);
 
-            $("<tr></tr>").html("<th>Action: </th> <th>Key</th>").appendTo(table);
+            (0, _jquery2.default)("<tr></tr>").html("<th>Action: </th> <th>Key</th>").appendTo(table);
 
             for (var key in this._itemsObj) {
                 if (!this._itemsObj.hasOwnProperty(key)) {
                     continue;
                 }
 
-                $("<tr></tr>").html("<td>" + key + ": </td> <td>" + this._itemsObj[key] + "</td>").appendTo(table);
+                (0, _jquery2.default)("<tr></tr>").html("<td>" + key + ": </td> <td>" + this._itemsObj[key] + "</td>").appendTo(table);
             }
 
             /*

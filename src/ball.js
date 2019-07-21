@@ -1,11 +1,11 @@
-import $ from '/lib/jquery-3.4.1';
+import $ from '../lib/jquery-3.4.1';
 import { Vector, calcQuad} from "./components";
 
 export class Ball {
     constructor(options) {
         this._game = options.game;
         this.speedCoef = options.speed || 100;
-        this._startDirection = new Vector.FromObj(
+        this._startDirection = Vector.FromObj(
             options.direction || {
             x: 0.1,
             y: -1
@@ -49,8 +49,8 @@ export class Ball {
         let c = coord.x * coord.x + d * d - 2 * d * coord.y + coord.y * coord.y - this._radius * this._radius;
         let resX = calcQuad(a, b, c);
         if (!resX) {
-            let error = new ErrorEvent("Not found coord centr of ball");
-            console.log(error);
+            throw new Error("Not found coord centr of ball");
+
         }
         if (resX.x_1 * this.direction.x < resX.x_2 * this.direction.x) {
             return new Vector(resX.x_1, k * resX.x_1 + d);

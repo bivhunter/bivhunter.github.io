@@ -1,12 +1,29 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Game = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _components = require("./components");
+
+var _StartScene = require("./StartScene");
+
+var _GameScene = require("./GameScene");
+
+var _jquery = require("/lib/jquery-3.4.1");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 //Класс для організаціЇ Game Loop
 //Для організаціЇ гри використовується requestAnimationFrame
-var Game = function () {
+var Game = exports.Game = function () {
     function Game(gameField, headerField) {
         _classCallCheck(this, Game);
 
@@ -16,13 +33,13 @@ var Game = function () {
         this._score = 0;
         this._stop = false;
 
-        this.round = new Round();
-        this.header = new Header({});
+        this.round = new _components.Round();
+        this.header = new _components.Header({});
         this._gameSceneArr = [];
 
         this._initEvent();
         this.setScene({
-            scene: StartScene,
+            scene: _StartScene.StartScene,
             round: this.round,
             isClear: true
         });
@@ -37,11 +54,11 @@ var Game = function () {
             //зберігає натиснуті кнопки та їх стан
             this.keys = {};
 
-            $(document).on("keydown", function (e) {
+            (0, _jquery2.default)(document).on("keydown", function (e) {
                 _this.keys[e.which] = true;
             });
 
-            $(document).on("keyup", function (e) {
+            (0, _jquery2.default)(document).on("keyup", function (e) {
                 _this.keys[e.which] = false;
             });
 
@@ -58,11 +75,11 @@ var Game = function () {
             //виділення тексту, виклик контекстного меню
 
 
-            $(document).on("dragstart", function (event) {
+            (0, _jquery2.default)(document).on("dragstart", function (event) {
                 event.preventDefault();
             });
 
-            $(document).on("mousedown", function (event) {
+            (0, _jquery2.default)(document).on("mousedown", function (event) {
                 event.preventDefault();
             });
 
@@ -73,8 +90,8 @@ var Game = function () {
                 event.preventDefault();
             } );*/
 
-            $(document).on("contextmenu", function (event) {
-                if ($(".wrapper *").is($(event.target))) {
+            (0, _jquery2.default)(document).on("contextmenu", function (event) {
+                if ((0, _jquery2.default)(".wrapper *").is((0, _jquery2.default)(event.target))) {
                     event.preventDefault();
                 }
             });
@@ -99,7 +116,7 @@ var Game = function () {
 
             //очищення масиву сцен, якщо запускається
             //GameScene або StartScene
-            if (scene instanceof GameScene) {
+            if (scene instanceof _GameScene.GameScene) {
                 this._gameSceneArr = [];
             }
 
@@ -139,8 +156,8 @@ var Game = function () {
         key: "_renderHeader",
         value: function _renderHeader() {
 
-            if (!this.headerField.find("*").is($(this.header.getElem()))) {
-                this.headerField.append($(this.header.getElem()));
+            if (!this.headerField.find("*").is((0, _jquery2.default)(this.header.getElem()))) {
+                this.headerField.append((0, _jquery2.default)(this.header.getElem()));
             }
 
             /*if ( !this.headerField.contains( this.header.getElem() ) ) {
@@ -237,6 +254,3 @@ var Game = function () {
 }();
 
 //Запуск гри
-
-
-var gameLounch = new Game($("#game-field"), $("#header-field"));

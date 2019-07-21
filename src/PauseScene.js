@@ -1,3 +1,7 @@
+import { Menu } from "./components";
+import { GameOverScene } from "./GameOverScene";
+import { HelpScene } from "./HelpScene";
+
 export class PauseScene {
 	constructor(game) {
 		this._game = game;

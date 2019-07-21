@@ -1,3 +1,4 @@
+import $ from '../lib/jquery-3.4.1';
 import { GameScene } from "./GameScene";
 import { Menu } from "./components";
 import { Ball } from "./ball";
@@ -8,6 +9,7 @@ import { FinalScene } from "./FinalScene";
 export class StartScene extends GameScene {
 	constructor(game) {
 		super(game);
+		console.log("start scene");
 	}
 
 	_initRound(round) {

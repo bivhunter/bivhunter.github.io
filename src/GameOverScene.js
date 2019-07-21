@@ -1,3 +1,6 @@
+import { Info } from "./components";
+import { GameScene } from "./GameScene";
+import { FinalScene } from "./FinalScene";
 //Обирає продовження гри при після закінчення раунда будь яким способом
 //перемога, втрата шара, вихід, рестарт. І повідомляє про це
 //через Info
@@ -35,7 +38,6 @@ export class GameOverScene {
             if (!this._game.gameField.find("*").is( this._info.getElem() ) ) {
                 this._game.gameField.append( this._info.getElem() );
             }
-            return;
         } else {
             if (this._game.gameField.find("*").is( this._info.getElem() )  ) {
                 this._info.getElem().remove();

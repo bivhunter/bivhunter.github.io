@@ -1,11 +1,34 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.GameScene = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require("/lib/jquery-3.4.1");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _board = require("./board");
+
+var _ball = require("./ball");
+
+var _block = require("./block");
+
+var _components = require("./components");
+
+var _PauseScene = require("./PauseScene");
+
+var _GameOverScene = require("./GameOverScene");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 //Основна сцена гри, в якій відбуваються всі події
-var GameScene = function () {
+var GameScene = exports.GameScene = function () {
     function GameScene(game) {
         _classCallCheck(this, GameScene);
 
@@ -20,8 +43,8 @@ var GameScene = function () {
         this._acceleration = 0.2;
         this._infoTime = 0;
         this.ballOnBoard = true;
-        this._deffBall = $.Deferred();
-        this._deffBoard = $.Deferred();
+        this._deffBall = _jquery2.default.Deferred();
+        this._deffBoard = _jquery2.default.Deferred();
         //this._isLoadBall = false;
         //this._isLoadBoard = false;
         this._initRound();
@@ -41,7 +64,7 @@ var GameScene = function () {
         value: function _initBoard() {
             var _this = this;
 
-            this._board = new Board({
+            this._board = new _board.Board({
                 gameField: this._game.gameField
             });
             this._board.speedCoef = this._SPEED_COEF;
@@ -54,14 +77,14 @@ var GameScene = function () {
             });
             //this._game.gameField.append( this._boardElem );
 
-            // console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
+            // window.console.log("board min max", this._boardMinPosition,  this._boardMaxPosition);
         }
     }, {
         key: "_initBall",
         value: function _initBall() {
             var _this2 = this;
 
-            this._ball = new Ball({
+            this._ball = new _ball.Ball({
                 game: this,
                 speed: this._SPEED_COEF,
                 direction: {
@@ -98,7 +121,7 @@ var GameScene = function () {
                     }
 
                     if (round[i][j] === "w") {
-                        block = new Block({
+                        block = new _block.Block({
                             x: x,
                             y: y,
                             blockClass: "block-weak"
@@ -106,7 +129,7 @@ var GameScene = function () {
                     }
 
                     if (round[i][j] === "s") {
-                        block = new Block({
+                        block = new _block.Block({
                             x: x,
                             y: y,
                             blockClass: "block-strong"
@@ -120,14 +143,14 @@ var GameScene = function () {
     }, {
         key: "_initInfo",
         value: function _initInfo(round) {
-            this._info = new Info("");
+            this._info = new _components.Info("");
             this._isShowInfo = true;
             this._infoText = "Round " + this._round.getActiveRoundNum();
         }
     }, {
         key: "update",
         value: function update(dt) {
-            //console.log("update dt", dt);
+            //window.console.log("update dt", dt);
 
             if (this._isShowInfo) {
                 this._updateInfo(dt);
@@ -200,7 +223,7 @@ var GameScene = function () {
                 ball.direction.y = 0.01;
             }
 
-            ball.speed = Vector.FromObj(ball.direction.scalar(dt * ball.speedCoef));
+            ball.speed = _components.Vector.FromObj(ball.direction.scalar(dt * ball.speedCoef));
             //генерує помилку при перевищенні швидкості в 30
             //всі розрахунки проводилися для меншої швидкості
             //метод в основному потрібний при розробці
@@ -213,8 +236,8 @@ var GameScene = function () {
             if (speed.x >= 30 || speed.y >= 30) {
                 var error = new Error("big speed: ");
                 this.stop();
-                console.log(error);
-                console.log(speed, this._ball.direction);
+                window.console.log(error);
+                window.console.log(speed, this._ball.direction);
             }
         }
 
@@ -252,8 +275,8 @@ var GameScene = function () {
             }
 
             if (ball.direction.y > 0) {
-                if (Block.isTouchBlockVsBall(this._board, ball)) {
-                    //  console.log("touch board border", ball.touchedElem.board, ball.board);
+                if (_block.Block.isTouchBlockVsBall(this._board, ball)) {
+                    //  window.console.log("touch board border", ball.touchedElem.board, ball.board);
                     this._calcTouchedBoardPos(ball, this._board);
                 }
             }
@@ -331,9 +354,9 @@ var GameScene = function () {
                 if (obj[key] > distance) {
                     distance = obj[key];
                     if (key === "left" || key === "right") {
-                        ball.newDirection = new Vector(-1 * ball.direction.x, ball.direction.y);
+                        ball.newDirection = new _components.Vector(-1 * ball.direction.x, ball.direction.y);
                     } else {
-                        ball.newDirection = new Vector(ball.direction.x, -1 * ball.direction.y);
+                        ball.newDirection = new _components.Vector(ball.direction.x, -1 * ball.direction.y);
                     }
                 }
             }
@@ -341,7 +364,7 @@ var GameScene = function () {
             ball.touchedElem.border = distance;
             var over = ball.direction.scalar(distance);
             ball.border.speed = ball.newDirection.scalar(distance);
-            ball.border.direction = Vector.FromObj(ball.newDirection);
+            ball.border.direction = _components.Vector.FromObj(ball.newDirection);
             ball.border.position = position.diff(over);
         }
 
@@ -354,7 +377,7 @@ var GameScene = function () {
 
             this._touchedBlockArr = [];
             this._blockArr.forEach(function (block) {
-                if (Block.isTouchBlockVsBall(block, ball)) {
+                if (_block.Block.isTouchBlockVsBall(block, ball)) {
                     _this3._touchedBlockArr.push(block);
                 }
             });
@@ -378,17 +401,17 @@ var GameScene = function () {
             ball.touchSide = false;
 
             //вертикальний та горизонтальний вектори нормалі у напрямку руху шара
-            var normalH = ball.getNormal(new Vector(Math.sign(ball.direction.x), 0));
-            var normalV = ball.getNormal(new Vector(0, Math.sign(+ball.direction.y)));
+            var normalH = ball.getNormal(new _components.Vector(Math.sign(ball.direction.x), 0));
+            var normalV = ball.getNormal(new _components.Vector(0, Math.sign(+ball.direction.y)));
             //якщо є дотик до сторони, то не перевіряти далі
             this._calcSideBlockRebound(normalH, normalV, ball);
             if (ball.touchSide) {
                 return;
             }
 
-            var vertex = Block.findNearVertex(this._touchedBlockArr[0], ball);
+            var vertex = _block.Block.findNearVertex(this._touchedBlockArr[0], ball);
             if (vertex === null) {
-                //console.log("vertex null");
+                //window.console.log("vertex null");
                 return;
             }
             this._calcVertexRebound(this._touchedBlockArr[0], ball, vertex);
@@ -438,11 +461,11 @@ var GameScene = function () {
             if (distH > distV) {
                 dist = distH;
                 block = blockH;
-                ball.newDirection = new Vector(-Math.sign(normalH.x) * ball.direction.x, ball.direction.y);
+                ball.newDirection = new _components.Vector(-Math.sign(normalH.x) * ball.direction.x, ball.direction.y);
             } else {
                 dist = distV;
                 block = blockV;
-                ball.newDirection = new Vector(ball.direction.x, -Math.sign(+normalV.y) * ball.direction.y);
+                ball.newDirection = new _components.Vector(ball.direction.x, -Math.sign(+normalV.y) * ball.direction.y);
             }
 
             ball.touchSide = true;
@@ -451,7 +474,7 @@ var GameScene = function () {
 
             var over = ball.direction.scalar(dist + ball.centrOver);
             ball.block.speed = ball.newDirection.scalar(dist + ball.centrOver);
-            ball.block.direction = Vector.FromObj(ball.newDirection);
+            ball.block.direction = _components.Vector.FromObj(ball.newDirection);
             ball.block.position = ball.position.diff(over);
         }
 
@@ -468,11 +491,11 @@ var GameScene = function () {
         value: function _calcVertexRebound(block, ball, vertex) {
             ball.block.position = ball.calcCentr(vertex);
             var vecCentrToVertex = vertex.diff(ball.block.position);
-            var normal = new Vector(-vecCentrToVertex.y, vecCentrToVertex.x);
+            var normal = new _components.Vector(-vecCentrToVertex.y, vecCentrToVertex.x);
 
             //кут між напрямком руху і вектором з центра до вершини
-            var angle = Math.acos(Vector.scalarMult(ball.direction, vecCentrToVertex.norm()));
-            var sign = Math.sign(Vector.scalarMult(normal, ball.direction));
+            var angle = Math.acos(_components.Vector.scalarMult(ball.direction, vecCentrToVertex.norm()));
+            var sign = Math.sign(_components.Vector.scalarMult(normal, ball.direction));
             var distance = ball.position.diff(vertex).module() + ball.centrOver;
             this._touchingBlock(block);
 
@@ -492,7 +515,7 @@ var GameScene = function () {
         key: "_calcTouchedBoardPos",
         value: function _calcTouchedBoardPos(ball, board) {
             ball.board = {};
-            ball.board.position = Vector.FromObj(ball.position);
+            ball.board.position = _components.Vector.FromObj(ball.position);
             var point = this._findTouchedBoardPoint(ball, board);
 
             if (point === null) {
@@ -502,9 +525,9 @@ var GameScene = function () {
             ball.board.position = ball.calcCentr(point);
             var vecCentrToVertex = point.diff(ball.board.position);
 
-            var normal = new Vector(-vecCentrToVertex.y, vecCentrToVertex.x);
-            var angle = Math.acos(Vector.scalarMult(ball.direction, vecCentrToVertex.norm()));
-            var sign = Math.sign(Vector.scalarMult(normal, ball.direction));
+            var normal = new _components.Vector(-vecCentrToVertex.y, vecCentrToVertex.x);
+            var angle = Math.acos(_components.Vector.scalarMult(ball.direction, vecCentrToVertex.norm()));
+            var sign = Math.sign(_components.Vector.scalarMult(normal, ball.direction));
             var distance = ball.position.diff(ball.board.position).module();
 
             ball.touchedElem.board = distance;
@@ -569,7 +592,7 @@ var GameScene = function () {
             if (this._game.checkKeyPress(13) || this._game.checkKeyPress(27)) {
                 this._blockNumber = 0;
                 this._game.setScene({
-                    scene: PauseScene,
+                    scene: _PauseScene.PauseScene,
                     isClear: false
                 });
                 this.isPause = true;
@@ -603,7 +626,7 @@ var GameScene = function () {
     }, {
         key: "render",
         value: function render(dt) {
-            // console.log("render dt", dt);
+            // window.console.log("render dt", dt);
             if (this._deffBoard.state() === "resolved") {
                 this._board.render(dt);
             }
@@ -721,7 +744,7 @@ var GameScene = function () {
         value: function gameOver(gameStatus) {
             this.isPause = true;
             this._game.setScene({
-                scene: GameOverScene,
+                scene: _GameOverScene.GameOverScene,
                 isClear: false,
                 gameStatus: gameStatus
             });
