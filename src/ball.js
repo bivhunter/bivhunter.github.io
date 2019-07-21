@@ -40,7 +40,7 @@ class Ball {
         let c = coord.x * coord.x + d * d - 2 * d * coord.y + coord.y * coord.y - this._radius * this._radius;
         let resX = calcQuad(a, b, c);
         if (!resX) {
-            let error = new ErrorEvent("Not found coord centr of ball");
+            let error = new Error("Not found coord centr of ball");
             console.log(error);
         }
         if (resX.x_1 * this.direction.x < resX.x_2 * this.direction.x) {
@@ -66,7 +66,6 @@ class Ball {
     }
 
     _setPosition(coord) {
-        //console.log(coord);
         this._ball.style.left = coord.x - this._radius + "px";
         this._ball.style.top = coord.y - this._radius + "px";
     }

@@ -22,7 +22,6 @@ class Block {
 
         if ((block.bottom() > ball.position.y - ball.radius) &&
             (block.top() < ball.position.y + ball.radius)) {
-            //console.log("collY");
             yColl = true;
         }
 
