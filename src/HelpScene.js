@@ -1,4 +1,4 @@
-import $ from '../lib/jquery-3.4.1';
+import $ from 'jquery';
 import { Menu } from "./components";
 
 

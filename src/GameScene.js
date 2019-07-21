@@ -1,4 +1,4 @@
-import $ from '../lib/jquery-3.4.1';
+import $ from 'jquery';
 import { Board } from "./board";
 import { Ball } from "./ball";
 import { Block } from "./block";
