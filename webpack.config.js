@@ -22,6 +22,8 @@ module.exports = {
         modules: ['node_modules']
     },
 
+    devtool: 'source-map',
+
     module: {
         rules: [
             {
