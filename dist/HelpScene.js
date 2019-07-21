@@ -1,101 +1,74 @@
-"use strict";
+import $ from '../lib/jquery-3.4.1';
+import { Menu } from "./components";
+export class HelpScene {
+  constructor(game) {
+    this._game = game;
+    this._itemsObj = {
+      Up: "↑  or  W",
+      Down: "↓  or  S",
+      Left: "←  or  A",
+      Right: "→  or  D",
+      "Select, Pause": "ENTER",
+      "Quit, Back": "ESC",
+      "Run ball": "SPACE"
+    };
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.HelpScene = undefined;
+    this._init();
+  }
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  _init() {
+    this._menu = new Menu({
+      header: "Game help",
+      menuItems: ["Back"]
+    });
+    this._help = $("<div></div>").addClass("help");
+    let table = $("<table></table>").addClass("help-table").appendTo(this._help);
+    $("<tr></tr>").html(`<th>Action: </th> <th>Key</th>`).appendTo(table);
 
-var _jquery = require("/lib/jquery-3.4.1");
+    for (let key in this._itemsObj) {
+      if (!this._itemsObj.hasOwnProperty(key)) {
+        continue;
+      }
 
-var _jquery2 = _interopRequireDefault(_jquery);
+      $("<tr></tr>").html(`<td>${key}: </td> <td>${this._itemsObj[key]}</td>`).appendTo(table);
+    }
+    /*
+    this._help = document.createElement("div");
+    this._help.classList.add("help");
+      let table = document.createElement("table");
+    table.classList.add("help-table");
+    let trHead = document.createElement("tr");
+    trHead.innerHTML = `<th>Action: </th> <th>Key</th>`;
+    table.appendChild(trHead);
+      for (let key in this._itemsObj) {
+        if (!this._itemsObj.hasOwnProperty(key)) {
+            continue;
+        }
+          let tr = document.createElement("tr");
+        tr.innerHTML = `<td>${key}: </td> <td>${this._itemsObj[key]}</td>`;
+        table.appendChild(tr);
+    }
+      this._help.appendChild(table);
+    */
 
-var _components = require("./components");
+  }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  update() {
+    if (this._game.checkKeyPress(27) || this._game.checkKeyPress(13)) {
+      this._menu.getElem().remove();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+      this._game.returnScene();
+    }
+  }
 
-var HelpScene = exports.HelpScene = function () {
-    function HelpScene(game) {
-        _classCallCheck(this, HelpScene);
-
-        this._game = game;
-        this._itemsObj = {
-            Up: "↑  or  W",
-            Down: "↓  or  S",
-            Left: "←  or  A",
-            Right: "→  or  D",
-            "Select, Pause": "ENTER",
-            "Quit, Back": "ESC",
-            "Run ball": "SPACE"
-        };
-
-        this._init();
+  render() {
+    if (!this._game.gameField.find("*").is(this._menu.getElem())) {
+      this._game.gameField.append(this._menu.getElem());
     }
 
-    _createClass(HelpScene, [{
-        key: "_init",
-        value: function _init() {
-            this._menu = new _components.Menu({
-                header: "Game help",
-                menuItems: ["Back"]
-            });
+    if (!this._menu.getElem().find("*").is(this._help)) {
+      this._menu.getElem().append(this._help);
+    }
+  }
 
-            this._help = (0, _jquery2.default)("<div></div>").addClass("help");
-
-            var table = (0, _jquery2.default)("<table></table>").addClass("help-table").appendTo(this._help);
-
-            (0, _jquery2.default)("<tr></tr>").html("<th>Action: </th> <th>Key</th>").appendTo(table);
-
-            for (var key in this._itemsObj) {
-                if (!this._itemsObj.hasOwnProperty(key)) {
-                    continue;
-                }
-
-                (0, _jquery2.default)("<tr></tr>").html("<td>" + key + ": </td> <td>" + this._itemsObj[key] + "</td>").appendTo(table);
-            }
-
-            /*
-            this._help = document.createElement("div");
-            this._help.classList.add("help");
-              let table = document.createElement("table");
-            table.classList.add("help-table");
-            let trHead = document.createElement("tr");
-            trHead.innerHTML = `<th>Action: </th> <th>Key</th>`;
-            table.appendChild(trHead);
-              for (let key in this._itemsObj) {
-                if (!this._itemsObj.hasOwnProperty(key)) {
-                    continue;
-                }
-                  let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${key}: </td> <td>${this._itemsObj[key]}</td>`;
-                table.appendChild(tr);
-            }
-              this._help.appendChild(table);
-            */
-        }
-    }, {
-        key: "update",
-        value: function update() {
-            if (this._game.checkKeyPress(27) || this._game.checkKeyPress(13)) {
-                this._menu.getElem().remove();
-                this._game.returnScene();
-            }
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            if (!this._game.gameField.find("*").is(this._menu.getElem())) {
-                this._game.gameField.append(this._menu.getElem());
-            }
-
-            if (!this._menu.getElem().find("*").is(this._help)) {
-                this._menu.getElem().append(this._help);
-            }
-        }
-    }]);
-
-    return HelpScene;
-}();
+}
