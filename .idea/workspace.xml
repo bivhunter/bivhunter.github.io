@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b196b7c-4138-49c8-bedb-4106b91577c5" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="5b196b7c-4138-49c8-bedb-4106b91577c5" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -94,21 +92,6 @@
               <item name="Ricochet Game" type="b2602c69:ProjectViewProjectNode" />
               <item name="Ricochet Game" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Ricochet Game" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ricochet Game" type="462c0819:PsiDirectoryNode" />
-              <item name="dist" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ricochet Game" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ricochet Game" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ricochet Game" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ricochet Game" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -163,7 +146,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33022000" />
+    <option name="totallyTimeSpent" value="33137000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
