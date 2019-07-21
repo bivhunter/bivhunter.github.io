@@ -122,7 +122,6 @@ class Board {
     //змещення точок при зміщенні дошки
     renderPoint() {
         let pointArr = this.getPointArr();
-        //console.log(pointArr);
         let field = document.getElementById( "game-field" );
         let pointList = field.querySelectorAll( ".point" );
         for ( let i = 0; i < pointList.length; i++ ) {

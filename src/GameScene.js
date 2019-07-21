@@ -91,7 +91,6 @@ class GameScene {
     }
 
     update( dt ) {
-        console.log("update dt", dt);
         this._updateInfo( dt );
         if ( this._isShowInfo ) {
             return;
@@ -203,7 +202,6 @@ class GameScene {
 
         if ( ball.direction.y > 0 ) {
             if ( Block.isTouchBlockVsBall( this._board, ball ) ) {
-                //  console.log("touch board border", ball.touchedElem.board, ball.board);
                 this._calcTouchedBoardPos( ball, this._board );
 
             }
@@ -330,7 +328,6 @@ class GameScene {
 
         let vertex = Block.findNearVertex( this._touchedBlockArr[ 0 ], ball );
         if ( vertex === null ) {
-            //console.log("vertex null");
             return;
         }
         this._calcVertexRebound( this._touchedBlockArr[ 0 ], ball, vertex );
@@ -534,7 +531,6 @@ class GameScene {
     }
 
     render(dt) {
-        console.log("render dt", dt);
 		this._board.render(dt);
 
 		if (!this._game.gameField.contains(this._boardElem)) {
