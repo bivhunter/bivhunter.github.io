@@ -8,8 +8,9 @@ import $ from 'jquery';
 //Класс для організаціЇ Game Loop
 //Для організаціЇ гри використовується requestAnimationFrame
 export class Game {
-    constructor( gameField, headerField ) {
+    constructor( gameField, headerField, eventBus ) {
         console.log("Game");
+        this.eventBus = eventBus;
         this.gameField = gameField;
         this.headerField = headerField;
         this._life = 0;

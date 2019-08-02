@@ -656,6 +656,7 @@ export class GameScene {
 
 	//викликається при зіткненні з блоком
 	_touchingBlock(block) {
+        this._game.eventBus.publish('touch', 'block touch');
 		block.touching();
 		this._game.score += block.getScore();
 		this._blockForRemove.push(block);

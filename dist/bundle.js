@@ -11707,6 +11707,8 @@ function () {
   }, {
     key: "_touchingBlock",
     value: function _touchingBlock(block) {
+      this._game.eventBus.publish('touch', 'block touch');
+
       block.touching();
       this._game.score += block.getScore();
 
@@ -13145,6 +13147,69 @@ function calcQuad(a, b, c) {
 
 /***/ }),
 
+/***/ "./src/eventBus.js":
+/*!*************************!*\
+  !*** ./src/eventBus.js ***!
+  \*************************/
+/*! exports provided: EventBus */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventBus", function() { return EventBus; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var EventBus =
+/*#__PURE__*/
+function () {
+  function EventBus() {
+    _classCallCheck(this, EventBus);
+
+    this.channels = {};
+  }
+
+  _createClass(EventBus, [{
+    key: "subscribe",
+    value: function subscribe(channel, fn) {
+      if (!this.channels[channel]) {
+        this.channels[channel] = [];
+      }
+
+      this.channels[channel].push(fn);
+    }
+  }, {
+    key: "unSubscribe",
+    value: function unSubscribe(channel, fn) {
+      if (!this.channels[channel]) {
+        return;
+      }
+
+      this.channels[channel] = this.channels[channel].filter(function (item) {
+        return item !== fn;
+      });
+    }
+  }, {
+    key: "publish",
+    value: function publish(channel, message) {
+      if (!this.channels[channel] || !this.channels[channel].length) {
+        return;
+      }
+
+      this.channels[channel].forEach(function (item) {
+        item(message);
+      });
+    }
+  }]);
+
+  return EventBus;
+}();
+
+/***/ }),
+
 /***/ "./src/game.js":
 /*!*********************!*\
   !*** ./src/game.js ***!
@@ -13175,10 +13240,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Game =
 /*#__PURE__*/
 function () {
-  function Game(gameField, headerField) {
+  function Game(gameField, headerField, eventBus) {
     _classCallCheck(this, Game);
 
     console.log("Game");
+    this.eventBus = eventBus;
     this.gameField = gameField;
     this.headerField = headerField;
     this._life = 0;
@@ -13405,15 +13471,117 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/game.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _sound__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sound */ "./src/sound.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./eventBus */ "./src/eventBus.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_3__);
+
+
 
  //Запуск гри\
 
-jquery__WEBPACK_IMPORTED_MODULE_1___default()(document).ready(function () {
-  console.log("main");
-  var gameLounch = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](jquery__WEBPACK_IMPORTED_MODULE_1___default()("#game-field"), jquery__WEBPACK_IMPORTED_MODULE_1___default()("#header-field"));
+/*
+function getAudio( url ) {
+
+}
+
+function getUrl ( url ) {
+   return new Promise((resolve, reject) => {
+       let xhr = new XMLHttpRequest();
+       xhr.open('GET', url);
+       xhr.responseType = "arraybuffer";
+       xhr.onload = () => {
+           if (xhr.status === 200) {
+               console.log("ok");
+               resolve(xhr.response);
+           } else {
+               reject(new Error('no load file'));
+           }
+       };
+       xhr.send();
+   });
+
+}
+
+function connectData( url, audioContext ) {
+    getUrl( url ).then((data) => {
+        return audioContext.decodeAudioData(data);
+    }).then((buffer) => {
+        let source = audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioContext.destination);
+        source.start(0);
+    });
+}
+
+*/
+
+jquery__WEBPACK_IMPORTED_MODULE_3___default()(document).ready(function () {
+  var audioContext = new AudioContext();
+  var eventBus = new _eventBus__WEBPACK_IMPORTED_MODULE_2__["EventBus"](); // connectData('./audio/audio_1.mp3', audioContext);
+  // console.log("main");
+
+  var gameLounch = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](jquery__WEBPACK_IMPORTED_MODULE_3___default()("#game-field"), jquery__WEBPACK_IMPORTED_MODULE_3___default()("#header-field"), eventBus);
+  var sound = new _sound__WEBPACK_IMPORTED_MODULE_1__["Sound"](audioContext, gameLounch);
 });
+
+/***/ }),
+
+/***/ "./src/sound.js":
+/*!**********************!*\
+  !*** ./src/sound.js ***!
+  \**********************/
+/*! exports provided: Sound */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Sound", function() { return Sound; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Sound =
+/*#__PURE__*/
+function () {
+  function Sound(audioContext, game) {
+    _classCallCheck(this, Sound);
+
+    this.game = game;
+    this.audioCtx = audioContext;
+
+    this._subscribeEvent();
+  }
+
+  _createClass(Sound, [{
+    key: "_subscribeEvent",
+    value: function _subscribeEvent() {
+      var _this = this;
+
+      this.game.eventBus.subscribe('touch', function (data) {
+        _this.touch(data);
+      });
+    }
+  }, {
+    key: "touch",
+    value: function touch(data) {
+      console.log(data);
+    }
+  }, {
+    key: "touchBlock",
+    value: function touchBlock() {}
+  }, {
+    key: "volumeUp",
+    value: function volumeUp() {}
+  }, {
+    key: "volumeDown",
+    value: function volumeDown() {}
+  }]);
+
+  return Sound;
+}();
 
 /***/ })
 
