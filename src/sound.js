@@ -1,30 +1,10 @@
+/*
+import { audioCtx } from "./audioContext";
+
 export class Sound {
-    constructor(audioContext, game) {
-        this.game = game;
-        this.audioCtx = audioContext;
-        this._subscribeEvent();
+    constructor(url) {
+        this.url = url;
     }
 
-    _subscribeEvent() {
-        this.game.eventBus.subscribe('touch', (data) => {
-            this.touch(data);
-        });
-    }
-
-    touch(data) {
-        console.log(data);
-    }
-
-    touchBlock() {
-
-    }
-
-    volumeUp() {
-
-    }
-
-    volumeDown() {
-        
-    }
-
-}
+    playOnce
+}*/

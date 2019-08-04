@@ -1,6 +1,7 @@
 import { Game } from "./game";
-import { Sound } from "./sound";
-import { EventBus } from "./eventBus";
+import { sounds } from "./sounds";
+import { BufferSoundsService } from "./bufferSoundsService";
+import { eventBus } from "./eventBus";
 import $ from "jquery";
 
 
@@ -48,14 +49,25 @@ function connectData( url, audioContext ) {
 
 $(document).ready(() => {
 
-    let audioContext = new AudioContext();
-    let eventBus = new EventBus();
+    let urlList = {
+        touch: './audio/touch.mp3'
+    };
+
+    let gameLounch = new Game( $("#game-field" ), $( "#header-field" ), eventBus );
+
+    let bufferSoundsService = new BufferSoundsService();
+    bufferSoundsService.buffer(urlList).then((data) => {
+        $("#game-field" ).click();
+        sounds.list = data;
+    });
+
+
 
 
    // connectData('./audio/audio_1.mp3', audioContext);
    // console.log("main");
-    let gameLounch = new Game( $("#game-field" ), $( "#header-field" ), eventBus );
-    let sound = new Sound(audioContext, gameLounch);
+
+
 });
 
 

@@ -1,4 +1,4 @@
-export class EventBus {
+class EventBus {
     constructor() {
         this.channels = {};
     }
@@ -28,5 +28,6 @@ export class EventBus {
             item(message);
         });
     }
-
 }
+
+export let eventBus = new EventBus();

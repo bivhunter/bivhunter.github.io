@@ -12219,6 +12219,20 @@ function (_GameScene) {
 
 /***/ }),
 
+/***/ "./src/audioContext.js":
+/*!*****************************!*\
+  !*** ./src/audioContext.js ***!
+  \*****************************/
+/*! exports provided: audioCtx */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "audioCtx", function() { return audioCtx; });
+var audioCtx = new AudioContext();
+
+/***/ }),
+
 /***/ "./src/ball.js":
 /*!*********************!*\
   !*** ./src/ball.js ***!
@@ -12715,6 +12729,116 @@ function () {
 
 /***/ }),
 
+/***/ "./src/bufferSoundsService.js":
+/*!************************************!*\
+  !*** ./src/bufferSoundsService.js ***!
+  \************************************/
+/*! exports provided: BufferSoundsService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BufferSoundsService", function() { return BufferSoundsService; });
+/* harmony import */ var _audioContext__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./audioContext */ "./src/audioContext.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+var BufferSoundsService =
+/*#__PURE__*/
+function () {
+  function BufferSoundsService() {
+    _classCallCheck(this, BufferSoundsService);
+  }
+
+  _createClass(BufferSoundsService, [{
+    key: "buffer",
+    value: function buffer(urlList) {
+      var _this = this;
+
+      var urlObjArr = this._reformatUrlList(urlList);
+
+      return new Promise(function (resolve, reject) {
+        _this._requestUrlList(urlObjArr).then(function (data) {
+          var bufferSoundList = {};
+          data.forEach(function (item) {
+            bufferSoundList[item.name] = item.data;
+          });
+          console.log("bufferSoundList", bufferSoundList);
+          resolve(bufferSoundList);
+        });
+      });
+    }
+  }, {
+    key: "_reformatUrlList",
+    value: function _reformatUrlList(urlList) {
+      var arr = [];
+
+      for (var key in urlList) {
+        if (urlList.hasOwnProperty(key)) {
+          arr.push({
+            name: key,
+            url: urlList[key]
+          });
+        }
+      }
+
+      return arr;
+    }
+  }, {
+    key: "_requestUrlList",
+    value: function _requestUrlList(urlList) {
+      var _this2 = this;
+
+      var promiseList = urlList.map(function (item) {
+        return new Promise(function (resolve) {
+          _this2.decodeData(_this2._getDataFromUrl(item.url)).then(function (data) {
+            item.data = data;
+            resolve(item);
+          });
+        });
+      });
+      return Promise.all(promiseList);
+    }
+  }, {
+    key: "decodeData",
+    value: function decodeData(promise) {
+      return promise.then(function (data) {
+        return _audioContext__WEBPACK_IMPORTED_MODULE_0__["audioCtx"].decodeAudioData(data);
+      }, function (error) {
+        return error;
+      });
+    }
+  }, {
+    key: "_getDataFromUrl",
+    value: function _getDataFromUrl(url) {
+      return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.responseType = "arraybuffer";
+
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            console.log("ok");
+            resolve(xhr.response);
+          } else {
+            reject(new Error('no found file'));
+          }
+        };
+
+        xhr.send();
+      });
+    }
+  }]);
+
+  return BufferSoundsService;
+}();
+
+/***/ }),
+
 /***/ "./src/components.js":
 /*!***************************!*\
   !*** ./src/components.js ***!
@@ -13151,12 +13275,12 @@ function calcQuad(a, b, c) {
 /*!*************************!*\
   !*** ./src/eventBus.js ***!
   \*************************/
-/*! exports provided: EventBus */
+/*! exports provided: eventBus */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventBus", function() { return EventBus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "eventBus", function() { return eventBus; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13207,6 +13331,8 @@ function () {
 
   return EventBus;
 }();
+
+var eventBus = new EventBus();
 
 /***/ }),
 
@@ -13471,10 +13597,12 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ "./src/game.js");
-/* harmony import */ var _sound__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sound */ "./src/sound.js");
-/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./eventBus */ "./src/eventBus.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _sounds__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sounds */ "./src/sounds.js");
+/* harmony import */ var _bufferSoundsService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bufferSoundsService */ "./src/bufferSoundsService.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./eventBus */ "./src/eventBus.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 
@@ -13516,58 +13644,83 @@ function connectData( url, audioContext ) {
 
 */
 
-jquery__WEBPACK_IMPORTED_MODULE_3___default()(document).ready(function () {
-  var audioContext = new AudioContext();
-  var eventBus = new _eventBus__WEBPACK_IMPORTED_MODULE_2__["EventBus"](); // connectData('./audio/audio_1.mp3', audioContext);
+jquery__WEBPACK_IMPORTED_MODULE_4___default()(document).ready(function () {
+  var urlList = {
+    touch: './audio/touch.mp3'
+  };
+  var gameLounch = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](jquery__WEBPACK_IMPORTED_MODULE_4___default()("#game-field"), jquery__WEBPACK_IMPORTED_MODULE_4___default()("#header-field"), _eventBus__WEBPACK_IMPORTED_MODULE_3__["eventBus"]);
+  var bufferSoundsService = new _bufferSoundsService__WEBPACK_IMPORTED_MODULE_2__["BufferSoundsService"]();
+  bufferSoundsService.buffer(urlList).then(function (data) {
+    jquery__WEBPACK_IMPORTED_MODULE_4___default()("#game-field").click();
+    _sounds__WEBPACK_IMPORTED_MODULE_1__["sounds"].list = data;
+  }); // connectData('./audio/audio_1.mp3', audioContext);
   // console.log("main");
-
-  var gameLounch = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](jquery__WEBPACK_IMPORTED_MODULE_3___default()("#game-field"), jquery__WEBPACK_IMPORTED_MODULE_3___default()("#header-field"), eventBus);
-  var sound = new _sound__WEBPACK_IMPORTED_MODULE_1__["Sound"](audioContext, gameLounch);
 });
 
 /***/ }),
 
-/***/ "./src/sound.js":
-/*!**********************!*\
-  !*** ./src/sound.js ***!
-  \**********************/
-/*! exports provided: Sound */
+/***/ "./src/sounds.js":
+/*!***********************!*\
+  !*** ./src/sounds.js ***!
+  \***********************/
+/*! exports provided: sounds */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Sound", function() { return Sound; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sounds", function() { return sounds; });
+/* harmony import */ var _audioContext__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./audioContext */ "./src/audioContext.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./eventBus */ "./src/eventBus.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Sound =
+
+
+
+var Sounds =
 /*#__PURE__*/
 function () {
-  function Sound(audioContext, game) {
-    _classCallCheck(this, Sound);
+  function Sounds() {
+    _classCallCheck(this, Sounds);
 
-    this.game = game;
-    this.audioCtx = audioContext;
+    this.list = {};
 
     this._subscribeEvent();
   }
 
-  _createClass(Sound, [{
+  _createClass(Sounds, [{
     key: "_subscribeEvent",
     value: function _subscribeEvent() {
       var _this = this;
 
-      this.game.eventBus.subscribe('touch', function (data) {
-        _this.touch(data);
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('touch', function (data) {
+        _this._touch(data);
       });
     }
   }, {
-    key: "touch",
-    value: function touch(data) {
-      console.log(data);
+    key: "_touch",
+    value: function _touch(data) {
+      var sound = this.list.touch;
+
+      if (!sound) {
+        console.log("no sound");
+        return;
+      }
+
+      this._playOnce(sound);
+    }
+  }, {
+    key: "_playOnce",
+    value: function _playOnce(sound) {
+      var source = _audioContext__WEBPACK_IMPORTED_MODULE_0__["audioCtx"].createBufferSource();
+      source.buffer = sound;
+      source.connect(_audioContext__WEBPACK_IMPORTED_MODULE_0__["audioCtx"].destination);
+      source.loop = false;
+      source.start(0.6);
+      console.log("playOnce", source); //source.stop(0.8);
     }
   }, {
     key: "touchBlock",
@@ -13580,8 +13733,10 @@ function () {
     value: function volumeDown() {}
   }]);
 
-  return Sound;
+  return Sounds;
 }();
+
+var sounds = new Sounds();
 
 /***/ })
 
