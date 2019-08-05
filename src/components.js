@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { eventBus } from "./eventBus";
 
 //Параметри: текст заголовку і пунктів меню
 //Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
@@ -64,6 +65,7 @@ export class Menu {
             this._select( this._menuList.children()
                 .first() );
         }
+        eventBus.publish('changeMenuItem', "changeMenuItem");
     }
 
     selectPrevious() {
@@ -73,6 +75,7 @@ export class Menu {
             this._select( this._menuList.children()
                 .last() );
         }
+        eventBus.publish('changeMenuItem', "changeMenuItem");
     }
 
     getSelectedItem() {

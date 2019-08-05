@@ -50,7 +50,8 @@ function connectData( url, audioContext ) {
 $(document).ready(() => {
 
     let urlList = {
-        touch: './audio/touch.mp3'
+        touch: './audio/touch.mp3',
+        changeMenuItem: './audio/changeMenuItem.mp3'
     };
 
     let gameLounch = new Game( $("#game-field" ), $( "#header-field" ), eventBus );

@@ -12856,11 +12856,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "calcQuad", function() { return calcQuad; });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./eventBus */ "./src/eventBus.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
  //Параметри: текст заголовку і пунктів меню
 //Має методи виділення попереднього і наступного пунктів по колу, зміною CSS классу "menu_selected"
@@ -12935,6 +12937,8 @@ function () {
       } else {
         this._select(this._menuList.children().first());
       }
+
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].publish('changeMenuItem', "changeMenuItem");
     }
   }, {
     key: "selectPrevious",
@@ -12944,6 +12948,8 @@ function () {
       } else {
         this._select(this._menuList.children().last());
       }
+
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].publish('changeMenuItem', "changeMenuItem");
     }
   }, {
     key: "getSelectedItem",
@@ -13646,7 +13652,8 @@ function connectData( url, audioContext ) {
 
 jquery__WEBPACK_IMPORTED_MODULE_4___default()(document).ready(function () {
   var urlList = {
-    touch: './audio/touch.mp3'
+    touch: './audio/touch.mp3',
+    changeMenuItem: './audio/changeMenuItem.mp3'
   };
   var gameLounch = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](jquery__WEBPACK_IMPORTED_MODULE_4___default()("#game-field"), jquery__WEBPACK_IMPORTED_MODULE_4___default()("#header-field"), _eventBus__WEBPACK_IMPORTED_MODULE_3__["eventBus"]);
   var bufferSoundsService = new _bufferSoundsService__WEBPACK_IMPORTED_MODULE_2__["BufferSoundsService"]();
@@ -13699,6 +13706,21 @@ function () {
       _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('touch', function (data) {
         _this._touch(data);
       });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('changeMenuItem', function (data) {
+        _this._changeMenuItem(data);
+      });
+    }
+  }, {
+    key: "_changeMenuItem",
+    value: function _changeMenuItem() {
+      var sound = this.list.changeMenuItem;
+
+      if (!sound) {
+        console.log("no sound");
+        return;
+      }
+
+      this._playOnce(sound);
     }
   }, {
     key: "_touch",
@@ -13722,6 +13744,9 @@ function () {
       source.start(0.6);
       console.log("playOnce", source); //source.stop(0.8);
     }
+  }, {
+    key: "changeMenu",
+    value: function changeMenu() {}
   }, {
     key: "touchBlock",
     value: function touchBlock() {}
