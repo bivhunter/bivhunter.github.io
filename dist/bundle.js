@@ -11291,6 +11291,8 @@ function () {
 
 
       if (distance !== 0) {
+        this._game.eventBus.publish('touch', this.__proto__.constructor.name);
+
         ball.speedCoef += this._acceleration;
         this._board.speedCoef = ball.speedCoef;
         ball.correctionDirection(dt);
@@ -11707,8 +11709,7 @@ function () {
   }, {
     key: "_touchingBlock",
     value: function _touchingBlock(block) {
-      this._game.eventBus.publish('touch', 'block touch');
-
+      //this._game.eventBus.publish('touch', this.__proto__.constructor.name);
       block.touching();
       this._game.score += block.getScore();
 
@@ -13653,7 +13654,13 @@ function connectData( url, audioContext ) {
 jquery__WEBPACK_IMPORTED_MODULE_4___default()(document).ready(function () {
   var urlList = {
     touch: './audio/touch.mp3',
-    changeMenuItem: './audio/changeMenuItem.mp3'
+    changeMenuItem: './audio/changeMenuItem.mp3',
+    lostBall: './audio/lostBall.mp3',
+    removeBlock: './audio/removeBlock.mp3',
+    okMenuItem: './audio/okMenuItem.mp3',
+    newRound: './audio/newRound.mp3',
+    victory: './audio/victory.mp3',
+    defeat: './audio/defeat.mp3'
   };
   var gameLounch = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](jquery__WEBPACK_IMPORTED_MODULE_4___default()("#game-field"), jquery__WEBPACK_IMPORTED_MODULE_4___default()("#header-field"), _eventBus__WEBPACK_IMPORTED_MODULE_3__["eventBus"]);
   var bufferSoundsService = new _bufferSoundsService__WEBPACK_IMPORTED_MODULE_2__["BufferSoundsService"]();
@@ -13727,8 +13734,8 @@ function () {
     value: function _touch(data) {
       var sound = this.list.touch;
 
-      if (!sound) {
-        console.log("no sound");
+      if (!sound || data === 'StartScene') {
+        console.log("no sound || startScene");
         return;
       }
 
@@ -13741,8 +13748,8 @@ function () {
       source.buffer = sound;
       source.connect(_audioContext__WEBPACK_IMPORTED_MODULE_0__["audioCtx"].destination);
       source.loop = false;
-      source.start(0.6);
-      console.log("playOnce", source); //source.stop(0.8);
+      source.start(0.6); // console.log("playOnce", source);
+      //source.stop(0.8);
     }
   }, {
     key: "changeMenu",

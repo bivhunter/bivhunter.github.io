@@ -261,6 +261,7 @@ export class GameScene {
         //якщо distance = 0, то зіткнення нема, інакше розраховуємо
         //позицію після відскоку з залишковою швидкістю
         if ( distance !== 0 ) {
+            this._game.eventBus.publish('touch', this.__proto__.constructor.name);
             ball.speedCoef += this._acceleration;
             this._board.speedCoef = ball.speedCoef;
             ball.correctionDirection( dt );
@@ -656,7 +657,7 @@ export class GameScene {
 
 	//викликається при зіткненні з блоком
 	_touchingBlock(block) {
-        this._game.eventBus.publish('touch', 'block touch');
+        //this._game.eventBus.publish('touch', this.__proto__.constructor.name);
 		block.touching();
 		this._game.score += block.getScore();
 		this._blockForRemove.push(block);

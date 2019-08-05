@@ -28,8 +28,8 @@ class Sounds {
 
     _touch(data) {
         let sound = this.list.touch;
-        if (!sound) {
-            console.log("no sound");
+        if (!sound || data === 'StartScene') {
+            console.log("no sound || startScene");
             return;
         }
         this._playOnce(sound);
@@ -42,7 +42,7 @@ class Sounds {
         source.connect(audioCtx.destination);
         source.loop = false;
         source.start(0.6);
-        console.log("playOnce", source);
+       // console.log("playOnce", source);
         //source.stop(0.8);
     }
 
