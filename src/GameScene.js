@@ -261,7 +261,7 @@ export class GameScene {
         //якщо distance = 0, то зіткнення нема, інакше розраховуємо
         //позицію після відскоку з залишковою швидкістю
         if ( distance !== 0 ) {
-            this._game.eventBus.publish('touch', this.__proto__.constructor.name);
+
             ball.speedCoef += this._acceleration;
             this._board.speedCoef = ball.speedCoef;
             ball.correctionDirection( dt );
@@ -305,6 +305,7 @@ export class GameScene {
         }
 
         if ( position.y > bottomBorder ) {
+            this._game.eventBus.publish('lostBall', "lostBall");
             this.gameOver( "loss" );
         }
 
@@ -317,6 +318,7 @@ export class GameScene {
 			}
 			
             if ( obj[ key ] > distance ) {
+                this._game.eventBus.publish('touch', this.__proto__.constructor.name);
                 distance = obj[ key ];
                 if ( key === "left" || key === "right" ) {
                     ball.newDirection = new Vector( -1 * ball.direction.x, ball.direction.y );
@@ -481,6 +483,7 @@ export class GameScene {
         let sign = Math.sign(Vector.scalarMult(normal, ball.direction));
         let distance = ball.position.diff(ball.board.position).module();
 
+        this._game.eventBus.publish('touch', this.__proto__.constructor.name);
         ball.touchedElem.board = distance;
         ball.board.direction = ball.direction.turnAngle(Math.PI - sign * 2 * angle).norm();
         ball.board.speed = ball.board.direction.scalar(distance);
@@ -671,6 +674,7 @@ export class GameScene {
 				let pos = this._blockArr.indexOf(block);
 				if (pos >= 0) {
 					this._blockArr.splice(pos, 1);
+					this._game.eventBus.publish('removeBlock', this.__proto__.constructor.name);
 					block.getElem().remove();
 				}
 			}

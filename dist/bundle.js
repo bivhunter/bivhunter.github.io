@@ -11291,8 +11291,6 @@ function () {
 
 
       if (distance !== 0) {
-        this._game.eventBus.publish('touch', this.__proto__.constructor.name);
-
         ball.speedCoef += this._acceleration;
         this._board.speedCoef = ball.speedCoef;
         ball.correctionDirection(dt);
@@ -11336,6 +11334,8 @@ function () {
       }
 
       if (position.y > bottomBorder) {
+        this._game.eventBus.publish('lostBall', "lostBall");
+
         this.gameOver("loss");
       } //distance найбюільша (якщо виліт за дві границі)
       // відстань на яку шар вийшов за границю поля
@@ -11348,6 +11348,8 @@ function () {
         }
 
         if (obj[key] > distance) {
+          this._game.eventBus.publish('touch', this.__proto__.constructor.name);
+
           distance = obj[key];
 
           if (key === "left" || key === "right") {
@@ -11519,6 +11521,9 @@ function () {
       var angle = Math.acos(_components__WEBPACK_IMPORTED_MODULE_4__["Vector"].scalarMult(ball.direction, vecCentrToVertex.norm()));
       var sign = Math.sign(_components__WEBPACK_IMPORTED_MODULE_4__["Vector"].scalarMult(normal, ball.direction));
       var distance = ball.position.diff(ball.board.position).module();
+
+      this._game.eventBus.publish('touch', this.__proto__.constructor.name);
+
       ball.touchedElem.board = distance;
       ball.board.direction = ball.direction.turnAngle(Math.PI - sign * 2 * angle).norm();
       ball.board.speed = ball.board.direction.scalar(distance);
@@ -11728,6 +11733,8 @@ function () {
 
           if (pos >= 0) {
             _this6._blockArr.splice(pos, 1);
+
+            _this6._game.eventBus.publish('removeBlock', _this6.__proto__.constructor.name);
 
             block.getElem().remove();
           }
@@ -12134,6 +12141,7 @@ function (_GameScene) {
       }
 
       if (this._game.checkKeyPress(13)) {
+        // this._game.eventBus.publish('okMenuItem', 'okMenuItem');
         switch (this._menu.getSelectedItem().attr("data-name")) {
           case "start-game":
             this._game.life = 5;
@@ -13653,12 +13661,12 @@ function connectData( url, audioContext ) {
 
 jquery__WEBPACK_IMPORTED_MODULE_4___default()(document).ready(function () {
   var urlList = {
-    touch: './audio/touch.mp3',
     changeMenuItem: './audio/changeMenuItem.mp3',
-    lostBall: './audio/lostBall.mp3',
-    removeBlock: './audio/removeBlock.mp3',
     okMenuItem: './audio/okMenuItem.mp3',
-    newRound: './audio/newRound.mp3',
+    touch: './audio/touch.mp3',
+    removeBlock: './audio/removeBlock.mp3',
+    lostBall: './audio/lostBall.mp3',
+    startRound: './audio/startRound.mp3',
     victory: './audio/victory.mp3',
     defeat: './audio/defeat.mp3'
   };
@@ -13710,20 +13718,32 @@ function () {
     value: function _subscribeEvent() {
       var _this = this;
 
-      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('touch', function (data) {
-        _this._touch(data);
-      });
       _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('changeMenuItem', function (data) {
-        _this._changeMenuItem(data);
+        _this._playSound('changeMenuItem', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('okMenuItem', function (data) {
+        _this._playSound('okMenuItem', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('touch', function (data) {
+        _this._playSound('touch', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('lostBall', function (data) {
+        _this._playSound('lostBall', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('removeBlock', function (data) {
+        _this._playSound('removeBlock', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('startRound', function (data) {
+        _this._playSound('startRound', data);
       });
     }
   }, {
-    key: "_changeMenuItem",
-    value: function _changeMenuItem() {
-      var sound = this.list.changeMenuItem;
+    key: "_playSound",
+    value: function _playSound(soundName, data) {
+      var sound = this.list[soundName];
 
-      if (!sound) {
-        console.log("no sound");
+      if (!sound || data === 'StartScene') {
+        console.log("no sound || startScene");
         return;
       }
 
@@ -13742,14 +13762,53 @@ function () {
       this._playOnce(sound);
     }
   }, {
+    key: "_changeMenuItem",
+    value: function _changeMenuItem() {
+      var sound = this.list.changeMenuItem;
+
+      if (!sound) {
+        console.log("no sound");
+        return;
+      }
+
+      this._playOnce(sound);
+    }
+  }, {
+    key: "_lostBall",
+    value: function _lostBall() {}
+  }, {
+    key: "_removeBlock",
+    value: function _removeBlock(data) {
+      var sound = this.list.removeBlock;
+
+      if (!sound || data === 'StartScene') {
+        console.log("no sound || startScene");
+        return;
+      }
+
+      this._playOnce(sound);
+    }
+  }, {
+    key: "_okMenuItem",
+    value: function _okMenuItem(data) {}
+  }, {
+    key: "_newRound",
+    value: function _newRound(data) {}
+  }, {
+    key: "_victory",
+    value: function _victory(data) {}
+  }, {
+    key: "_defeat",
+    value: function _defeat(data) {}
+  }, {
     key: "_playOnce",
     value: function _playOnce(sound) {
       var source = _audioContext__WEBPACK_IMPORTED_MODULE_0__["audioCtx"].createBufferSource();
       source.buffer = sound;
       source.connect(_audioContext__WEBPACK_IMPORTED_MODULE_0__["audioCtx"].destination);
       source.loop = false;
-      source.start(0.6); // console.log("playOnce", source);
-      //source.stop(0.8);
+      source.start(0);
+      console.log("playOnce", source); //source.stop(0.8);
     }
   }, {
     key: "changeMenu",

@@ -50,12 +50,15 @@ function connectData( url, audioContext ) {
 $(document).ready(() => {
 
     let urlList = {
-        touch: './audio/touch.mp3',
         changeMenuItem: './audio/changeMenuItem.mp3',
-        lostBall: './audio/lostBall.mp3',
-        removeBlock: './audio/removeBlock.mp3',
         okMenuItem: './audio/okMenuItem.mp3',
-        newRound: './audio/newRound.mp3',
+
+        touch: './audio/touch.mp3',
+        removeBlock: './audio/removeBlock.mp3',
+        lostBall: './audio/lostBall.mp3',
+
+
+        startRound: './audio/startRound.mp3',
         victory: './audio/victory.mp3',
         defeat: './audio/defeat.mp3'
     };
