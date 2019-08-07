@@ -87,7 +87,7 @@ export class StartScene extends GameScene {
 		}
 
 		if (this._game.checkKeyPress(13)) {
-           // this._game.eventBus.publish('okMenuItem', 'okMenuItem');
+
 			switch (this._menu.getSelectedItem().attr("data-name")) {
 				case "start-game":
 					this._game.life = 5;
@@ -107,6 +107,7 @@ export class StartScene extends GameScene {
 					});
 					break;
 				case "quit":
+                    this._game.eventBus.publish('finalInfo', 'finalInfo');
 					this._clearScene();
 					this._game.setScene({
 						scene: FinalScene,

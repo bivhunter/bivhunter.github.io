@@ -79,6 +79,7 @@ export class GameOverScene {
                         isClear: true
                     } );
                 } else {
+                    this._game.eventBus.publish('victoryGame', this.__proto__.constructor.name);
                     this._setFinalScene( "victory" );
                 }
             }
@@ -91,6 +92,7 @@ export class GameOverScene {
                         isClear: true
                     } );
                 } else {
+                    this._game.eventBus.publish('gameOver', this.__proto__.constructor.name);
                     this._setFinalScene( "gameOver" );
                 }
             }
@@ -101,11 +103,13 @@ export class GameOverScene {
                     this._clearScene();
                     this._game.returnScene( true );
                 } else {
+                    this._game.eventBus.publish('gameOver', this.__proto__.constructor.name);
                     this._setFinalScene( "gameOver" );
                 }
             }
                 break;
             case "quit" : {
+                this._game.eventBus.publish('gameOver', this.__proto__.constructor.name);
                 this._setFinalScene( "gameOver" );
             }
                 break;

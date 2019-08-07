@@ -21,17 +21,36 @@ class Sounds {
             this._playSound('touch', data);
         });
 
-        eventBus.subscribe('lostBall', (data) => {
-            this._playSound('lostBall', data);
-        });
-
-
         eventBus.subscribe('removeBlock', (data) => {
             this._playSound('removeBlock', data);
         });
 
+        eventBus.subscribe('lostBall', (data) => {
+            this._playSound('lostBall', data);
+        });
+
+        eventBus.subscribe('restart', (data) => {
+            this._playSound('restart', data);
+        });
+
         eventBus.subscribe('startRound', (data) => {
             this._playSound('startRound', data);
+        });
+
+        eventBus.subscribe('victoryRound', (data) => {
+            this._playSound('victoryRound', data);
+        });
+
+        eventBus.subscribe('victoryGame', (data) => {
+            this._playSound('victoryGame', data);
+        });
+
+        eventBus.subscribe('gameOver', (data) => {
+            this._playSound('gameOver', data);
+        });
+
+        eventBus.subscribe('finalInfo', (data) => {
+            this._playSound('finalInfo', data);
         });
     }
 

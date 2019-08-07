@@ -55,12 +55,17 @@ $(document).ready(() => {
 
         touch: './audio/touch.mp3',
         removeBlock: './audio/removeBlock.mp3',
-        lostBall: './audio/lostBall.mp3',
+        lostBall: './audio/lostBall_2.mp3',
 
 
+        restart: './audio/lostBall_2.mp3',
         startRound: './audio/startRound.mp3',
-        victory: './audio/victory.mp3',
-        defeat: './audio/defeat.mp3'
+
+        victoryRound: './audio/victoryRound.mp3',
+        victoryGame: './audio/victoryGame.mp3',
+
+        gameOver: './audio/gameOver.mp3',
+        finalInfo: './audio/finalInfo.mp3'
     };
 
     let gameLounch = new Game( $("#game-field" ), $( "#header-field" ), eventBus );

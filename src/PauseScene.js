@@ -46,12 +46,14 @@ export class PauseScene {
 					}
 					break;
 				case "restart":
+                    this._game.eventBus.publish('restart', this.__proto__.constructor.name);
 					this._setScene(GameOverScene, "restart");
 					break;
 				case "help":
                     this._setScene(HelpScene);
 					break;
 				case "quit":
+                    this._game.eventBus.publish('restart', this.__proto__.constructor.name);
                     this._setScene(GameOverScene, "quit");
 					break;
 			}

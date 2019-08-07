@@ -117,6 +117,7 @@ export class GameScene {
         this._info = new Info( "" );
         this._isShowInfo = true;
         this._infoText = "Round " + this._round.getActiveRoundNum();
+        this._game.eventBus.publish('startRound', this.__proto__.constructor.name);
     }
 
     update( dt ) {
@@ -682,6 +683,7 @@ export class GameScene {
 
 		this._blockForRemove = [];
 		if (this._blockArr.length === 0) {
+            this._game.eventBus.publish('victoryRound', this.__proto__.constructor.name);
 			this.gameOver("victory");
 		}
 	}

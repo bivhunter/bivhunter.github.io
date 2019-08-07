@@ -10917,6 +10917,8 @@ function () {
                 isClear: true
               });
             } else {
+              this._game.eventBus.publish('victoryGame', this.__proto__.constructor.name);
+
               this._setFinalScene("victory");
             }
           }
@@ -10932,6 +10934,8 @@ function () {
                 isClear: true
               });
             } else {
+              this._game.eventBus.publish('gameOver', this.__proto__.constructor.name);
+
               this._setFinalScene("gameOver");
             }
           }
@@ -10946,6 +10950,8 @@ function () {
 
               this._game.returnScene(true);
             } else {
+              this._game.eventBus.publish('gameOver', this.__proto__.constructor.name);
+
               this._setFinalScene("gameOver");
             }
           }
@@ -10953,6 +10959,8 @@ function () {
 
         case "quit":
           {
+            this._game.eventBus.publish('gameOver', this.__proto__.constructor.name);
+
             this._setFinalScene("gameOver");
           }
           break;
@@ -11139,6 +11147,8 @@ function () {
       this._info = new _components__WEBPACK_IMPORTED_MODULE_4__["Info"]("");
       this._isShowInfo = true;
       this._infoText = "Round " + this._round.getActiveRoundNum();
+
+      this._game.eventBus.publish('startRound', this.__proto__.constructor.name);
     }
   }, {
     key: "update",
@@ -11744,6 +11754,8 @@ function () {
       this._blockForRemove = [];
 
       if (this._blockArr.length === 0) {
+        this._game.eventBus.publish('victoryRound', this.__proto__.constructor.name);
+
         this.gameOver("victory");
       }
     }
@@ -11947,6 +11959,8 @@ function () {
             break;
 
           case "restart":
+            this._game.eventBus.publish('restart', this.__proto__.constructor.name);
+
             this._setScene(_GameOverScene__WEBPACK_IMPORTED_MODULE_1__["GameOverScene"], "restart");
 
             break;
@@ -11957,6 +11971,8 @@ function () {
             break;
 
           case "quit":
+            this._game.eventBus.publish('restart', this.__proto__.constructor.name);
+
             this._setScene(_GameOverScene__WEBPACK_IMPORTED_MODULE_1__["GameOverScene"], "quit");
 
             break;
@@ -12141,7 +12157,6 @@ function (_GameScene) {
       }
 
       if (this._game.checkKeyPress(13)) {
-        // this._game.eventBus.publish('okMenuItem', 'okMenuItem');
         switch (this._menu.getSelectedItem().attr("data-name")) {
           case "start-game":
             this._game.life = 5;
@@ -12169,6 +12184,8 @@ function (_GameScene) {
             break;
 
           case "quit":
+            this._game.eventBus.publish('finalInfo', 'finalInfo');
+
             this._clearScene();
 
             this._game.setScene({
@@ -13665,10 +13682,13 @@ jquery__WEBPACK_IMPORTED_MODULE_4___default()(document).ready(function () {
     okMenuItem: './audio/okMenuItem.mp3',
     touch: './audio/touch.mp3',
     removeBlock: './audio/removeBlock.mp3',
-    lostBall: './audio/lostBall.mp3',
+    lostBall: './audio/lostBall_2.mp3',
+    restart: './audio/lostBall_2.mp3',
     startRound: './audio/startRound.mp3',
-    victory: './audio/victory.mp3',
-    defeat: './audio/defeat.mp3'
+    victoryRound: './audio/victoryRound.mp3',
+    victoryGame: './audio/victoryGame.mp3',
+    gameOver: './audio/gameOver.mp3',
+    finalInfo: './audio/finalInfo.mp3'
   };
   var gameLounch = new _game__WEBPACK_IMPORTED_MODULE_0__["Game"](jquery__WEBPACK_IMPORTED_MODULE_4___default()("#game-field"), jquery__WEBPACK_IMPORTED_MODULE_4___default()("#header-field"), _eventBus__WEBPACK_IMPORTED_MODULE_3__["eventBus"]);
   var bufferSoundsService = new _bufferSoundsService__WEBPACK_IMPORTED_MODULE_2__["BufferSoundsService"]();
@@ -13727,14 +13747,29 @@ function () {
       _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('touch', function (data) {
         _this._playSound('touch', data);
       });
-      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('lostBall', function (data) {
-        _this._playSound('lostBall', data);
-      });
       _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('removeBlock', function (data) {
         _this._playSound('removeBlock', data);
       });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('lostBall', function (data) {
+        _this._playSound('lostBall', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('restart', function (data) {
+        _this._playSound('restart', data);
+      });
       _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('startRound', function (data) {
         _this._playSound('startRound', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('victoryRound', function (data) {
+        _this._playSound('victoryRound', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('victoryGame', function (data) {
+        _this._playSound('victoryGame', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('gameOver', function (data) {
+        _this._playSound('gameOver', data);
+      });
+      _eventBus__WEBPACK_IMPORTED_MODULE_1__["eventBus"].subscribe('finalInfo', function (data) {
+        _this._playSound('finalInfo', data);
       });
     }
   }, {
